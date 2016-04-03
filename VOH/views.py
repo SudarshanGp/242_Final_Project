@@ -1,10 +1,11 @@
-from flask import Flask
+from flask import Flask, Blueprint
 from flask import render_template, request
 from VOH import app
 from authentication import *
+api = Blueprint('api', __name__)
 
 
-@app.route('/login')
+@api.route('/login')
 def login():
     """
     Default Login Page
@@ -13,7 +14,7 @@ def login():
     return render_template("login.html")
 
 
-@app.route('/login', methods=["POST"])
+@api.route('/login', methods=["POST"])
 def authenticate_login():
     """
     Validation of Credentials
@@ -24,7 +25,3 @@ def authenticate_login():
     if authenticate_user(username, password):
         return render_template("success.html")
     return render_template("login.html")
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
