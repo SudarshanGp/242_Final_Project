@@ -5,7 +5,7 @@ from authentication import *
 api = Blueprint('api', __name__)
 
 
-@api.route('/login')
+@api.route('/login/')
 def login():
     """
     Default Login Page
@@ -14,7 +14,7 @@ def login():
     return render_template("login.html")
 
 
-@api.route('/login', methods=["POST"])
+@api.route('/login/', methods=["POST"])
 def authenticate_login():
     """
     Validation of Credentials
@@ -22,6 +22,7 @@ def authenticate_login():
     """
     username = request.form["username"]
     password = request.form["password"]
+    print username, password
     if authenticate_user(username, password):
-        return render_template("success.html")
+        return "Success"
     return render_template("login.html")
