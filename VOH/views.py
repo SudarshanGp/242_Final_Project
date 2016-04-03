@@ -13,6 +13,9 @@ def login():
     """
     return render_template("login.html")
 
+@api.route('/register/')
+def register():
+    return render_template("register.html")
 
 @api.route('/login/', methods=["POST"])
 def authenticate_login():
