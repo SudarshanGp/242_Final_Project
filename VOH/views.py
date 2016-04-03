@@ -10,7 +10,7 @@ def login():
     Default Login Page
     :return:
     """
-    render_template("login.html")
+    return render_template("login.html")
 
 
 @app.route('/login', methods=["POST"])
@@ -22,5 +22,9 @@ def authenticate_login():
     username = request.form["username"]
     password = request.form["password"]
     if authenticate_user(username, password):
-        render_template("success.html")
-    render_template("login.html")
+        return render_template("success.html")
+    return render_template("login.html")
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
