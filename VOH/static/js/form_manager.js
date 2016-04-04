@@ -6,6 +6,9 @@ function submitComment(form) {
     $.ajax({
         url: "",
         method: "post",
-        data: $(form).serialize()
+        data: $(form).serialize(),
+        success:function(data){
+            console.log(data);
+        }
     });
 }
