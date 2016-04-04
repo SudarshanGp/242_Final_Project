@@ -1,8 +1,10 @@
 from flask import Flask, Blueprint
 from flask import render_template, request
 from VOH import app
+from flask_socketio import *
 from authentication import *
 api = Blueprint('api', __name__)
+socketio = SocketIO(app)
 
 
 @api.route('/login/')
