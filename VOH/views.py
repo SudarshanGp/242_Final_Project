@@ -17,7 +17,7 @@ def login():
 def register():
     return render_template("register.html")
 
-@api.route('/login/', methods=["POST"])
+@api.route('/authenticate/', methods=["POST"])
 def authenticate_login():
     """
     Validation of Credentials
@@ -28,4 +28,9 @@ def authenticate_login():
     print username, password
     if authenticate_user(username, password):
         return "Success"
-    return render_template("login.html")
+    return "ADfs"
+
+@app.errorhandler(Exception)
+def exception_handler(error):
+
+    return 'ERROR ' + repr(error)
