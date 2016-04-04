@@ -25,8 +25,8 @@
         <div class="row margin">
           <div class="input-field col s12">
             <i class="mdi-social-person-outline prefix"></i>
-            <input class="validate" id="email" type="email">
-            <label for="email" data-error="wrong" data-success="right" class="center-align">Email</label>
+            <input class="validate" id="username" type="email">
+            <label for="username" data-error="wrong" data-success="right" class="center-align">Email</label>
           </div>
         </div>
         <div class="row margin">
@@ -44,7 +44,7 @@
         </div>
         <div class="row">
           <div class="input-field col s12">
-            <a href="login.html" class="btn waves-effect waves-light col s12">Login</a>
+            <a onclick="submitComment(document.getElementsByClassName('form'))" class="btn waves-effect waves-light col s12">Login</a>
           </div>
         </div>
         <div class="row">
@@ -64,5 +64,6 @@
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="{{ url_for('static',filename='js/materialize.js') }}"></script>
         <script src="{{ url_for('static',filename='js/init.js') }}"></script>
+        <script src="{{ url_for('static',filename='js/form_manager.js') }}"></script>
 </body>
 </html>
