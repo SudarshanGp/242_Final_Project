@@ -1,5 +1,5 @@
 from flask import Flask, Blueprint
-from flask import render_template, request
+from flask import render_template, request, session
 from VOH import app
 from flask_socketio import *
 from authentication import *
