@@ -29,7 +29,7 @@ def authenticate_login():
     password = request.form["password"]
     print username, password
     if authenticate_user(username, password):
-        return "Success"
+        return jsonify(response = "Success")
     return jsonify(response = 'ADfs')
 
 @app.errorhandler(Exception)
