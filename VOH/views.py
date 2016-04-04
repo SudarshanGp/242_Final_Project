@@ -1,11 +1,11 @@
 from flask import Flask, Blueprint
-from flask import render_template, request, session
+from flask import render_template, request, session, jsonify
 from VOH import app
 from flask_socketio import *
 from authentication import *
 api = Blueprint('api', __name__)
 socketio = SocketIO(app)
-
+thread = None # keeping track of thread
 
 @api.route('/login/')
 def login():
@@ -30,7 +30,7 @@ def authenticate_login():
     print username, password
     if authenticate_user(username, password):
         return "Success"
-    return "ADfs"
+    return jsonify(response = 'ADfs')
 
 @app.errorhandler(Exception)
 def exception_handler(error):
