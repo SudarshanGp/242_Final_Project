@@ -53,20 +53,6 @@ def instructor_view():
             message = "No file to upload!"
     return render_template("instructor.html", message = message)
 
-@app.route('/upload', methods=['POST'])
-def upload():
-    if request.method == 'POST':
-        file = request.files['file']
-        if file:
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('uploaded_file',
-                                    filename=filename))
-
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'],
-                               filename)
 @app.errorhandler(Exception)
 def exception_handler(error):
 
