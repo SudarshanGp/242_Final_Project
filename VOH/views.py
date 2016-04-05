@@ -7,6 +7,11 @@ api = Blueprint('api', __name__)
 socketio = SocketIO(app)
 thread = None # keeping track of thread
 
+@api.route('/')
+@api.route('/index/')
+def main_page():
+    return render_template("base.html")
+
 @api.route('/login/')
 def login():
     """

@@ -1,4 +1,4 @@
-{% extends "login.html" %}
+{% extends "base.html" %}
 {% block data %}
   <div id="create-page" class="row">
     <div class="col s6 z-depth-6 card-panel offset-s3">
@@ -12,7 +12,7 @@
         <div class="row margin">
         <p>
             <input name="persontype" type="radio" id="instructor" />
-            <label for="instructor">Instructor/TA</label>
+            <label for="instructor">Teaching Assistant</label>
             <input name="persontype" type="radio" id="student" />
             <label for="student">Student</label>
         </p>
