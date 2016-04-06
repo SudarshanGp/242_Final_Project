@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_formhelpers.html" import render_field %}
 {% block data %}
 <div class="row">
     <div class="col s6 z-depth-6 card-panel offset-s3">
@@ -12,21 +13,24 @@
         <div class="row margin">
           <div class="input-field col s12">
             <i class="mdi-social-person-outline prefix"></i>
-            <input name="username" class="validate" id="username" type="text">
-            <label for="username" data-error="wrong" data-success="right" class="center-align">Email</label>
+            <!--<input name="username" class="validate" id="username" type="text">-->
+              <!--<label for="username" data-error="wrong" data-success="right" class="center-align">Email</label>-->
+              {{ render_field(form.username) }}
           </div>
         </div>
         <div class="row margin">
           <div class="input-field col s12">
             <i class="mdi-action-lock-outline prefix"></i>
-            <input name="password" id="password" type="password">
-            <label for="password">Password</label>
+            <!--<input name="password" id="password" type="password">-->
+            <!--<label for="password">Password</label>-->
+              {{ render_field(form.password) }}
           </div>
         </div>
         <div class="row">
           <div class="input-field col s12 m12 l12  login-text">
-              <input type="checkbox" id="remember-me" />
-              <label for="remember-me">Remember me</label>
+              <!--<input type="checkbox" id="remember-me" />-->
+              <!--<label for="remember-me">Remember me</label>-->
+              {{ render_field(form.remember_me) }}
           </div>
         </div>
         <div class="row">

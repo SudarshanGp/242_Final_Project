@@ -1,7 +1,6 @@
-from wtforms import Form, RadioField, TextField, PasswordField, validators
+from wtforms import Form, RadioField, TextField, PasswordField, BooleanField,validators
 
 
-# noinspection PyDeprecation
 class RegistrationForm(Form):
 
 
@@ -13,3 +12,8 @@ class RegistrationForm(Form):
     ])
     confirm = PasswordField('Repeat Password')
     instructor_type = RadioField('', choices=[('ta','Teaching Assistant'),('stud','Student')])
+
+class LoginForm(Form):
+    username = TextField('Username')
+    password = PasswordField('Password')
+    remember_me = BooleanField('Remember Me?')

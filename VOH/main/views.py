@@ -2,7 +2,7 @@ from flask import Flask, Blueprint
 from flask import render_template, request, session, jsonify, redirect
 from flask_socketio import *
 
-from VOH.main.forms import RegistrationForm
+from VOH.main.forms import RegistrationForm, LoginForm
 from authentication import *
 from . import main
 from .. import app
@@ -17,7 +17,8 @@ def main_page():
 
 @main.route('/login/')
 def login():
-    return render_template("login.html")
+    form = LoginForm()
+    return render_template("login.html", form = form)
 
 
 @main.route('/register/')
