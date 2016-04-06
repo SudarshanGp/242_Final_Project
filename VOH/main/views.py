@@ -10,6 +10,7 @@ import os
 @main.route('/')
 @main.route('/index/')
 def main_page():
+    print("hErE")
     return render_template("base.html")
 
 
@@ -19,11 +20,13 @@ def login():
     Default Login Page
     :return:
     """
+    print("in login")
     return render_template("login.html")
 
 
 @main.route('/register/')
 def register():
+    print("in register")
     return render_template("register.html")
 
 
@@ -33,6 +36,7 @@ def authenticate_login():
     Validation of Credentials
     :return:
     """
+    print("in authenticate")
     username = request.form["username"]
     password = request.form["password"]
     print username, password
