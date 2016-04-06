@@ -8,10 +8,13 @@ api = Blueprint('api', __name__)
 socketio = SocketIO(app)
 thread = None # keeping track of thread
 app.config['UPLOAD_FOLDER'] = 'uploads'
+
+
 @api.route('/')
 @api.route('/index/')
 def main_page():
     return render_template("base.html")
+
 
 @api.route('/login/')
 def login():
@@ -21,9 +24,11 @@ def login():
     """
     return render_template("login.html")
 
+
 @api.route('/register/')
 def register():
     return render_template("register.html")
+
 
 @api.route('/authenticate/', methods=["POST"])
 def authenticate_login():
@@ -37,6 +42,7 @@ def authenticate_login():
     if authenticate_user(username, password):
         return jsonify(response = "Success")
     return jsonify(response = 'ADfs')
+
 
 @api.route('/instructor/',methods = ["GET","POST"])
 def instructor_view():
