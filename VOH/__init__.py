@@ -13,7 +13,7 @@ def create_app(debug=False):
     app.config.from_object(__name__)
     app.config['UPLOAD_FOLDER'] = 'uploads'
     app.debug = debug
-    app.config['SECRET_KEY'] = 'gjr39dkjn344_!67#'
+    app.config['SECRET_KEY'] = 'asdq2312ds1242!67#'
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)

@@ -1,5 +1,6 @@
 from .. import db
 
+
 def get_user_db():
     """
     Gets USERS Table
@@ -7,6 +8,7 @@ def get_user_db():
     """
     users_table = db["users"]
     return users_table
+
 
 def authenticate_user(username, password):
     """
