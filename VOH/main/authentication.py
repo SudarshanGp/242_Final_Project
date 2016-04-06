@@ -1,4 +1,4 @@
-from VOH import db
+from .. import db
 
 def get_user_db():
     """

@@ -1,14 +1,10 @@
 from flask import Flask, Blueprint
 from flask import render_template, request, session, jsonify, redirect
 from flask_socketio import *
-# from authentication import *
+from authentication import *
 from . import main
 
 import os
-# api = Blueprint('api', __name__)
-# socketio = SocketIO(app)
-thread = None # keeping track of thread
-# app.config['UPLOAD_FOLDER'] = 'uploads'
 
 
 @main.route('/')
