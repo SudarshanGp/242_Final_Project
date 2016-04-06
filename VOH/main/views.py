@@ -1,22 +1,23 @@
 from flask import Flask, Blueprint
 from flask import render_template, request, session, jsonify, redirect
-from VOH import app
 from flask_socketio import *
-from authentication import *
+# from authentication import *
+from . import main
+
 import os
-api = Blueprint('api', __name__)
-socketio = SocketIO(app)
+# api = Blueprint('api', __name__)
+# socketio = SocketIO(app)
 thread = None # keeping track of thread
-app.config['UPLOAD_FOLDER'] = 'uploads'
+# app.config['UPLOAD_FOLDER'] = 'uploads'
 
 
-@api.route('/')
-@api.route('/index/')
+@main.route('/')
+@main.route('/index/')
 def main_page():
     return render_template("base.html")
 
 
-@api.route('/login/')
+@main.route('/login/')
 def login():
     """
     Default Login Page
@@ -25,12 +26,12 @@ def login():
     return render_template("login.html")
 
 
-@api.route('/register/')
+@main.route('/register/')
 def register():
     return render_template("register.html")
 
 
-@api.route('/authenticate/', methods=["POST"])
+@main.route('/authenticate/', methods=["POST"])
 def authenticate_login():
     """
     Validation of Credentials
@@ -44,7 +45,7 @@ def authenticate_login():
     return jsonify(response = 'ADfs')
 
 
-@api.route('/instructor/',methods = ["GET","POST"])
+@main.route('/instructor/',methods = ["GET","POST"])
 def instructor_view():
     message = "No file uploaded"
     if request.method == 'POST':
@@ -59,7 +60,8 @@ def instructor_view():
             message = "No file to upload!"
     return render_template("instructor.html", message = message)
 
-@app.errorhandler(Exception)
+
+@main.errorhandler(Exception)
 def exception_handler(error):
 
     return 'ERROR ' + repr(error)
