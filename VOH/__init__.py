@@ -6,10 +6,11 @@ from pymongo import *
 socketio = SocketIO()
 client = MongoClient('104.131.185.191', 27017)
 db = client["225VOH"]
+app = Flask(__name__)
 
 def create_app(debug=False):
     """Create an application."""
-    app = Flask(__name__)
+    global app
     app.config.from_object(__name__)
     app.config['UPLOAD_FOLDER'] = 'uploads'
     app.debug = debug
