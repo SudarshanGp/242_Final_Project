@@ -53,6 +53,7 @@ def login():
 
 @main.route('/register/')
 def register():
+
     form = RegistrationForm()
     return render_template("register.html", form = form)
 
@@ -70,21 +71,29 @@ def register_user():
         elif form.instructor_type.data == "student":
             # "Adding student"
             add_student(form.username.data, form.password.data, form.name.data, form.net_id.data, form.instructor_type.data)
-
+    # Return a new form
     form = RegistrationForm()
     return render_template("register.html", form = form)
 
 @main.route('/authenticate/', methods=["POST"])
 def authenticate_login():
-    print("in authenticate")
+    # Get Login Form
     form = LoginForm(request.form)
+    # Authenticate USER
     if authenticate_user(form.username.data, form.password.data, form.instructor_type.data):
-        flask.redirect('localhost:5000/landing/'+str(form.username.data))
-    flask.redirect('localhost:5000/login/')
+        # Redirect to main Landing
+        return flask.redirect('/landing/'+str(form.username.data))
+    # Error! Redirect to Login Page
+    return flask.redirect('/login/')
 
-@main.route('/landing/<netid>')
-def landing_page(netid):
-    return render_template("landing.html", netid = netid)
+@main.route('/landing/<user>')
+def landing_page(user):
+    """
+    Landing Page after Login
+    :param netid: User Name
+    :return:
+    """
+    return render_template("landing.html", netid = user)
 
 @main.route('/instructor/',methods = ["GET","POST"])
 def instructor_view():
