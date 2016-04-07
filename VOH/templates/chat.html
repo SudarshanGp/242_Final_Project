@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block data %}
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="{{ url_for('static',filename='js/socket_manager.js') }}"></script>
+
+        <h1>Flask-SocketIO-Chat: {{ chatID }}</h1>
+        <textarea class="materialize-textarea" id="chat" cols="80" rows="20"></textarea><br><br>
+        <input id="text" size="80" placeholder="Enter your message here"><br><br>
+        <a href="#" onclick="leave_room();">Leave this room</a>
+
+{% endblock %}
