@@ -26,14 +26,18 @@ def register():
     form = RegistrationForm()
     return render_template("register.html", form = form)
 
+@main.route('/register/', methods=["POST"])
+def register_user():
+    form = RegistrationForm(request.form)
+    if request.method == "POST" and form.validate():
+        print form.username.data, form.password.data
+    return "Success"
 
 @main.route('/authenticate/', methods=["POST"])
 def authenticate_login():
     print("in authenticate")
-    username = request.form["username"]
-    password = request.form["password"]
-    print username, password
-    if authenticate_user(username, password):
+    form = LoginForm(request.form)
+    if authenticate_user(form.username, form.password):
         return jsonify(response = "Success")
     return jsonify(response = 'ADfs')
 
