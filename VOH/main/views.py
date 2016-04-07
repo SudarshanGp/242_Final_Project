@@ -1,7 +1,8 @@
 from flask import Flask, Blueprint
 from flask import render_template, request, session, jsonify, redirect
 from flask_socketio import *
-
+from TA import *
+from student import *
 from VOH.main.forms import RegistrationForm, LoginForm
 from authentication import *
 from . import main
@@ -28,16 +29,27 @@ def register():
 
 @main.route('/register/', methods=["POST"])
 def register_user():
+    # Get the Form
     form = RegistrationForm(request.form)
+    # Validate the Form
     if request.method == "POST" and form.validate():
-        print form.username.data, form.password.data
-    return "Success"
+        # Register TA
+        print form
+        if form.instructor_type.data == "TA":
+            # "Adding TA"
+            add_TA(form.username.data, form.password.data, form.name.data, form.email.data, form.instructor_type.data)
+        elif form.instructor_type.data == "student":
+            # "Adding student"
+            add_student(form.username.data, form.password.data, form.name.data, form.email.data, form.instructor_type.data)
+
+    form = RegistrationForm()
+    return render_template("register.html", form = form)
 
 @main.route('/authenticate/', methods=["POST"])
 def authenticate_login():
     print("in authenticate")
     form = LoginForm(request.form)
-    if authenticate_user(form.username, form.password):
+    if authenticate_user(form.username.data, form.password.data):
         return jsonify(response = "Success")
     return jsonify(response = 'ADfs')
 
