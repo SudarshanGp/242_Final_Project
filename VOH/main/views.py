@@ -79,8 +79,8 @@ def authenticate_login():
     print("in authenticate")
     form = LoginForm(request.form)
     if authenticate_user(form.username.data, form.password.data, form.instructor_type.data):
-        flask.redirect('localhost:5000/landing/'+str(form.username.data))
-    flask.redirect('localhost:5000/login/')
+        return flask.redirect('/landing/'+str(form.username.data))
+    return flask.redirect('/login/')
 
 @main.route('/landing/<netid>')
 def landing_page(netid):
