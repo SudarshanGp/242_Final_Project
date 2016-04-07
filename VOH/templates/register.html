@@ -1,71 +1,59 @@
 {% extends "base.html" %}
 {% from "_formhelpers.html" import render_field %}
 {% block data %}
-  <div id="create-page" class="row">
+<div id="create-page" class="row">
     <div class="col s6 z-depth-6 card-panel offset-s3">
-      <form class="create-form" method = "post" >
-        <div class="row">
-          <div class="input-field col s12 center">
-            <img src="../static/data/voh_icon.png" alt="" class="responsive-img valign profile-image-login">
-            <p class="center login-form-text">Virtual Office Hours - Register</p>
-          </div>
-        </div>
-        <div class="row margin">
-        <p>
-            <!--<input name="persontype" type="radio" id="instructor" />-->
-            <!--<label for="instructor">Teaching Assistant</label>-->
-            <!--<input name="persontype" type="radio" id="student" />-->
-            <!--<label for="student">Student</label>-->
-            {{ render_field(form.instructor_type) }}
-        </p>
-          </div>
-          <div class="row margin">
-          <div class="input-field col s12">
-            <i class="mdi-social-person-outline prefix"></i>
-              {{ render_field(form.name) }}
-          </div>
-        </div>
-        <div class="row margin">
-          <div class="input-field col s12">
-            <i class="mdi-social-person-outline prefix"></i>
-              {{ render_field(form.username) }}
-          </div>
-        </div>
-        <div class="row margin">
-          <div class="input-field col s12">
-            <i class="mdi-communication-email prefix"></i>
-            <!--<input name = "email" id="email" type="email" class="validate">-->
-            <!--<label for="email" class="center-align">Email</label>-->
-              {{ render_field(form.email) }}
-          </div>
-        </div>
-        <div class="row margin">
-          <div class="input-field col s12">
-            <i class="mdi-action-lock-outline prefix"></i>
-            <!--<input name = "password" id="password" type="password" class="validate">-->
-            <!--<label for="password">Password</label>-->
-                  {{ render_field(form.password) }}
-
-          </div>
-        </div>
-        <div class="row margin">
-          <div class="input-field col s12">
-            <i class="mdi-action-lock-outline prefix"></i>
-            <!--<input name = "password-again" id="password-again" type="password">-->
-            <!--<label for="password-again">Re-type password</label>-->
-              {{ render_field(form.confirm) }}
-          </div>
-        </div>
-        <div class="row">
-          <div class="input-field col s12">
-            <button class="btn waves-effect waves-light col s12 blue darken-3" type="submit">Register Now</button>
-          </div>
-          <div class="input-field col s12">
-            <p class="margin center medium-small sign-up" >Already have an account? <a href = "../login">Login</a></p>
-          </div>
-        </div>
-      </form>
+        <form class="create-form" method = "post" >
+            <div class="row">
+                <div class="input-field col s12 center">
+                    <img src="../static/data/voh_icon.png" alt="" class="responsive-img valign profile-image-login">
+                    <p class="center login-form-text">Virtual Office Hours - Register</p>
+                </div>
+            </div>
+            <div class="row margin">
+                <p>
+                    {{ render_field(form.instructor_type) }}
+                </p>
+            </div>
+            <div class="row margin">
+                <div class="input-field col s12">
+                    <i class="mdi-social-person-outline prefix"></i>
+                    {{ render_field(form.name) }}
+                </div>
+            </div>
+            <div class="row margin">
+                <div class="input-field col s12">
+                    <i class="mdi-social-person-outline prefix"></i>
+                    {{ render_field(form.username) }}
+                </div>
+            </div>
+            <div class="row margin">
+                <div class="input-field col s12">
+                    <i class="mdi-communication-email prefix"></i>
+                    {{ render_field(form.email) }}
+                </div>
+            </div>
+            <div class="row margin">
+                <div class="input-field col s12">
+                    <i class="mdi-action-lock-outline prefix"></i>
+                    {{ render_field(form.password) }}
+                </div>
+            </div>
+            <div class="row margin">
+                <div class="input-field col s12">
+                    <i class="mdi-action-lock-outline prefix"></i>
+                    {{ render_field(form.confirm) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <button class="btn waves-effect waves-light col s12 blue darken-3" type="submit">Register Now</button>
+                </div>
+                <div class="input-field col s12">
+                    <p class="margin center medium-small sign-up" >Already have an account? <a href = "../login">Login</a></p>
+                </div>
+            </div>
+        </form>
     </div>
-  </div>
-
+</div>
 {% endblock %}

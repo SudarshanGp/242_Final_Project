@@ -1,44 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
         <title>VOH</title>
-
         <!-- CSS Stylesheets  Use jinja to get the css style files from materialize and custom css file-->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
         <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename='css/materialize.css') }}"  media="screen,projection"/>
         <link href="{{ url_for('static',filename='css/style.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
         <div class="navbar-fixed">
-        <nav class = "pink accent-3">
-          <div class="nav-wrapper">
-              <a href="/" class="brand-logo center">VOH</a>
-              <ul class="right hide-on-med-and-down">
-                  <li><a href="/register">Register</a></li>
-                  <li><a href="/login">Login</a></li>
-              </ul>
-          </div>
-        </nav>
-      </div>
-    </head>
-<body>
-{% block data %}
- <div class="section no-pad-bot" id="index-banner">
-    <div class="container">
-        <br><br>
-        <h1 class="header center black-text text-darken-4">VOH - Virtual Office Hours</h1>
-        <div class="row center">
-            <h5 class="header col s12 light">Allows you to communicate with your TAs in your own personal time and space</h5>
-            <i class="large material-icons">code</i>
+            <nav class = "pink accent-3">
+                <div class="nav-wrapper">
+                    <a href="/" class="brand-logo center">VOH</a>
+                    <ul class="right hide-on-med-and-down">
+                        <li><a href="/register">Register</a></li>
+                        <li><a href="/login">Login</a></li>
+                    </ul>
+                </div>
+            </nav>
         </div>
-        <br><br>
-    </div>
-</div>
-{%  endblock %}
+    </head>
+    <body>
+        {% block data %}
+        <div class="section no-pad-bot" id="index-banner">
+            <div class="container">
+                <br><br>
+                <h1 class="header center black-text text-darken-4">VOH - Virtual Office Hours</h1>
+                <div class="row center">
+                    <h5 class="header col s12 light">Allows you to communicate with your TAs in your own personal time and space</h5>
+                    <i class="large material-icons">code</i>
+                </div>
+                <br><br>
+            </div>
+        </div>
+        {%  endblock %}
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="{{ url_for('static',filename='js/materialize.js') }}"></script>
         <script src="{{ url_for('static',filename='js/init.js') }}"></script>
-</body>
+    </body>
 </html>
