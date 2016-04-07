@@ -1,4 +1,4 @@
-from .. import db
+from .. import open_db_connection, close_db_connection
 
 def add_student(username, password, name, email,user_type):
 
@@ -10,8 +10,14 @@ def add_student(username, password, name, email,user_type):
         "email":email,
         "type":user_type
     }
-    # Add TA value
+    # Add Student value
+    client, db = open_db_connection()
     db["student_table"].insert(student)
+    close_db_connection(client)
 
 def get_student(username):
-    return list(db["student_table"].find({"username":username}))
+
+    client, db = open_db_connection()
+    student = list(db["student_table"].find({"username":username}))
+    close_db_connection(client)
+    return student

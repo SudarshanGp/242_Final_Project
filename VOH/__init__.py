@@ -4,8 +4,7 @@ from pymongo import *
 
 
 socketio = SocketIO()
-client = MongoClient('104.131.185.191', 27017)
-db = client["225VOH"]
+
 app = Flask(__name__)
 
 def create_app(debug=False):
@@ -22,3 +21,10 @@ def create_app(debug=False):
     socketio.init_app(app)
     return app
 
+def open_db_connection():
+    client = MongoClient('104.131.185.191', 27017)
+    db = client["225VOH"]
+    return client, db
+
+def close_db_connection(client):
+    client.close()
