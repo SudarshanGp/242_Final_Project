@@ -1,16 +1,22 @@
 from .. import db
 
 
-def get_user_db():
+def get_user_db(user_type):
     """
     Gets USERS Table
     :return:
     """
-    users_table = db["users"]
+    users_table = None
+    # Return TA Table
+    if user_type == "TA":
+        users_table = db["ta_table"]
+    # Return Student Table
+    elif user_type == "student":
+        users_table = db["student_table"]
     return users_table
 
 
-def authenticate_user(username, password):
+def authenticate_user(username, password, user_type):
     """
     Validates User Credentials
     :param username: Username
@@ -19,7 +25,7 @@ def authenticate_user(username, password):
     """
 
     # Gets the users table
-    users_table = get_user_db()
+    users_table = get_user_db(user_type)
 
     # Get's user with this username
     user = list(users_table.find({"username":username}))
@@ -31,5 +37,5 @@ def authenticate_user(username, password):
             return True
         else:
             return False
-    # No one found
+    # No one valid was found
     return False
