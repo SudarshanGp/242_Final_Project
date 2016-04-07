@@ -15,23 +15,6 @@ import os
 def main_page():
     return render_template("base.html")
 
-@main.route('/TA/', methods=['GET', 'POST'])
-def ta_page():
-    print("in index function")
-    form = ChatForm()
-    if form.validate_on_submit():
-        print("submitted form")
-        session['netID'] = form.netID.data
-        session['chatID'] = form.chatID.data
-        print("getting data from validated form ", session['netID'], session['chatID'])
-        return redirect(url_for('.chat'))
-    elif request.method == 'GET':
-        print("IN GET REQUEST METHOD")
-        form.netID.data = session.get('netID', '')
-        print(form.netID.data)
-        form.chatID.data = session.get('chatID', '')
-        print(form.chatID.data)
-    return render_template('TAView.html', form=form)
 
 @main.route('/chat/')
 def chat():
@@ -39,10 +22,8 @@ def chat():
     netID = session.get('netID', '')
     chatID = session.get('chatID', '')
     if netID == '' or chatID == '':
-        return redirect(url_for('.TA'))
+        return redirect(url_for('.landing'))
     return render_template('chat.html', netID=netID, chatID=chatID)
-
-
 
 
 @main.route('/login/')
@@ -86,14 +67,28 @@ def authenticate_login():
     # Error! Redirect to Login Page
     return flask.redirect('/login/')
 
-@main.route('/landing/<user>')
+@main.route('/landing/<user>', methods=['GET', 'POST'])
 def landing_page(user):
     """
     Landing Page after Login
     :param netid: User Name
     :return:
     """
-    return render_template("landing.html", netid = user)
+    print("in index function")
+    form = ChatForm()
+    if form.validate_on_submit():
+        print("submitted form")
+        session['netID'] = form.netID.data
+        session['chatID'] = form.chatID.data
+        print("getting data from validated form ", session['netID'], session['chatID'])
+        return redirect(url_for('.chat'))
+    elif request.method == 'GET':
+        print("IN GET REQUEST METHOD")
+        form.netID.data = session.get('netID', '')
+        print(form.netID.data)
+        form.chatID.data = session.get('chatID', '')
+        print(form.chatID.data)
+    return render_template("landing.html", netid = user, form = form )
 
 @main.route('/instructor/',methods = ["GET","POST"])
 def instructor_view():

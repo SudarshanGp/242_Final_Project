@@ -17,6 +17,7 @@ class RegistrationForm(Form):
     confirm = PasswordField('Repeat Password')
     instructor_type = RadioField('Register as', choices=[('TA','Teaching Assistant'),('student','Student')])
 
+
 class LoginForm(Form):
     instructor_type = RadioField('Login as', choices=[('TA','Teaching Assistant'),('student','Student')])
     username = TextField('Username')

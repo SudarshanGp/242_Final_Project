@@ -1,4 +1,5 @@
 var socket;
+// MOTIVATION FROM FLASK-SOCKETIO DOCUMENTATION
 
 $(document).ready(function(){
     socket = io.connect('http://' + document.domain + ':' + location.port + '/chat');
@@ -7,16 +8,18 @@ $(document).ready(function(){
         console.log("EMIT CONNECT JOINED");
         socket.emit('joined', {});
     });
+    
     socket.on('status', function(data) {
         console.log("ON STATUS");
         $('#chat').val($('#chat').val() + '<' + data.msg + '>\n');
         $('#chat').scrollTop($('#chat')[0].scrollHeight);
     });
+
     socket.on('message', function(data) {
         console.log("ON MESSAGE");
         $('#chat').val($('#chat').val() + data.msg + '\n');
-        $('#chat').scrollTop($('#chat')[0].scrollHeight);
     });
+
     $('#text').keypress(function(e) {
         console.log("ON TEXT ENTER");
         var code = e.keyCode || e.which;
@@ -33,8 +36,9 @@ $(document).ready(function(){
 function leave_room() {
     socket.emit('left', {}, function() {
         socket.disconnect();
-
-        // go back to the login page
-        window.location.href = "{{ url_for('index') }}";
+        console.log(document.domain);
+        console.log(location.port);
+        var redirect ='http://' + document.domain + ':' + location.port + '/';
+        window.location.href = redirect;
     });
 }
