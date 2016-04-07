@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_socketio import *
 from pymongo import *
-
+from .main import main as main_blueprint
 
 socketio = SocketIO()
 client = MongoClient('104.131.185.191', 27017)
@@ -16,7 +16,6 @@ def create_app(debug=False):
     app.debug = debug
     app.config['SECRET_KEY'] = 'asdq2312ds1242!67#'
 
-    from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
     socketio.init_app(app)
