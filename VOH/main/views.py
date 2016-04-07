@@ -50,12 +50,12 @@ def authenticate_login():
     print("in authenticate")
     form = LoginForm(request.form)
     if authenticate_user(form.username.data, form.password.data, form.instructor_type.data):
-        return flask.redirect('/main/'+str(form.username.data))
-    return flask.redirect('/login/')
+        flask.redirect('localhost:5000/landing/'+str(form.username.data))
+    flask.redirect('localhost:5000/login/')
 
-@main.route('/main/<netid>')
-def main_page(netid):
-    return render_template("main.html", netid = netid)
+@main.route('/landing/<netid>')
+def landing_page(netid):
+    return render_template("landing.html", netid = netid)
 
 @main.route('/instructor/',methods = ["GET","POST"])
 def instructor_view():
