@@ -1,9 +1,9 @@
 from flask import Flask, Blueprint
-from flask import render_template, request, session, jsonify, redirect
+from flask import render_template, request, session, jsonify, redirect, url_for
 from flask_socketio import *
 from TA import *
 from student import *
-from VOH.main.forms import RegistrationForm, LoginForm
+from VOH.main.forms import RegistrationForm, LoginForm, ChatForm
 from authentication import *
 from . import main
 from .. import app
@@ -14,6 +14,35 @@ import os
 @main.route('/index/')
 def main_page():
     return render_template("base.html")
+
+@main.route('/TA/', methods=['GET', 'POST'])
+def ta_page():
+    print("in index function")
+    form = ChatForm()
+    if form.validate_on_submit():
+        print("submitted form")
+        session['netID'] = form.netID.data
+        session['chatID'] = form.chatID.data
+        print("getting data from validated form ", session['netID'], session['chatID'])
+        return redirect(url_for('.chat'))
+    elif request.method == 'GET':
+        print("IN GET REQUEST METHOD")
+        form.netID.data = session.get('netID', '')
+        print(form.netID.data)
+        form.chatID.data = session.get('chatID', '')
+        print(form.chatID.data)
+    return render_template('TAView.html', form=form)
+
+@main.route('/chat/')
+def chat():
+    print("in chat route")
+    netID = session.get('netID', '')
+    chatID = session.get('chatID', '')
+    if netID == '' or chatID == '':
+        return redirect(url_for('.TA'))
+    return render_template('chat.html', netID=netID, chatID=chatID)
+
+
 
 
 @main.route('/login/')

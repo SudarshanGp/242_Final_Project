@@ -1,4 +1,8 @@
 from wtforms import Form, RadioField, TextField, PasswordField, BooleanField,validators
+from flask.ext.wtf import Form as form
+from wtforms.fields import StringField, SubmitField
+from wtforms.validators import Required
+
 
 
 class RegistrationForm(Form):
@@ -17,3 +21,11 @@ class LoginForm(Form):
     instructor_type = RadioField('Login as', choices=[('TA','Teaching Assistant'),('student','Student')])
     username = TextField('Username')
     password = PasswordField('Password')
+
+class ChatForm(form):
+    """
+        Form that takes in a netID and a room ID to start a chat
+    """
+    netID = StringField('NetID', validators=[Required()])
+    chatID = StringField('chatID', validators=[Required()])
+    submit = SubmitField('Initiate chat')
