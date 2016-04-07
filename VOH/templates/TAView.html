@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block data %}
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.netID.label }}: {{ form.netID() }} {% for error in form.netID.errors %}{{ error }}{% endfor %}<br>
+        {{ form.chatID.label }}: {{ form.chatID() }} {% for error in form.chatID.errors %}{{ error }}{% endfor %}<br>
+        {{ form.submit() }}
+    </form>
+{% endblock %}
