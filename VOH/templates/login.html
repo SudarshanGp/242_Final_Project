@@ -10,6 +10,15 @@
             <p class="center login-form-text">Virtual Office Hours - Sign In</p>
           </div>
           </div>
+          <div class="row margin">
+        <p>
+            <!--<input name="persontype" type="radio" id="instructor" />-->
+            <!--<label for="instructor">Teaching Assistant</label>-->
+            <!--<input name="persontype" type="radio" id="student" />-->
+            <!--<label for="student">Student</label>-->
+            {{ render_field(form.instructor_type) }}
+        </p>
+          </div>
         <div class="row margin">
           <div class="input-field col s12">
             <i class="mdi-social-person-outline prefix"></i>
@@ -26,13 +35,6 @@
               {{ render_field(form.password) }}
           </div>
         </div>
-        <div class="row">
-          <div class="input-field col s12 m12 l12  login-text">
-              <!--<input type="checkbox" id="remember-me" />-->
-              <!--<label for="remember-me">Remember me</label>-->
-              {{ render_field(form.remember_me) }}
-          </div>
-        </div>
         <div class="row center">
           <div class="input-field col s12">
             <a onclick="submitComment(document.getElementById('login-form'))" class="btn waves-effect waves-light col s12 blue darken-3">Login</a>
@@ -41,9 +43,6 @@
         <div class="row">
           <div class="input-field col s6 m6 l6">
             <p class="margin medium-small"><a href="../register">Register Now!</a></p>
-          </div>
-          <div class="input-field col s6 m6 l6">
-              <p class="margin right-align medium-small"><a href="forgot-password.html">Forgot password?</a></p>
           </div>
         </div>
 
