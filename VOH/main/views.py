@@ -37,10 +37,10 @@ def register_user():
         print form
         if form.instructor_type.data == "TA":
             # "Adding TA"
-            add_TA(form.username.data, form.password.data, form.name.data, form.email.data, form.instructor_type.data)
+            add_TA(form.username.data, form.password.data, form.name.data, form.net_id.data, form.instructor_type.data)
         elif form.instructor_type.data == "student":
             # "Adding student"
-            add_student(form.username.data, form.password.data, form.name.data, form.email.data, form.instructor_type.data)
+            add_student(form.username.data, form.password.data, form.name.data, form.net_id.data, form.instructor_type.data)
 
     form = RegistrationForm()
     return render_template("register.html", form = form)
@@ -49,7 +49,7 @@ def register_user():
 def authenticate_login():
     print("in authenticate")
     form = LoginForm(request.form)
-    if authenticate_user(form.username.data, form.password.data):
+    if authenticate_user(form.username.data, form.password.data, form.instructor_type.data):
         return jsonify(response = "Success")
     return jsonify(response = 'ADfs')
 
