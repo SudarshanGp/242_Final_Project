@@ -50,9 +50,12 @@ def authenticate_login():
     print("in authenticate")
     form = LoginForm(request.form)
     if authenticate_user(form.username.data, form.password.data, form.instructor_type.data):
-        return jsonify(response = "Success")
-    return jsonify(response = 'ADfs')
+        return flask.redirect('/main/'+str(form.username.data))
+    return flask.redirect('/login/')
 
+@main.route('/main/<netid>')
+def main_page(netid):
+    return render_template("main.html", netid = netid)
 
 @main.route('/instructor/',methods = ["GET","POST"])
 def instructor_view():
