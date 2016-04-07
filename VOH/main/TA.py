@@ -1,12 +1,12 @@
 from .. import db
-def add_TA(username, password, name, email,user_type):
+def add_TA(username, password, name, net_id,user_type):
 
     # Create TA dict for table
     ta = {
         "username":username,
         "password": password,
         "name": name,
-        "email":email,
+        "net_id":net_id,
         "type":user_type
     }
     # Add TA value

@@ -37,10 +37,10 @@ def register_user():
         print form
         if form.instructor_type.data == "TA":
             # "Adding TA"
-            add_TA(form.username.data, form.password.data, form.name.data, form.email.data, form.instructor_type.data)
+            add_TA(form.username.data, form.password.data, form.name.data, form.net_id.data, form.instructor_type.data)
         elif form.instructor_type.data == "student":
             # "Adding student"
-            add_student(form.username.data, form.password.data, form.name.data, form.email.data, form.instructor_type.data)
+            add_student(form.username.data, form.password.data, form.name.data, form.net_id.data, form.instructor_type.data)
 
     form = RegistrationForm()
     return render_template("register.html", form = form)
@@ -49,10 +49,13 @@ def register_user():
 def authenticate_login():
     print("in authenticate")
     form = LoginForm(request.form)
-    if authenticate_user(form.username.data, form.password.data):
-        return jsonify(response = "Success")
-    return jsonify(response = 'ADfs')
+    if authenticate_user(form.username.data, form.password.data, form.instructor_type.data):
+        flask.redirect('localhost:5000/landing/'+str(form.username.data))
+    flask.redirect('localhost:5000/login/')
 
+@main.route('/landing/<netid>')
+def landing_page(netid):
+    return render_template("landing.html", netid = netid)
 
 @main.route('/instructor/',methods = ["GET","POST"])
 def instructor_view():
