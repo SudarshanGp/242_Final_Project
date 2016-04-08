@@ -72,7 +72,7 @@ def register_user():
     # Validate the Form
     if request.method == "POST" and form.validate():
         # Register TA
-        print form
+
         if form.instructor_type.data == "TA":
             # "Adding TA"
             add_TA(form.username.data, form.password.data, form.name.data, form.net_id.data, form.instructor_type.data)
