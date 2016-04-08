@@ -22,7 +22,8 @@ def create_app(debug=False):
     return app
 
 def open_db_connection():
-    client = MongoClient('104.131.185.191', 27017)
+    # client = MongoClient('104.131.185.191', 27017)
+    client = MongoClient()
     db = client["225VOH"]
     return client, db
 

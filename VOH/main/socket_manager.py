@@ -5,34 +5,43 @@ from flask.ext.socketio import emit, join_room, leave_room
 
 from .. import socketio
 
-print("here")
 
-@socketio.on('joined', namespace='/chat')
-def joined(message):
-    """Sent by clients when they enter a room.
-    A status message is broadcast to all people in the room."""
-    print("ON JOINED")
-    print(session)
-    room = session.get('chatID')
-    join_room(room)
-    emit('status', {'msg': session.get('netID') + ' has entered the room.'}, room=room)
+@socketio.on('join', namespace='/chat')
+def join(message):
+    """
+    @author : Sudarshan
+    join function catches any a join signal emitted by socketIO client
+    adds client to a particular room identified by chatID.
+    Join Message returned is broadcasted to everyone in that specific room
+    :param message: Join Message
+    """
+
+    chatID = session.get('chatID') # Retrieve chatID from session i
+    join_room(chatID) # Join chatID room
+    emit('status', {'msg': session.get('netID') + ' is now in the conversation'}, room=chatID)  #Emits signal to a particular chat conversation
 
 
 @socketio.on('text', namespace='/chat')
-def add(message):
-    """Sent by a client when the user entered a new message.
-    The message is sent to all people in the room."""
-    print(" IN  GOT TEXT MESSAGE")
-    room = session.get('chatID')
-    emit('message', {'msg': session.get('netID') + ':' + message['msg']}, room=room)
+def converse(message):
+    """
+    @author : Sudarshan
+    converse function catches any a text signal emitted by socketIO client
+    It emits a signal to all users in that room to add that message to the chat box
+    :param message: Conversation Message
+    """
+    chatID = session.get('chatID')
+    emit('message', {'msg': session.get('netID') + ':' + message['msg']}, room=chatID)
 
 
 @socketio.on('left', namespace='/chat')
-def left(message):
-    print("ON LEFT")
-    """Sent by clients when they leave a room.
-    A status message is broadcast to all people in the room."""
-    room = session.get('chatID')
-    leave_room(room)
-    emit('status', {'msg': session.get('netID') + ' has left the room.'}, room=room)
+def leave(message):
+    """
+    @author : Sudarshan
+    leave function catches any a left signal emitted by socketIO client
+    It emits a signal to all users in that room notifying that the user has left the chat conversation
+    :param message: Leave Message
+    """
+    chatID = session.get('chatID')
+    leave_room(chatID)
+    emit('status', {'msg': session.get('netID') + ' has now left the conversation.'}, room=chatID)
 
