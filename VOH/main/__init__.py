@@ -7,5 +7,5 @@ from VOH.main import socket_manager
 
 from init_db import *
 
-create_ta_list("../static/data/ta_netids.csv")
-create_student_list("../static/data/student_netids.csv")
+create_ta_list("VOH/static/data/ta_netids.csv")
+create_student_list("VOH/static/data/student_netids.csv")
