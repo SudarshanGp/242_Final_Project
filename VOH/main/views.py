@@ -27,6 +27,7 @@ def main_page():
 @main.route('/chat/')
 def chat():
     """
+    @author: Sudarshan
     Routed to /chat/ by from landing_page on successful form submission
     chat() retrieves netID and chatID from session and validates whether it is valid
     If valid, it renders chat.html
@@ -87,6 +88,7 @@ def authenticate_login():
 @main.route('/landing/<user>', methods=['GET', 'POST'])
 def landing_page(user):
     """
+    @author: Sudarshan
     Landing Page after Login for a particular user
     landing_page() validates the form submission and redirects to /chat/ if it is successful form POST
     :param user: NetID of user
