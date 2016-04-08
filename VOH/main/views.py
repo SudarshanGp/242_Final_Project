@@ -41,18 +41,32 @@ def chat():
 
 @main.route('/login/')
 def login():
+    """
+    @author: Aadhya
+    Login Page
+    :return: Template
+    """
     form = LoginForm()
     return render_template("login.html", form = form)
 
 
 @main.route('/register/')
 def register():
+    """
+    @author: Aadhya
+    Registration Page
+    :return: Template
+    """
     form = RegistrationForm()
     return render_template("register.html", form = form)
 
 
 @main.route('/register/', methods=["POST"])
 def register_user():
+    """
+    @author: Nihal
+    :return: None
+    """
     # Get the Form
     form = RegistrationForm(request.form)
     # Validate the Form
@@ -73,7 +87,8 @@ def register_user():
 @main.route('/authenticate/', methods=["POST"])
 def authenticate_login():
     """
-
+    @author: Nihal
+    Authenticate Login
     """
     # Get Login Form
     form = LoginForm(request.form)
