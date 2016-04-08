@@ -6,10 +6,10 @@ from wtforms.validators import DataRequired
 
 class RegistrationForm(Form):
     """
+    @author: Aadhya
     A registration form which allows the user to add name, username, net_id and password
     where there are conditions to check that the repeated password is the same as the original
     password
-    @author: Aadhya
     """
     name = StringField('Name', [validators.Length(min=4, max=25)])
     username = StringField('Username', [validators.Length(min=4, max=25)])
@@ -25,8 +25,8 @@ class RegistrationForm(Form):
 
 class LoginForm(Form):
     """
-    A login form which allows a user to login depending upon whether he is a TA or a student
     @author: Aadhya
+    A login form which allows a user to login depending upon whether he is a TA or a student
     """
     instructor_type = RadioField('Login as', choices=[('TA', 'Teaching Assistant'), ('student', 'Student')])
     username = StringField('Username')
@@ -35,9 +35,9 @@ class LoginForm(Form):
 
 class ChatForm(form):
     """
+    @author Sudarshan
     Form that takes in a netID and a room ID to start a chat and a submit field which allows a user to submit the
     form
-    @author Sudarshan
     """
     netID = StringField('NetID', validators=[DataRequired()])
     chatID = StringField('chatID', validators=[DataRequired()])
