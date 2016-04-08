@@ -9,40 +9,34 @@ from . import main
 from .. import app
 import os
 
+"""
+    views.py is in charge of routing different server requests from clients.
+
+"""
 
 @main.route('/')
 @main.route('/index/')
 def main_page():
+    """
+    Routed to main_page() on load of website
+    Renders base.html
+    """
     return render_template("base.html")
 
-@main.route('/TA/', methods=['GET', 'POST'])
-def ta_page():
-    print("in index function")
-    form = ChatForm()
-    if form.validate_on_submit():
-        print("submitted form")
-        session['netID'] = form.netID.data
-        session['chatID'] = form.chatID.data
-        print("getting data from validated form ", session['netID'], session['chatID'])
-        return redirect(url_for('.chat'))
-    elif request.method == 'GET':
-        print("IN GET REQUEST METHOD")
-        form.netID.data = session.get('netID', '')
-        print(form.netID.data)
-        form.chatID.data = session.get('chatID', '')
-        print(form.chatID.data)
-    return render_template('TAView.html', form=form)
 
 @main.route('/chat/')
 def chat():
-    print("in chat route")
+    """
+    @author: Sudarshan
+    Routed to /chat/ by from landing_page on successful form submission
+    chat() retrieves netID and chatID from session and validates whether it is valid
+    If valid, it renders chat.html
+    """
     netID = session.get('netID', '')
     chatID = session.get('chatID', '')
     if netID == '' or chatID == '':
-        return redirect(url_for('.TA'))
+        return redirect(url_for('.landing'))
     return render_template('chat.html', netID=netID, chatID=chatID)
-
-
 
 
 @main.route('/login/')
@@ -53,9 +47,9 @@ def login():
 
 @main.route('/register/')
 def register():
-
     form = RegistrationForm()
     return render_template("register.html", form = form)
+
 
 @main.route('/register/', methods=["POST"])
 def register_user():
@@ -75,8 +69,12 @@ def register_user():
     form = RegistrationForm()
     return render_template("register.html", form = form)
 
+
 @main.route('/authenticate/', methods=["POST"])
 def authenticate_login():
+    """
+
+    """
     # Get Login Form
     form = LoginForm(request.form)
     # Authenticate USER
@@ -86,14 +84,25 @@ def authenticate_login():
     # Error! Redirect to Login Page
     return flask.redirect('/login/')
 
-@main.route('/landing/<user>')
+
+@main.route('/landing/<user>', methods=['GET', 'POST'])
 def landing_page(user):
     """
-    Landing Page after Login
-    :param netid: User Name
-    :return:
+    @author: Sudarshan
+    Landing Page after Login for a particular user
+    landing_page() validates the form submission and redirects to /chat/ if it is successful form POST
+    :param user: NetID of user
     """
-    return render_template("landing.html", netid = user)
+    form = ChatForm()  # Create a form as an instance of ChatFrom class
+    if form.validate_on_submit(): # On submission of From
+        session['netID'] = form.netID.data # Get NetID
+        session['chatID'] = form.chatID.data # Get unique chatID
+        return redirect(url_for('.chat')) # Redirect to /chat/
+    elif request.method == 'GET': # If its a get request
+        form.netID.data = session.get('netID', '') # Retrieve netID from form
+        form.chatID.data = session.get('chatID', '') # Retrieve chatID from form
+    return render_template("landing.html", netid = user, form = form ) # Render landing page
+
 
 @main.route('/instructor/',methods = ["GET","POST"])
 def instructor_view():

@@ -22,6 +22,7 @@ class RegistrationForm(Form):
     instructor_type = RadioField('Register as', choices=[('TA', 'Teaching Assistant'), ('student', 'Student')])
 
 
+
 class LoginForm(Form):
     """
     A login form which allows a user to login depending upon whether he is a TA or a student

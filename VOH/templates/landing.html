@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_formhelpers.html" import render_field %}
 
 {% block data %}
     <div class="section no-pad-bot" id="index-banner">
@@ -10,5 +11,11 @@
             </div>
             <br><br>
         </div>
+        <form method="POST">
+            {{ render_field(form.hidden_tag) }}
+            {{ render_field(form.netID) }}
+            {{ render_field(form.chatID) }}
+            {{ form.submit() }}
+        </form>
     </div>
 {%  endblock %}

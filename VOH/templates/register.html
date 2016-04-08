@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 {% from "_formhelpers.html" import render_field %}
+{# Includes the same frame as the main page but adds a form which allows a user to register #}
+{# Gets a macro function from another file which allows form validation and error checking #}
 {% block data %}
 <div id="create-page" class="row">
     <div class="col s6 z-depth-6 card-panel offset-s3">
+        {# Create a form via jinja and WtForms and add a form which allows a submit #}
         <form class="create-form" method = "post" >
             <div class="row">
                 <div class="input-field col s12 center">
