@@ -1,7 +1,7 @@
 from flask import Flask, Blueprint
 from flask import render_template, request, session, jsonify, redirect, url_for
 from flask_socketio import *
-from TA import *
+from ta import *
 from student import *
 from VOH.main.forms import RegistrationForm, LoginForm, ChatForm
 from authentication import *
