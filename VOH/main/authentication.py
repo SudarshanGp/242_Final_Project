@@ -3,6 +3,7 @@ from .. import open_db_connection, close_db_connection
 
 def get_user_db(user_type, db):
     """
+    @author: Nihal
     Gets USERS Table
     :return:
     """
@@ -20,6 +21,7 @@ def get_user_db(user_type, db):
 
 def authenticate_user(username, password, user_type):
     """
+    @author: Nihal
     Validates User Credentials
     :param username: Username
     :param password: Password
