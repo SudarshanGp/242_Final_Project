@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint
+from flask import Flask, Blueprint, flash
 from flask import render_template, request, session, jsonify, redirect, url_for
 from flask_socketio import *
 from TA import *
@@ -79,6 +79,8 @@ def register_user():
         elif form.instructor_type.data == "student":
             # "Adding student"
             add_student(form.username.data, form.password.data, form.name.data, form.net_id.data, form.instructor_type.data)
+        print "thanks for registering"
+        flash('Thanks for registering!')
     # Return a new form
     form = RegistrationForm()
     return render_template("register.html", form = form)
@@ -95,6 +97,7 @@ def authenticate_login():
     # Authenticate USER
     if authenticate_user(form.username.data, form.password.data, form.instructor_type.data):
         # Redirect to main Landing
+        flash('Login succeeded')
         return flask.redirect('/landing/'+str(form.username.data))
     # Error! Redirect to Login Page
     return flask.redirect('/login/')
