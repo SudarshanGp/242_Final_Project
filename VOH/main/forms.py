@@ -11,9 +11,9 @@ class RegistrationForm(Form):
     where there are conditions to check that the repeated password is the same as the original
     password
     """
-    name = StringField('Name', [validators.Length(min=4, max=25)])
-    username = StringField('Username', [validators.Length(min=4, max=25)])
-    net_id = StringField('Net ID', [validators.Length(min=6, max=35)])
+    name = StringField('Name', [validators.Length(min=2, max=25)])
+    username = StringField('Username', [validators.Length(min=2, max=25)])
+    net_id = StringField('Net ID', [validators.Length(min=2, max=35)])
     password = PasswordField('New Password', [
         validators.DataRequired(),
         validators.EqualTo('confirm', message='Passwords must match')  # makes sure that passwords match
