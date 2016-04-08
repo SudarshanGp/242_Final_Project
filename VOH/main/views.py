@@ -41,18 +41,32 @@ def chat():
 
 @main.route('/login/')
 def login():
+    """
+    @author: Aadhya
+    Create a login form and pass that into render_template so as to populate the form
+    :return: Template
+    """
     form = LoginForm()
     return render_template("login.html", form = form)
 
 
 @main.route('/register/')
 def register():
+    """
+    @author: Aadhya
+    Create a registration form and pass that into render_template so as to populate the form
+    :return: Template
+    """
     form = RegistrationForm()
     return render_template("register.html", form = form)
 
 
 @main.route('/register/', methods=["POST"])
 def register_user():
+    """
+    @author: Nihal
+    :return: None
+    """
     # Get the Form
     form = RegistrationForm(request.form)
     # Validate the Form
@@ -73,7 +87,8 @@ def register_user():
 @main.route('/authenticate/', methods=["POST"])
 def authenticate_login():
     """
-
+    @author: Nihal
+    Authenticate Login
     """
     # Get Login Form
     form = LoginForm(request.form)
@@ -106,15 +121,20 @@ def landing_page(user):
 
 @main.route('/instructor/',methods = ["GET","POST"])
 def instructor_view():
-    message = "No file uploaded"
-    if request.method == 'POST':
-        file = request.files['file']
-        if file:
-            filename = file.filename
-            path_of_file = "VOH/" + os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(path_of_file)
-            message = "File has been uploaded!"
+    """
+    @author: Aadhya
+    Creates an instructor view with added functionality for file uploading with proper message feedback
+    :return: template which returns a instructor view along with the message if file upload is successful
+    """
+    message = "No file uploaded" # Default message in case no file is uploaded
+    if request.method == 'POST': # If there is a POST request i.e. a file submit button has clicked then:
+        file = request.files['file'] # Get the file which the user has uploaded
+        if file: #If the file exists
+            filename = file.filename # Get the filename
+            path_of_file = "VOH/" + os.path.join(app.config['UPLOAD_FOLDER'], filename) # Path where file is stored
+            file.save(path_of_file) # Save the file at the particular path
+            message = "File has been uploaded!" # Change the response message
         else:
-            message = "No file to upload!"
-    return render_template("instructor.html", message = message)
+            message = "No file to upload!" # If the file does not exist then change message
+    return render_template("instructor.html", message = message) # Renders the template with the current message
 
