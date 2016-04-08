@@ -36,9 +36,16 @@ the given attributes with customized attributes*/
     border:none;
 }
 
+/* Creates a readable text area which can't be resized and allows for overflow and a scroll function */
 #chat {
     resize:none;
     overflow: scroll;
     height: 24rem;
     overflow-y: visible;
+}
+
+/* File upload submit button which allows for margin from the top and sets the height of the submit button */
+#upload_submit{
+    margin-top: 15px;
+    height:45px;
 }
