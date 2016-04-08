@@ -1,32 +1,44 @@
-from wtforms import Form, RadioField, TextField, PasswordField, BooleanField,validators
+from wtforms import Form, RadioField, PasswordField, validators
 from flask.ext.wtf import Form as form
 from wtforms.fields import StringField, SubmitField
-from wtforms.validators import Required
-
+from wtforms.validators import DataRequired
 
 
 class RegistrationForm(Form):
-
-    name = TextField('Name', [validators.Length(min=4, max=25)])
-    username = TextField('Username', [validators.Length(min=4, max=25)])
-    net_id= TextField('Net ID', [validators.Length(min=6, max=35)])
+    """
+    A registration form which allows the user to add name, username, net_id and password
+    where there are conditions to check that the repeated password is the same as the original
+    password
+    @author: Aadhya
+    """
+    name = StringField('Name', [validators.Length(min=4, max=25)])
+    username = StringField('Username', [validators.Length(min=4, max=25)])
+    net_id = StringField('Net ID', [validators.Length(min=6, max=35)])
     password = PasswordField('New Password', [
-        validators.Required(),
-        validators.EqualTo('confirm', message='Passwords must match')
+        validators.DataRequired(),
+        validators.EqualTo('confirm', message='Passwords must match')  # makes sure that passwords match
     ])
     confirm = PasswordField('Repeat Password')
-    instructor_type = RadioField('Register as', choices=[('TA','Teaching Assistant'),('student','Student')])
+    instructor_type = RadioField('Register as', choices=[('TA', 'Teaching Assistant'), ('student', 'Student')])
+
 
 
 class LoginForm(Form):
-    instructor_type = RadioField('Login as', choices=[('TA','Teaching Assistant'),('student','Student')])
-    username = TextField('Username')
+    """
+    A login form which allows a user to login depending upon whether he is a TA or a student
+    @author: Aadhya
+    """
+    instructor_type = RadioField('Login as', choices=[('TA', 'Teaching Assistant'), ('student', 'Student')])
+    username = StringField('Username')
     password = PasswordField('Password')
+
 
 class ChatForm(form):
     """
-        Form that takes in a netID and a room ID to start a chat
+    Form that takes in a netID and a room ID to start a chat and a submit field which allows a user to submit the
+    form
+    @author Sudarshan
     """
-    netID = StringField('NetID', validators=[Required()])
-    chatID = StringField('chatID', validators=[Required()])
+    netID = StringField('NetID', validators=[DataRequired()])
+    chatID = StringField('chatID', validators=[DataRequired()])
     submit = SubmitField('Initiate chat')
