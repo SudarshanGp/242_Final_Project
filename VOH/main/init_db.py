@@ -1,5 +1,6 @@
 from .. import open_db_connection, close_db_connection
 
+
 def add_to_db(table, user_list):
     """
     @author: Nihal
@@ -19,6 +20,7 @@ def add_to_db(table, user_list):
     # Close Connection
     close_db_connection(client)
 
+
 def create_ta_list(ta_list):
     """
     @author: Nihal
@@ -31,6 +33,7 @@ def create_ta_list(ta_list):
         user_list = ta_file.readlines()
         # Add TA's
         add_to_db("ta_list", user_list)
+
 
 def create_student_list(student_list):
     """
