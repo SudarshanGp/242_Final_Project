@@ -22,7 +22,8 @@ def main_page():
     Routed to main_page() on load of website
     Renders base.html
     """
-    return render_template("base.html")
+
+    return render_template("base.html", login_status = check_login_status())
 
 
 @main.route('/chat/')
@@ -37,7 +38,7 @@ def chat():
     chatID = session.get('chatID', '')
     if netID == '' or chatID == '':
         return redirect(url_for('.landing'))
-    return render_template('chat.html', netID=netID, chatID=chatID)
+    return render_template('chat.html', netID=netID, chatID=chatID,login_status = check_login_status())
 
 
 @main.route('/login/')
@@ -48,7 +49,7 @@ def login():
     :return: Template
     """
     form = LoginForm()
-    return render_template("login.html", form = form)
+    return render_template("login.html", form = form,login_status = check_login_status())
 
 
 @main.route('/register/')
@@ -59,7 +60,7 @@ def register():
     :return: Template
     """
     form = RegistrationForm()
-    return render_template("register.html", form = form)
+    return render_template("register.html", form = form,login_status = check_login_status())
 
 
 @main.route('/register/', methods=["POST"])
@@ -83,7 +84,7 @@ def register_user():
         return flask.redirect('/landing/'+str(form.net_id.data))
 
     # Error
-    return render_template("register.html", form = form)
+    return render_template("register.html", form = form,login_status = check_login_status())
 
 
 @main.route('/authenticate/', methods=["POST"])
@@ -96,14 +97,16 @@ def authenticate_login():
     form = LoginForm(request.form)
 
     if form.validate():
-        return flask.redirect('/landing/'+str(form.username.data))
+        session['net_id'] = str(form.net_id.data)
+        print session['net_id']
+        return flask.redirect('/landing/'+str(form.net_id.data))
     # Error! Redirect to Login Page
 
-    return render_template('login.html', form=form)
+    return render_template('login.html', form=form,login_status = check_login_status())
 
 
-@main.route('/landing/<user>', methods=['GET', 'POST'])
-def landing_page(user):
+@main.route('/landing/<netid>', methods=['GET', 'POST'])
+def landing_page(netid):
     """
     @author: Sudarshan
     Landing Page after Login for a particular user
@@ -118,7 +121,7 @@ def landing_page(user):
     elif request.method == 'GET': # If its a get request
         form.netID.data = session.get('netID', '') # Retrieve netID from form
         form.chatID.data = session.get('chatID', '') # Retrieve chatID from form
-    return render_template("landing.html", netid = user, form = form ) # Render landing page
+    return render_template("landing.html", netid = netid, form = form ,login_status = check_login_status()) # Render landing page
 
 
 @main.route('/instructor/',methods = ["GET","POST"])
@@ -138,5 +141,11 @@ def instructor_view():
             message = "File has been uploaded!" # Change the response message
         else:
             message = "No file to upload!" # If the file does not exist then change message
-    return render_template("instructor.html", message = message) # Renders the template with the current message
+    return render_template("instructor.html", message = message,login_status = check_login_status()) # Renders the template with the current message
 
+def check_login_status():
+    login_status = 'Login'
+    if 'net_id' in session:
+        login_status = 'Logout'
+    print login_status
+    return login_status
