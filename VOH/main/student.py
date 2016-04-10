@@ -1,5 +1,5 @@
 from .. import open_db_connection, close_db_connection
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hashs
 
 def add_student(username, password, name, net_id,user_type):
     """
