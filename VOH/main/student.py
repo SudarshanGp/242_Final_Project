@@ -1,4 +1,5 @@
 from .. import open_db_connection, close_db_connection
+from werkzeug.security import generate_password_hash, check_password_hash
 
 def add_student(username, password, name, net_id,user_type):
     """
@@ -14,7 +15,7 @@ def add_student(username, password, name, net_id,user_type):
     # Create Student dict for table
     student = {
         "username":username,
-        "password": password,
+        "password": generate_password_hash(password),
         "name": name,
         "net_id":net_id,
         "type":user_type

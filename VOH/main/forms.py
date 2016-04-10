@@ -3,7 +3,6 @@ from flask.ext.wtf import Form as form
 from wtforms.fields import StringField, SubmitField
 from wtforms.validators import DataRequired
 
-
 class RegistrationForm(Form):
     """
     @author: Aadhya
