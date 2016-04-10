@@ -1,9 +1,12 @@
 from .. import open_db_connection, close_db_connection
 from werkzeug.security import generate_password_hash
 
-def check_in_student_list(net_id, db):
+def check_in_student_list(net_id):
+    client, db = open_db_connection()
     if len( list(db["student_list"].find({"net_id":net_id})))> 0:
+        close_db_connection(client)
         return True
+    close_db_connection(client)
     return False
 
 
@@ -27,8 +30,7 @@ def add_student( password, name, net_id,user_type):
     }
     # Add Student value
     client, db = open_db_connection()
-    if check_in_student_list(net_id, db):
-        db["student_table"].insert(student)
+    db["student_table"].insert(student)
     close_db_connection(client)
 
 def get_student(net_id):

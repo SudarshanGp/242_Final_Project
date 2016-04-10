@@ -70,6 +70,7 @@ def register_user():
     """
     # Get the Form
     form = RegistrationForm(request.form)
+    print form.validate()
     # Validate the Form
     if request.method == "POST" and form.validate():
         # Register TA
@@ -81,9 +82,9 @@ def register_user():
             add_student(form.password.data, form.name.data, form.net_id.data, form.instructor_type.data)
 
         return flask.redirect('/landing/'+str(form.net_id.data))
-
-    # Error
-    return render_template("register.html", form = form)
+    else:
+        # Error
+        return render_template("register.html", form = form)
 
 
 @main.route('/authenticate/', methods=["POST"])
