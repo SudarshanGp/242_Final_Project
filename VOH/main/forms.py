@@ -3,7 +3,6 @@ from flask.ext.wtf import Form as form
 from wtforms.fields import StringField, SubmitField
 from wtforms.validators import DataRequired
 
-
 class RegistrationForm(Form):
     """
     A registration form which allows the user to add name, username, net_id and password

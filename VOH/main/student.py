@@ -1,11 +1,12 @@
 from .. import open_db_connection, close_db_connection
+from werkzeug.security import generate_password_hash, check_password_hash
 
 def add_student(username, password, name, email,user_type):
 
     # Create Student dict for table
     student = {
         "username":username,
-        "password": password,
+        "password": generate_password_hash(password),
         "name": name,
         "email":email,
         "type":user_type
