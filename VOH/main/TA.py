@@ -1,6 +1,11 @@
 from .. import open_db_connection, close_db_connection
 from werkzeug.security import generate_password_hash
 
+def check_in_ta_list(net_id, db):
+    if len( list(db["ta_list"].find({"net_id":net_id})))> 0:
+        return True
+    return False
+
 def add_TA(password, name, net_id,user_type):
     """
     @author: Nihal,Aadhya
@@ -20,7 +25,8 @@ def add_TA(password, name, net_id,user_type):
     }
     # Add TA value
     client, db = open_db_connection()
-    db["ta_table"].insert(ta)
+    if check_in_ta_list(net_id. db):
+        db["ta_table"].insert(ta)
     close_db_connection(client)
 
 def get_TA(net_id):
