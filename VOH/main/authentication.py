@@ -1,5 +1,5 @@
 from .. import open_db_connection, close_db_connection
-
+from werkzeug.security import check_password_hash
 
 def get_user_db(user_type, db):
     """
@@ -19,7 +19,7 @@ def get_user_db(user_type, db):
     return users_table
 
 
-def authenticate_user(username, password, user_type):
+def authenticate_user(net_id, password, user_type):
     """
     @author: Nihal
     Validates User Credentials
@@ -32,12 +32,12 @@ def authenticate_user(username, password, user_type):
     users_table = get_user_db(user_type, db)
 
     # Get's user with this username
-    user = list(users_table.find({"username":username}))
+    user = list(users_table.find({"net_id":net_id}))
 
     # If ONE user exists
     if len(user) == 1:
         # If password matches
-        if user[0]["password"] == password:
+        if  check_password_hash(user[0]["password"], password):
             return True
         else:
             return False
