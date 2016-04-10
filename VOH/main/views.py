@@ -75,10 +75,10 @@ def register_user():
         # Register TA
         if form.instructor_type.data == "TA":
             # "Adding TA"
-            add_TA(form.username.data, form.password.data, form.name.data, form.net_id.data, form.instructor_type.data)
+            add_TA(form.password.data, form.name.data, form.net_id.data, form.instructor_type.data)
         elif form.instructor_type.data == "student":
             # "Adding student"
-            add_student(form.username.data, form.password.data, form.name.data, form.net_id.data, form.instructor_type.data)
+            add_student(form.password.data, form.name.data, form.net_id.data, form.instructor_type.data)
 
         return flask.redirect('/landing/'+str(form.net_id.data))
 

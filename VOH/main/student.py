@@ -1,7 +1,7 @@
 from .. import open_db_connection, close_db_connection
 from werkzeug.security import generate_password_hash
 
-def add_student(username, password, name, net_id,user_type):
+def add_student( password, name, net_id,user_type):
     """
     @author: Nihal
     Add a student to the DB
@@ -14,7 +14,6 @@ def add_student(username, password, name, net_id,user_type):
     """
     # Create Student dict for table
     student = {
-        "username":username,
         "password": generate_password_hash(password),
         "name": name,
         "net_id":net_id,
@@ -25,7 +24,7 @@ def add_student(username, password, name, net_id,user_type):
     db["student_table"].insert(student)
     close_db_connection(client)
 
-def get_student(username):
+def get_student(net_id):
     """
     @author: Nihal
     Returns Username
@@ -35,7 +34,7 @@ def get_student(username):
     # Open Connection
     client, db = open_db_connection()
     # Find Student
-    student = list(db["student_table"].find({"username":username}))
+    student = list(db["student_table"].find({"net_id":net_id}))
     # Close Connection
     close_db_connection(client)
     return student

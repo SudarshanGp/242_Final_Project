@@ -1,7 +1,7 @@
 from .. import open_db_connection, close_db_connection
 from werkzeug.security import generate_password_hash
 
-def add_TA(username, password, name, net_id,user_type):
+def add_TA(password, name, net_id,user_type):
     """
     @author: Nihal
     :param username: Username
@@ -13,7 +13,6 @@ def add_TA(username, password, name, net_id,user_type):
     """
     # Create TA dict for table
     ta = {
-        "username":username,
         "password": generate_password_hash(password=password),
         "name": name,
         "net_id":net_id,
