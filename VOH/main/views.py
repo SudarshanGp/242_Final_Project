@@ -72,17 +72,16 @@ def register_user():
     # Validate the Form
     if request.method == "POST" and form.validate():
         # Register TA
-
         if form.instructor_type.data == "TA":
             # "Adding TA"
             add_TA(form.username.data, form.password.data, form.name.data, form.net_id.data, form.instructor_type.data)
         elif form.instructor_type.data == "student":
             # "Adding student"
             add_student(form.username.data, form.password.data, form.name.data, form.net_id.data, form.instructor_type.data)
-        print "thanks for registering"
-        flash('Thanks for registering!')
-    # Return a new form
-    form = RegistrationForm()
+
+        return flask.redirect('/landing/'+str(form.net_id.data))
+
+    # Error
     return render_template("register.html", form = form)
 
 
@@ -97,7 +96,6 @@ def authenticate_login():
     # Authenticate USER
     if authenticate_user(form.username.data, form.password.data, form.instructor_type.data):
         # Redirect to main Landing
-        flash('Login succeeded')
         return flask.redirect('/landing/'+str(form.username.data))
     # Error! Redirect to Login Page
     return flask.redirect('/login/')
