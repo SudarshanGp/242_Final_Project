@@ -2,7 +2,7 @@ from wtforms import Form, RadioField, PasswordField, validators
 from flask.ext.wtf import Form as form
 from wtforms.fields import StringField, SubmitField
 from wtforms.validators import DataRequired
-
+from authentication import *
 class RegistrationForm(Form):
     """
     @author: Aadhya
@@ -30,6 +30,20 @@ class LoginForm(Form):
     instructor_type = RadioField('Login as', choices=[('TA', 'Teaching Assistant'), ('student', 'Student')])
     username = StringField('Username')
     password = PasswordField('Password')
+
+    def __init__(self, *args, **kwargs):
+        Form.__init__(self, *args, **kwargs)
+
+
+    def validate(self):
+        # Authenticate USER
+        Form.validate(self)
+        if authenticate_user(self.username.data, self.password.data, self.instructor_type.data):
+            return True
+        self.password.errors.append('Password and Username do not match')
+        return False
+
+        # Redirect to main Landing
 
 
 class ChatForm(form):

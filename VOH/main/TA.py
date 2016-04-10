@@ -24,7 +24,7 @@ def add_TA(username, password, name, net_id,user_type):
     db["ta_table"].insert(ta)
     close_db_connection(client)
 
-def get_TA(username):
+def get_TA(net_id):
     """
     Return TA with username
     :param username: username
@@ -33,7 +33,7 @@ def get_TA(username):
     # Open Connection
     client, db = open_db_connection()
     # Find
-    ta =  list(db["ta_table"].find({"username":username}))
+    ta =  list(db["ta_table"].find({"net_id":net_id}))
     # Close Connection
     close_db_connection(client)
     return ta

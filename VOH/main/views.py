@@ -1,4 +1,5 @@
 from flask import Flask, Blueprint, flash
+import flask_wtf
 from flask import render_template, request, session, jsonify, redirect, url_for
 from flask_socketio import *
 from TA import *
@@ -93,12 +94,12 @@ def authenticate_login():
     """
     # Get Login Form
     form = LoginForm(request.form)
-    # Authenticate USER
-    if authenticate_user(form.username.data, form.password.data, form.instructor_type.data):
-        # Redirect to main Landing
+
+    if form.validate():
         return flask.redirect('/landing/'+str(form.username.data))
     # Error! Redirect to Login Page
-    return flask.redirect('/login/')
+
+    return render_template('login.html', form=form)
 
 
 @main.route('/landing/<user>', methods=['GET', 'POST'])
