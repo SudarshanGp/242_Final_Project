@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash
 
 def add_student( password, name, net_id,user_type):
     """
-    @author: Nihal
+    @author: Nihal,Aadhya
     Add a student to the DB
     :param username: Username
     :param password: Password

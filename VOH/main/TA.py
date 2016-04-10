@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash
 
 def add_TA(password, name, net_id,user_type):
     """
-    @author: Nihal
+    @author: Nihal,Aadhya
     :param username: Username
     :param password: Password
     :param name: name

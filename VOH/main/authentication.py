@@ -21,7 +21,7 @@ def get_user_db(user_type, db):
 
 def authenticate_user(net_id, password, user_type):
     """
-    @author: Nihal
+    @author: Nihal,Aadhya
     Validates User Credentials
     :param username: Username
     :param password: Password
