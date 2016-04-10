@@ -35,8 +35,7 @@ def open_db_connection():
     """
     Creates mongodb connection and returns client and current database instance
     """
-    client = MongoClient('104.131.185.191', 27017)
-    # client = MongoClient()
+    client = MongoClient() #'104.131.185.191', 27017
     db = client["225VOH"]
     return client, db
 
