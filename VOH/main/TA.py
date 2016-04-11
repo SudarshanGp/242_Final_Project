@@ -29,12 +29,7 @@ def add_TA(password, name, net_id,user_type):
     }
     # Add TA value
     client, db = open_db_connection()
-<<<<<<< HEAD
     db["ta_table"].insert(ta)
-=======
-    if check_in_ta_list(net_id, db):
-        db["ta_table"].insert(ta)
->>>>>>> session
     close_db_connection(client)
 
     return False

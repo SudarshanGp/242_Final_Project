@@ -40,7 +40,7 @@ def chat():
         return redirect(url_for('.landing'))
     return render_template('chat.html', netID=netID, chatID=chatID,login_status = check_login_status())
 
-
+@main.route('/Login/')
 @main.route('/login/')
 def login():
     """
@@ -81,17 +81,12 @@ def register_user():
         elif form.instructor_type.data == "student":
             # "Adding student"
             add_student(form.password.data, form.name.data, form.net_id.data, form.instructor_type.data)
-
+        session['net_id'] = form.net_id.data
         return flask.redirect('/landing/'+str(form.net_id.data))
-<<<<<<< HEAD
     else:
         # Error
-        return render_template("register.html", form = form)
-=======
+        return render_template("register.html", form = form,login_status = check_login_status())
 
-    # Error
-    return render_template("register.html", form = form,login_status = check_login_status())
->>>>>>> session
 
 
 @main.route('/authenticate/', methods=["POST"])
@@ -149,6 +144,11 @@ def instructor_view():
         else:
             message = "No file to upload!" # If the file does not exist then change message
     return render_template("instructor.html", message = message,login_status = check_login_status()) # Renders the template with the current message
+
+@main.route('/Logout/', methods = ["GET", "POST"])
+def logout():
+    session.clear()
+    return flask.redirect('/')
 
 def check_login_status():
     login_status = 'Login'
