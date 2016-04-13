@@ -3,6 +3,8 @@ from flask.ext.wtf import Form as form
 from wtforms.fields import StringField, SubmitField
 from wtforms.validators import DataRequired
 from authentication import *
+from TA import *
+from student import *
 class RegistrationForm(Form):
     """
     @author: Aadhya
@@ -19,7 +21,25 @@ class RegistrationForm(Form):
     confirm = PasswordField('Repeat Password')
     instructor_type = RadioField('Register as', choices=[('TA', 'Teaching Assistant'), ('student', 'Student')], default='student')
 
+    def __init__(self, *args, **kwargs):
+        Form.__init__(self, *args, **kwargs)
 
+
+    def validate(self):
+        # Authenticate USER
+        Form.validate(self)
+        if self.instructor_type.data == "TA":
+            if check_in_ta_list(self.net_id.data) == False:
+                self.net_id.errors.append("This NETID is not a valid TA")
+            else:
+                return True
+        elif self.instructor_type.data == "student":
+            if check_in_student_list(self.net_id.data) == False:
+                self.net_id.errors.append("This NETID is not a valid Student")
+            else:
+                return True
+
+        return False
 
 class LoginForm(Form):
     """
@@ -42,7 +62,7 @@ class LoginForm(Form):
         self.password.errors.append('Password and Username do not match')
         return False
 
-        # Redirect to main Landing
+
 
 
 class ChatForm(form):

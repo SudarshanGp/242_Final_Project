@@ -16,7 +16,7 @@ def add_to_db(table, user_list):
     db[table].remove()
     # Insert all Students / TA's
     for user in user_list:
-        db[table].insert({"netid":user.replace("\r\n","").encode("utf-8")})
+        db[table].insert({"net_id":user.replace("\r\n","").encode("utf-8")})
     # Close Connection
     close_db_connection(client)
 
