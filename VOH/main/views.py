@@ -103,7 +103,6 @@ def authenticate_login():
 
     if form.validate():
         session['net_id'] = str(form.net_id.data)
-        print session['net_id']
         return flask.redirect('/landing/'+str(form.net_id.data))
     # Error! Redirect to Login Page
 
