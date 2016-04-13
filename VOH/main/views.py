@@ -106,14 +106,19 @@ def authenticate_login():
         session['type'] = str(form.instructor_type.data)
         if session['type'] == 'TA':
             set_ta_status(session['net_id'],"online")
-        return flask.redirect('/landing/'+str(form.net_id.data))
+        return flask.redirect('/'+session['type']+'/'+str(form.net_id.data))
     # Error! Redirect to Login Page
 
     return render_template('login.html', form=form,login_status = check_login_status())
 
 
-@main.route('/landing/<netid>', methods=['GET', 'POST'])
-def landing_page(netid):
+@main.route('/student/<netid>', methods=['GET','POST'])
+def student_page(netid):
+    return render_template("landing.html", netid = netid ,form = None, login_status = check_login_status()) # Render landing page
+
+
+@main.route('/TA/<netid>', methods=['GET', 'POST'])
+def TA_page(netid):
     """
     @author: Sudarshan
     Landing Page after Login for a particular user

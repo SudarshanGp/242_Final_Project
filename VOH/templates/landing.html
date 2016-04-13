@@ -13,11 +13,13 @@
         </div>
         <br><br>
     </div>
+    {% if form %}
     <form method="POST">
         {{ render_field(form.hidden_tag) }}
         {{ render_field(form.netID) }}
         {{ render_field(form.chatID) }}
         {{ form.submit() }}
+    {%  endif %}
     </form>
 </div>
 {%  endblock %}
