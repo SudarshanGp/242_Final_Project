@@ -103,7 +103,9 @@ def authenticate_login():
 
     if form.validate():
         session['net_id'] = str(form.net_id.data)
-        print session['net_id']
+        session['type'] = str(form.instructor_type.data)
+        if session['type'] == 'TA':
+            set_ta_status(session['net_id'],"online")
         return flask.redirect('/landing/'+str(form.net_id.data))
     # Error! Redirect to Login Page
 
@@ -150,6 +152,8 @@ def instructor_view():
 
 @main.route('/Logout/', methods = ["GET", "POST"])
 def logout():
+    if session['type'] == 'TA':
+        set_ta_status(session['net_id'],"offline")
     session.clear()
     return flask.redirect('/')
 

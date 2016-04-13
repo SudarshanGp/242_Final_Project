@@ -48,3 +48,13 @@ def get_TA(net_id):
     # Close Connection
     close_db_connection(client)
     return ta
+
+def set_ta_status(net_id, status):
+    client, db = open_db_connection()
+    db["online_ta"].update_one({
+        '_id': net_id
+    },{
+        '$set':{
+            'status': status
+        }
+    }, upsert=False)
