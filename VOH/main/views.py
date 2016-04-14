@@ -86,6 +86,8 @@ def register_user():
             add_student(form.password.data, form.name.data, form.net_id.data, form.instructor_type.data)
         session['net_id'] = form.net_id.data
         session['type'] = form.instructor_type.data
+        if session['type'] == 'TA':
+            set_ta_status(session['net_id'],"online")
         return flask.redirect('/'+session['type']+'/'+str(form.net_id.data))
     else:
         # Error
