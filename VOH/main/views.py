@@ -114,19 +114,21 @@ def authenticate_login():
     return render_template('login.html', form=form,login_status = check_login_status())
 
 
-@main.route('/student/<netid>', methods=['GET','POST'])
-def student_page(netid):
-    return render_template("landing.html", netid = netid ,form = None, login_status = check_login_status()) # Render landing page
+@main.route('/student/<net_id>', methods=['GET','POST'])
+def student_page(net_id):
+    student = get_student(net_id)
+    return render_template("landing.html", netid = student[0]["name"] ,form = None, login_status = check_login_status()) # Render landing page
 
 
-@main.route('/TA/<netid>', methods=['GET', 'POST'])
-def TA_page(netid):
+@main.route('/TA/<net_id>', methods=['GET', 'POST'])
+def TA_page(net_id):
     """
     @author: Sudarshan
     Landing Page after Login for a particular user
     landing_page() validates the form submission and redirects to /chat/ if it is successful form POST
     :param user: NetID of user
     """
+    ta = get_TA(net_id)
     form = ChatForm()  # Create a form as an instance of ChatFrom class
     if form.validate_on_submit(): # On submission of From
         session['netID'] = form.netID.data # Get NetID
@@ -135,7 +137,7 @@ def TA_page(netid):
     elif request.method == 'GET': # If its a get request
         form.netID.data = session.get('netID', '') # Retrieve netID from form
         form.chatID.data = session.get('chatID', '') # Retrieve chatID from form
-    return render_template("landing.html", netid = netid, form = form ,login_status = check_login_status()) # Render landing page
+    return render_template("landing.html", netid = ta[0]["name"], form = form ,login_status = check_login_status()) # Render landing page
 
 @main.route('/update_ta_status/', methods=['GET','POST'])
 def update_ta_status():
