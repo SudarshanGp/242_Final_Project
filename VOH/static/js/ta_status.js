@@ -27,6 +27,6 @@ $.ajax({
     url: "/update_ta_status/",
     method: "post",
     success:function(data){
-        get_ta_status(data);
+        setTimeout(function(){get_ta_status(data);}, 1000);
     }
 });
