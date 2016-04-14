@@ -24,7 +24,7 @@ def main_page():
     """
 
     if "net_id" in session:
-        return flask.redirect('/landing/'+str(session["net_id"]))
+        return flask.redirect('/'+session['type']+'/'+str(session["net_id"]))
 
     return render_template("base.html", login_status = check_login_status())
 
