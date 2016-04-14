@@ -40,12 +40,21 @@ def add_TA(password, name, net_id,user_type):
 
     return False
 
+def update_ta_list(net_id_list):
+    for index in range(len(net_id_list)):
+        net_id = net_id_list[index]["net_id"]
+        name = get_TA(net_id)[0]["name"]
+        net_id_list[index]["name"] = name
+
 def get_online_ta():
 
     # Open Connection
     client, db = open_db_connection()
 
     ta_list = list(db["online_ta"].find({"status":"online"}))
+
+    update_ta_list(ta_list)
+    print ta_list
     # Close Connection
     close_db_connection(client)
     return ta_list
