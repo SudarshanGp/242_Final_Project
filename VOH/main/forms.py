@@ -1,10 +1,13 @@
-from wtforms import Form, RadioField, PasswordField, validators
+from database import TA
 from flask.ext.wtf import Form as form
+from database import student
+from wtforms import Form, RadioField, PasswordField, validators
 from wtforms.fields import StringField, SubmitField
 from wtforms.validators import DataRequired
-from authentication import *
-from TA import *
-from student import *
+
+from VOH.main.database.authentication import *
+
+
 class RegistrationForm(Form):
     """
     @author: Aadhya
@@ -29,16 +32,16 @@ class RegistrationForm(Form):
         # Authenticate USER
         Form.validate(self)
         if self.instructor_type.data == "TA":
-            if check_in_ta_list(self.net_id.data) == False:
+            if TA.check_in_ta_list(self.net_id.data) == False:
                 self.net_id.errors.append("This Net ID is not a valid TA")
-            elif check_ta_registration(self.net_id.data) == True:
+            elif TA.check_ta_registration(self.net_id.data) == True:
                 self.net_id.errors.append("This Net ID has already been registered")
             else:
                 return True
         elif self.instructor_type.data == "student":
-            if check_in_student_list(self.net_id.data) == False:
+            if student.check_in_student_list(self.net_id.data) == False:
                 self.net_id.errors.append("This NETID is not a valid Student")
-            elif check_student_registration(self.net_id.data) == True:
+            elif student.check_student_registration(self.net_id.data) == True:
                 self.net_id.errors.append("This Net ID has already been registered")
             else:
                 return True

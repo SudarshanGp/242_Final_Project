@@ -1,14 +1,15 @@
-from flask import Flask, Blueprint, flash
-import flask_wtf
-from flask import render_template, request, session, jsonify, redirect, url_for
+import os
+
+from database import TA
+# from a import *
+from flask import render_template, request, redirect, url_for
 from flask_socketio import *
-from TA import *
-from student import *
-from VOH.main.forms import RegistrationForm, LoginForm, ChatForm
-from authentication import *
+from database import student
+
+from VOH.main.database.authentication import *
+from VOH.main.forms import RegistrationForm, LoginForm
 from . import main
 from .. import app
-import os
 
 """
     views.py is in charge of routing different server requests from clients.
@@ -79,15 +80,15 @@ def register_user():
         # Register TA
         if form.instructor_type.data == "TA":
             # "Adding TA"
-            add_TA(form.password.data, form.name.data, form.net_id.data, form.instructor_type.data)
+            TA.add_TA(form.password.data, form.name.data, form.net_id.data, form.instructor_type.data)
         elif form.instructor_type.data == "student":
             # "Adding student"
-            add_student(form.password.data, form.name.data, form.net_id.data, form.instructor_type.data)
+            student.add_student(form.password.data, form.name.data, form.net_id.data, form.instructor_type.data)
         # Setting session variables
         session['net_id'] = form.net_id.data
         session['type'] = form.instructor_type.data
         if session['type'] == 'TA':
-            set_ta_status(session['net_id'],"online")
+            TA.set_ta_status(session['net_id'],"online")
         return flask.redirect('/'+session['type']+'/'+str(form.net_id.data))
     else:
         # Error
@@ -109,7 +110,7 @@ def authenticate_login():
         session['net_id'] = str(form.net_id.data)
         session['type'] = str(form.instructor_type.data)
         if session['type'] == 'TA':
-            set_ta_status(session['net_id'],"online")
+            TA.set_ta_status(session['net_id'],"online")
         return flask.redirect('/'+session['type']+'/'+str(form.net_id.data))
     # Error! Redirect to Login Page
 
@@ -139,6 +140,6 @@ def instructor_view():
 @main.route('/Logout/', methods = ["GET", "POST"])
 def logout():
     if session['type'] == 'TA':
-        set_ta_status(session['net_id'],"offline")
+        TA.set_ta_status(session['net_id'],"offline")
     session.clear()
     return flask.redirect('/')

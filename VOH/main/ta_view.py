@@ -1,8 +1,10 @@
-from . import main
+from database import TA
+from flask import render_template, request, jsonify, redirect, url_for
+
+from VOH.main.database.authentication import *
 from VOH.main.forms import ChatForm
-from flask import render_template, request, session, jsonify, redirect, url_for
-from TA import *
-from authentication import *
+from . import main
+
 
 @main.route('/TA/<net_id>', methods=['GET', 'POST'])
 def TA_page(net_id):
@@ -12,7 +14,7 @@ def TA_page(net_id):
     landing_page() validates the form submission and redirects to /chat/ if it is successful form POST
     :param user: NetID of user
     """
-    ta = get_TA(net_id)
+    ta = TA.get_TA(net_id)
     form = ChatForm()  # Create a form as an instance of ChatFrom class
     if form.validate_on_submit(): # On submission of From
         session['netID'] = form.netID.data # Get NetID
@@ -25,7 +27,7 @@ def TA_page(net_id):
 
 @main.route('/update_ta_status/', methods=['GET','POST'])
 def update_ta_status():
-    online_ta = get_online_ta()
+    online_ta = TA.get_online_ta()
     ret_list = {}
     for index in range(len(online_ta)):
         ta = online_ta[index]

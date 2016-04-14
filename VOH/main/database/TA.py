@@ -1,4 +1,4 @@
-from .. import open_db_connection, close_db_connection
+from VOH import open_db_connection, close_db_connection
 from werkzeug.security import generate_password_hash
 
 def check_in_ta_list(net_id):
