@@ -4,12 +4,15 @@ function get_ta_status(data) {
         var html_data = "";
         mydiv = document.getElementById('ta_status');
         for (var i = 0; i< Object.keys(data).length; i++) {
+
             var ta_name = data[i]["net_id"];
             var ta_status = data[i]["status"];
-            html_data.concat("<div><span>ta_name:ta_status</span></div>");
+            console.log(ta_name);
+            html_data = html_data.concat('<div><span>ta_name:ta_status</span></div>');
         }
         $(mydiv).html("");
         $(mydiv).html(html_data);
+
     }
 
 }
