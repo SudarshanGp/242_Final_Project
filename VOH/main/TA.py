@@ -34,6 +34,15 @@ def add_TA(password, name, net_id,user_type):
 
     return False
 
+def get_online_ta():
+
+    # Open Connection
+    client, db = open_db_connection()
+
+    ta_list = list(db["online_ta"].find({"status":"online"}))
+    # Close Connection
+    close_db_connection(client)
+    return ta_list
 
 def get_TA(net_id):
     """
@@ -58,3 +67,5 @@ def set_ta_status(net_id, status):
             'status': status
         }
     }, upsert=False)
+    # Close Connection
+    close_db_connection(client)

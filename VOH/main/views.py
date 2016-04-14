@@ -135,6 +135,10 @@ def TA_page(netid):
         form.chatID.data = session.get('chatID', '') # Retrieve chatID from form
     return render_template("landing.html", netid = netid, form = form ,login_status = check_login_status()) # Render landing page
 
+@main.route('/update_ta_status', methods=['GET','POST'])
+def update_ta_status():
+    online_ta = get_online_ta()
+    return jsonify(online_ta)
 
 @main.route('/instructor/',methods = ["GET","POST"])
 def instructor_view():
