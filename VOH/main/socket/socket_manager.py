@@ -49,7 +49,9 @@ def leave(message):
 
 @socketio.on('loginTA', namespace = '/login')
 def add_ta_online(data):
+    print "getting online ta information"
     online_ta = TA.get_online_ta()
+    print(online_ta)
     ret_list = {}
     for index in range(len(online_ta)):
         ta = online_ta[index]
