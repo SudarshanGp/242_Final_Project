@@ -3,8 +3,14 @@ from werkzeug.security import generate_password_hash
 
 def check_in_ta_list(net_id):
     client, db = open_db_connection()
-    print db["ta_list"].find({"net_id":"nmshah4"})
     if len( list(db["ta_list"].find({"net_id":net_id})))> 0:
+        close_db_connection(client)
+        return True
+    close_db_connection(client)
+    return False
+def check_ta_registration(net_id):
+    client, db = open_db_connection()
+    if len( list(db["ta_table"].find({"net_id":net_id})))> 0:
         close_db_connection(client)
         return True
     close_db_connection(client)

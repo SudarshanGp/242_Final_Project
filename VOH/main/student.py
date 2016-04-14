@@ -9,6 +9,13 @@ def check_in_student_list(net_id):
     close_db_connection(client)
     return False
 
+def check_student_registration(net_id):
+    client, db = open_db_connection()
+    if len( list(db["student_table"].find({"net_id":net_id})))> 0:
+        close_db_connection(client)
+        return True
+    close_db_connection(client)
+    return False
 
 def add_student( password, name, net_id,user_type):
     """

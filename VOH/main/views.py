@@ -74,7 +74,6 @@ def register_user():
     """
     # Get the Form
     form = RegistrationForm(request.form)
-    print form.validate()
     # Validate the Form
     if request.method == "POST" and form.validate():
         # Register TA
@@ -146,8 +145,6 @@ def update_ta_status():
         ta = online_ta[index]
         ta.pop('_id',None)
         ret_list[index] = (ta)
-    print ret_list
-    print jsonify(ret_list)
     return jsonify(ret_list)
 
 @main.route('/instructor/',methods = ["GET","POST"])
@@ -180,5 +177,4 @@ def check_login_status():
     login_status = 'Login'
     if 'net_id' in session:
         login_status = 'Logout'
-    print login_status
     return login_status
