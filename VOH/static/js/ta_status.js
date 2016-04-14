@@ -1,3 +1,7 @@
+update_ta_status();
+setInterval(function(){
+    update_ta_status() // this will run after every 5 seconds
+}, 1000);
 function get_ta_status(data) {
     if (data){
         console.log(data);
@@ -23,10 +27,15 @@ function get_ta_status(data) {
 /**
  * Created by Aadhya on 4/14/16.
  */
-$.ajax({
+function update_ta_status(){
+    console.log("in ere");
+   $.ajax({
     url: "/update_ta_status/",
     method: "post",
     success:function(data){
+        console.log('in here');
         setTimeout(function(){get_ta_status(data);}, 1000);
     }
 });
+}
+
