@@ -21,6 +21,17 @@ def add_to_db(table, user_list):
     close_db_connection(client)
 
 
+def add_to_online_db(table, user_list):
+    client, db = open_db_connection()
+    # Clear Table
+    db[table].remove()
+    # Insert all Students / TA's
+    for user in user_list:
+        net_id = user.replace("\r\n","").encode("utf-8")
+        db[table].insert({"net_id":net_id, "status":"offline", "_id":net_id})
+    # Close Connection
+    close_db_connection(client)
+
 def create_ta_list(ta_list):
     """
     @author: Nihal
@@ -32,7 +43,8 @@ def create_ta_list(ta_list):
         # Read all lines into a list
         user_list = ta_file.readlines()
         # Add TA's
-        add_to_db("ta_list", user_list)
+        add_to_db("ta_list", user_list[1:])
+        add_to_online_db("online_ta", user_list[1:])
 
 
 def create_student_list(student_list):

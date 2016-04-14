@@ -4,20 +4,25 @@
 {# Gets a macro function from another file which allows form validation and error checking #}
 {% block data %}
 {# Welcomes the user to the main user page and allows the user to create a chat session#}
-<div class="section no-pad-bot" id="index-banner">
-    <div class="container">
         <br><br>
         <div class="row center">
-            <h5 class="header col s12 light">Welcome {{ netid }}</h5>
-            <i class="large material-icons">code</i>
+            <div class = "col s2">
+                <h5 class="header col s12 light">Welcome {{ netid }}</h5>
+                <i class="large material-icons">code</i>
+            </div>
+            <div class ="col s8"></div>
+            <div class = "col s2 right online">
+                <h5>Online TAs</h5>
+                <div id = "ta_status"></div>
+            </div>
         </div>
         <br><br>
-    </div>
-    <form method="POST">
-        {{ render_field(form.hidden_tag) }}
-        {{ render_field(form.netID) }}
-        {{ render_field(form.chatID) }}
-        {{ form.submit() }}
-    </form>
-</div>
+{#    {% if form %}#}
+{#        <form method="POST">#}
+{#            {{ render_field(form.hidden_tag) }}#}
+{#            {{ render_field(form.netID) }}#}
+{#            {{ render_field(form.chatID) }}#}
+{#            {{ form.submit() }}#}
+{#        </form>#}
+{#    {%  endif %}#}
 {%  endblock %}

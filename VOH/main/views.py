@@ -24,7 +24,7 @@ def main_page():
     """
 
     if "net_id" in session:
-        return flask.redirect('/landing/'+str(session["net_id"]))
+        return flask.redirect('/'+session['type']+'/'+str(session["net_id"]))
 
     return render_template("base.html", login_status = check_login_status())
 
@@ -74,7 +74,6 @@ def register_user():
     """
     # Get the Form
     form = RegistrationForm(request.form)
-    print form.validate()
     # Validate the Form
     if request.method == "POST" and form.validate():
         # Register TA
@@ -84,8 +83,12 @@ def register_user():
         elif form.instructor_type.data == "student":
             # "Adding student"
             add_student(form.password.data, form.name.data, form.net_id.data, form.instructor_type.data)
+        # Setting session variables
         session['net_id'] = form.net_id.data
-        return flask.redirect('/landing/'+str(form.net_id.data))
+        session['type'] = form.instructor_type.data
+        if session['type'] == 'TA':
+            set_ta_status(session['net_id'],"online")
+        return flask.redirect('/'+session['type']+'/'+str(form.net_id.data))
     else:
         # Error
         return render_template("register.html", form = form,login_status = check_login_status())
@@ -102,33 +105,16 @@ def authenticate_login():
     form = LoginForm(request.form)
 
     if form.validate():
+        # Setting session variables
         session['net_id'] = str(form.net_id.data)
         session['type'] = str(form.instructor_type.data)
         if session['type'] == 'TA':
             set_ta_status(session['net_id'],"online")
-        return flask.redirect('/landing/'+str(form.net_id.data))
+        return flask.redirect('/'+session['type']+'/'+str(form.net_id.data))
     # Error! Redirect to Login Page
 
     return render_template('login.html', form=form,login_status = check_login_status())
 
-
-@main.route('/landing/<netid>', methods=['GET', 'POST'])
-def landing_page(netid):
-    """
-    @author: Sudarshan
-    Landing Page after Login for a particular user
-    landing_page() validates the form submission and redirects to /chat/ if it is successful form POST
-    :param user: NetID of user
-    """
-    form = ChatForm()  # Create a form as an instance of ChatFrom class
-    if form.validate_on_submit(): # On submission of From
-        session['netID'] = form.netID.data # Get NetID
-        session['chatID'] = form.chatID.data # Get unique chatID
-        return redirect(url_for('.chat')) # Redirect to /chat/
-    elif request.method == 'GET': # If its a get request
-        form.netID.data = session.get('netID', '') # Retrieve netID from form
-        form.chatID.data = session.get('chatID', '') # Retrieve chatID from form
-    return render_template("landing.html", netid = netid, form = form ,login_status = check_login_status()) # Render landing page
 
 
 @main.route('/instructor/',methods = ["GET","POST"])
@@ -156,10 +142,3 @@ def logout():
         set_ta_status(session['net_id'],"offline")
     session.clear()
     return flask.redirect('/')
-
-def check_login_status():
-    login_status = 'Login'
-    if 'net_id' in session:
-        login_status = 'Logout'
-    print login_status
-    return login_status

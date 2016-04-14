@@ -4,6 +4,8 @@ main = Blueprint('main', __name__)  # Creates main blueprint
 
 # Imports files necessary for this package
 from VOH.main import views
+from VOH.main import ta_view
+from VOH.main import student_view
 from VOH.main import socket_manager
 
 from init_db import *

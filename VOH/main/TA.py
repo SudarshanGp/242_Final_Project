@@ -3,8 +3,14 @@ from werkzeug.security import generate_password_hash
 
 def check_in_ta_list(net_id):
     client, db = open_db_connection()
-    print db["ta_list"].find({"net_id":"nmshah4"})
     if len( list(db["ta_list"].find({"net_id":net_id})))> 0:
+        close_db_connection(client)
+        return True
+    close_db_connection(client)
+    return False
+def check_ta_registration(net_id):
+    client, db = open_db_connection()
+    if len( list(db["ta_table"].find({"net_id":net_id})))> 0:
         close_db_connection(client)
         return True
     close_db_connection(client)
@@ -34,6 +40,24 @@ def add_TA(password, name, net_id,user_type):
 
     return False
 
+def update_ta_list(net_id_list):
+    for index in range(len(net_id_list)):
+        net_id = net_id_list[index]["net_id"]
+        name = get_TA(net_id)[0]["name"]
+        net_id_list[index]["name"] = name
+
+def get_online_ta():
+
+    # Open Connection
+    client, db = open_db_connection()
+
+    ta_list = list(db["online_ta"].find({"status":"online"}))
+
+    update_ta_list(ta_list)
+    print ta_list
+    # Close Connection
+    close_db_connection(client)
+    return ta_list
 
 def get_TA(net_id):
     """
@@ -58,3 +82,6 @@ def set_ta_status(net_id, status):
             'status': status
         }
     }, upsert=False)
+    # Close Connection
+    close_db_connection(client)
+
