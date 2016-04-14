@@ -85,7 +85,8 @@ def register_user():
             # "Adding student"
             add_student(form.password.data, form.name.data, form.net_id.data, form.instructor_type.data)
         session['net_id'] = form.net_id.data
-        return flask.redirect('/landing/'+str(form.net_id.data))
+        session['type'] = form.instructor_type.data
+        return flask.redirect('/'+session['type']+'/'+str(form.net_id.data))
     else:
         # Error
         return render_template("register.html", form = form,login_status = check_login_status())
