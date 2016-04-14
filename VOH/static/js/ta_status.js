@@ -6,7 +6,7 @@ function get_ta_status(data) {
         for (var i = 0; i< Object.keys(data).length; i++) {
             var ta_name = data[i]["net_id"];
             var ta_status = data[i]["status"];
-            html_data.append("<div><span>ta_name:ta_status</span></div>");
+            html_data.concat("<div><span>ta_name:ta_status</span></div>");
         }
         $(mydiv).html("");
         $(mydiv).html(html_data);
