@@ -10,12 +10,17 @@ function get_ta_status(data) {
         mydiv = document.getElementById('ta_status');
         for (var i = 0; i< Object.keys(data).length; i++) {
 
-            var ta_name = data[i]["net_id"];
+            var ta_net_id = data[i]["net_id"];
             var ta_status = data[i]["status"];
+            var ta_name = data['i']['name'];
             console.log(ta_name);
-            html_data = html_data.concat('<div class = "card"><span>');
+            path = "../static/data/img/" + ta_net_id + ".jpg";
+            html_data = html_data.concat('<div class = "card"> <div class = "chip"><img src =');
+            html_data = html_data.concat(path);
+            html_data = html_data.concat('></img>');
             html_data = html_data.concat(ta_name);
-            html_data = html_data.concat("</span></div>");
+            html_data = html_data.concat('</h5>');
+
         }
         $(mydiv).html("");
         $(mydiv).html(html_data);
@@ -32,7 +37,6 @@ function update_ta_status(){
     url: "/update_ta_status/",
     method: "post",
     success:function(data){
-        console.log('in here');
         setTimeout(function(){get_ta_status(data);}, 1000);
     }
 });
