@@ -139,7 +139,13 @@ def TA_page(netid):
 @main.route('/update_ta_status/', methods=['GET','POST'])
 def update_ta_status():
     online_ta = get_online_ta()
-    return jsonify(online_ta)
+    ret_list = []
+    for ta in online_ta:
+        ta.pop('_id',None)
+        ret_list.append(ta)
+    print ret_list
+    print jsonify(ret_list)
+    return jsonify(ret_list)
 
 @main.route('/instructor/',methods = ["GET","POST"])
 def instructor_view():
