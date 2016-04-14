@@ -4,6 +4,7 @@ from flask_socketio import *
 from flask.ext.socketio import emit, join_room, leave_room
 
 from VOH import socketio
+from VOH.main.database import TA
 
 
 @socketio.on('join', namespace='/chat')
@@ -45,3 +46,13 @@ def leave(message):
     leave_room(chatID)
     emit('status', {'msg': session.get('netID') + ' has now left the conversation.'}, room=chatID)
 
+
+@socketio.on('loginTA', namespace = '/login')
+def add_ta_online(data):
+    online_ta = TA.get_online_ta()
+    ret_list = {}
+    for index in range(len(online_ta)):
+        ta = online_ta[index]
+        ta.pop('_id', None)
+        ret_list[index] = (ta)
+    emit('online', ret_list, namespace='/login', broadcast=True)

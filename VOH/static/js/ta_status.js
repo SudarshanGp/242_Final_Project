@@ -1,8 +1,27 @@
-update_ta_status();
-setInterval(function(){
-    update_ta_status();
-}, 5000);
-
+// update_ta_status();
+// setInterval(function(){
+//     update_ta_status();
+// }, 5000);
+var socket;
+$(document).ready(function() {
+    console.log("ADDING SOCKETIO");
+    socket = io.connect('http://' + document.domain + ':' + location.port + '/login'); // Connect to socket.io server
+    console.log('socket');
+    socket.on('connect', function () {
+        console.log("EMIT LOGIN TA");
+        socket.emit('loginTA', {}); // On connect of a new user, emit join signal to socket.io server
+        // socket.emit('updateTA', {msg : "update"});
+    });
+    socket.on('online', function (data) {
+        console.log("here in online");
+        console.log(data);
+        get_ta_status(data);
+    })
+    // socket.on('newonline', function () {
+    //      socket.emit('updateTA', {msg : "update"}); // On connect of a new user, emit join signal to socket.io server
+    // });
+        
+});
 function get_ta_status(data) {
     if (data){
         console.log(data);
@@ -37,13 +56,13 @@ function get_ta_status(data) {
 /**
  * Created by Aadhya on 4/14/16.
  */
-function update_ta_status(){
-    console.log("in ere");
-   $.ajax({
-    url: "/update_ta_status/",
-    method: "post",
-    success:function(data){
-        setTimeout(function(){get_ta_status(data);}, 1000);
-    }
-});
-}
+// function update_ta_status(){
+//     console.log("in ere");
+//    $.ajax({
+//     url: "/update_ta_status/",
+//     method: "post",
+//     success:function(data){
+//         setTimeout(function(){get_ta_status(data);}, 1000);
+//     }
+// });
+// }

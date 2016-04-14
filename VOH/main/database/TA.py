@@ -60,7 +60,6 @@ def get_online_ta():
     client, db = open_db_connection()
 
     ta_list = list(db["online_ta"].find({"status":"online"}))
-
     update_ta_list(ta_list)
     print ta_list
     # Close Connection
