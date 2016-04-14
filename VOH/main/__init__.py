@@ -6,8 +6,7 @@ main = Blueprint('main', __name__)  # Creates main blueprint
 from VOH.main import views
 from VOH.main import ta_view
 from VOH.main import student_view
-from VOH.main import socket_manager
-
+from VOH.main.socket import socket_manager
 
 from VOH.main.database.init_db import *
 

@@ -3,7 +3,7 @@ from flask import render_template, request, session, jsonify, redirect
 from flask_socketio import *
 from flask.ext.socketio import emit, join_room, leave_room
 
-from .. import socketio
+from VOH import socketio
 
 
 @socketio.on('join', namespace='/chat')
