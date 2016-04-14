@@ -1,4 +1,4 @@
-from .. import open_db_connection, close_db_connection
+from VOH import open_db_connection, close_db_connection
 
 
 def add_to_db(table, user_list):

@@ -1,6 +1,8 @@
-from .. import open_db_connection, close_db_connection
+from VOH import open_db_connection, close_db_connection
 from werkzeug.security import check_password_hash
 from flask import session
+
+
 def get_user_db(user_type, db):
     """
     @author: Nihal
