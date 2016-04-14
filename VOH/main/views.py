@@ -139,10 +139,11 @@ def TA_page(netid):
 @main.route('/update_ta_status/', methods=['GET','POST'])
 def update_ta_status():
     online_ta = get_online_ta()
-    ret_list = []
-    for ta in online_ta:
+    ret_list = {}
+    for index in range(len(online_ta)):
+        ta = online_ta[index]
         ta.pop('_id',None)
-        ret_list.append(ta)
+        ret_list[index] = (ta)
     print ret_list
     print jsonify(ret_list)
     return jsonify(ret_list)
