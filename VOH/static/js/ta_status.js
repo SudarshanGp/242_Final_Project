@@ -8,7 +8,11 @@ function get_ta_status(data) {
             var ta_name = data[i]["net_id"];
             var ta_status = data[i]["status"];
             console.log(ta_name);
-            html_data = html_data.concat('<div><span>ta_name:ta_status</span></div>');
+            html_data = html_data.concat('<div><span>');
+            html_data = html_data.concat(ta_name);
+            html_data = html_data.concat(":");
+            html_data = html_data.concat(ta_status);
+            html_data = html_data.concat("</span></div>");
         }
         $(mydiv).html("");
         $(mydiv).html(html_data);
