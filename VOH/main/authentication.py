@@ -1,6 +1,6 @@
 from .. import open_db_connection, close_db_connection
 from werkzeug.security import check_password_hash
-
+from flask import session
 def get_user_db(user_type, db):
     """
     @author: Nihal
@@ -44,3 +44,10 @@ def authenticate_user(net_id, password, user_type):
     # No one valid was found
     close_db_connection(client)
     return False
+
+
+def check_login_status():
+    login_status = 'Login'
+    if 'net_id' in session:
+        login_status = 'Logout'
+    return login_status

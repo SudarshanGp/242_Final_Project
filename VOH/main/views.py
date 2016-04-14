@@ -83,6 +83,7 @@ def register_user():
         elif form.instructor_type.data == "student":
             # "Adding student"
             add_student(form.password.data, form.name.data, form.net_id.data, form.instructor_type.data)
+        # Setting session variables
         session['net_id'] = form.net_id.data
         session['type'] = form.instructor_type.data
         if session['type'] == 'TA':
@@ -104,6 +105,7 @@ def authenticate_login():
     form = LoginForm(request.form)
 
     if form.validate():
+        # Setting session variables
         session['net_id'] = str(form.net_id.data)
         session['type'] = str(form.instructor_type.data)
         if session['type'] == 'TA':
@@ -114,40 +116,6 @@ def authenticate_login():
     return render_template('login.html', form=form,login_status = check_login_status())
 
 
-@main.route('/student/<net_id>', methods=['GET','POST'])
-def student_page(net_id):
-    student = get_student(net_id)
-    return render_template("landing.html", netid = student[0]["name"] ,form = None, login_status = check_login_status()) # Render landing page
-
-
-@main.route('/TA/<net_id>', methods=['GET', 'POST'])
-def TA_page(net_id):
-    """
-    @author: Sudarshan
-    Landing Page after Login for a particular user
-    landing_page() validates the form submission and redirects to /chat/ if it is successful form POST
-    :param user: NetID of user
-    """
-    ta = get_TA(net_id)
-    form = ChatForm()  # Create a form as an instance of ChatFrom class
-    if form.validate_on_submit(): # On submission of From
-        session['netID'] = form.netID.data # Get NetID
-        session['chatID'] = form.chatID.data # Get unique chatID
-        return redirect(url_for('.chat')) # Redirect to /chat/
-    elif request.method == 'GET': # If its a get request
-        form.netID.data = session.get('netID', '') # Retrieve netID from form
-        form.chatID.data = session.get('chatID', '') # Retrieve chatID from form
-    return render_template("landing.html", netid = ta[0]["name"], form = form ,login_status = check_login_status()) # Render landing page
-
-@main.route('/update_ta_status/', methods=['GET','POST'])
-def update_ta_status():
-    online_ta = get_online_ta()
-    ret_list = {}
-    for index in range(len(online_ta)):
-        ta = online_ta[index]
-        ta.pop('_id',None)
-        ret_list[index] = (ta)
-    return jsonify(ret_list)
 
 @main.route('/instructor/',methods = ["GET","POST"])
 def instructor_view():
@@ -174,9 +142,3 @@ def logout():
         set_ta_status(session['net_id'],"offline")
     session.clear()
     return flask.redirect('/')
-
-def check_login_status():
-    login_status = 'Login'
-    if 'net_id' in session:
-        login_status = 'Logout'
-    return login_status

@@ -75,3 +75,4 @@ def set_ta_status(net_id, status):
     }, upsert=False)
     # Close Connection
     close_db_connection(client)
+
