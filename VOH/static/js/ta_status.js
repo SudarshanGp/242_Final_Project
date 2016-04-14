@@ -1,7 +1,8 @@
 update_ta_status();
 setInterval(function(){
-    update_ta_status() // this will run after every 5 seconds
+    update_ta_status(); 
 }, 1000);
+
 function get_ta_status(data) {
     if (data){
         console.log(data);
