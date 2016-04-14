@@ -41,13 +41,21 @@ def add_TA(password, name, net_id,user_type):
     return False
 
 def update_ta_list(net_id_list):
+    """
+    @author: Nihal
+    :param net_id_list: List of Net Id's
+    :return: Update the list with Names as well
+    """
     for index in range(len(net_id_list)):
         net_id = net_id_list[index]["net_id"]
         name = get_TA(net_id)[0]["name"]
         net_id_list[index]["name"] = name
 
 def get_online_ta():
-
+    """
+    @author: Nihal
+    :return: A list of online TA's
+    """
     # Open Connection
     client, db = open_db_connection()
 
