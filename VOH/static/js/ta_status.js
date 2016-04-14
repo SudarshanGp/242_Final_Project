@@ -52,9 +52,9 @@ function get_ta_status(data) {
     }
 
 }
-/**
- * Created by Aadhya on 4/14/16.
- */
+// /**
+//  * Created by Aadhya on 4/14/16.
+//  */
 // function update_ta_status(){
 //     console.log("in ere");
 //    $.ajax({
