@@ -1,6 +1,6 @@
 update_ta_status();
 setInterval(function(){
-    update_ta_status(); 
+    update_ta_status();
 }, 1000);
 
 function get_ta_status(data) {
@@ -13,10 +13,8 @@ function get_ta_status(data) {
             var ta_name = data[i]["net_id"];
             var ta_status = data[i]["status"];
             console.log(ta_name);
-            html_data = html_data.concat('<div><span>');
+            html_data = html_data.concat('<div class = "card"><span>');
             html_data = html_data.concat(ta_name);
-            html_data = html_data.concat(":");
-            html_data = html_data.concat(ta_status);
             html_data = html_data.concat("</span></div>");
         }
         $(mydiv).html("");
