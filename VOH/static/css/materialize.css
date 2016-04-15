@@ -2670,7 +2670,7 @@ ul li {
 blockquote {
   margin: 20px 0;
   padding-left: 1.5rem;
-  border-left: 5px solid #ee6e73;
+  border-left: 5px solid #f50057;
 }
 
 i {
@@ -8576,21 +8576,21 @@ a.waves-effect .waves-ripple {
 
 .chip {
   display: inline-block;
-  height: 32px;
-  font-size: 13px;
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.6);
-  line-height: 32px;
-  padding: 0 12px;
+  height: 48px;
+  font-size: 18px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.7);
+  line-height: 48px;
+  padding: 0 14px;
   border-radius: 16px;
   background-color: #e4e4e4;
 }
 
 .chip img {
   float: left;
-  margin: 0 8px 0 -12px;
-  height: 32px;
-  width: 32px;
+  margin: -8px 0 0 -18px;
+  height: 70px;
+  width: 70px;
   border-radius: 50%;
 }
 
