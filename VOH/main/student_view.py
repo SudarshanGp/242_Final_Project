@@ -7,5 +7,5 @@ from . import main
 @main.route('/student/<net_id>', methods=['GET','POST'])
 def student_page(net_id):
     student = s.get_student(net_id)
-    return render_template("landing.html", netid = student[0]["name"] ,form = None, login_status = check_login_status()) # Render landing page
+    return render_template("student.html", netid = student[0]["name"], form = None, login_status = check_login_status()) # Render landing page
 

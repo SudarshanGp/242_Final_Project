@@ -23,4 +23,4 @@ def TA_page(net_id):
     elif request.method == 'GET': # If its a get request
         form.netID.data = session.get('netID', '') # Retrieve netID from form
         form.chatID.data = session.get('chatID', '') # Retrieve chatID from form
-    return render_template("landing.html", netid = ta[0]["name"], form = form ,login_status = check_login_status()) # Render landing page
+    return render_template("ta.html", netid = ta[0]["name"], form = form, login_status = check_login_status()) # Render landing page
