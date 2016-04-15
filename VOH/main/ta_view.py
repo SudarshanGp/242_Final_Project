@@ -24,13 +24,3 @@ def TA_page(net_id):
         form.netID.data = session.get('netID', '') # Retrieve netID from form
         form.chatID.data = session.get('chatID', '') # Retrieve chatID from form
     return render_template("landing.html", netid = ta[0]["name"], form = form ,login_status = check_login_status()) # Render landing page
-
-@main.route('/update_ta_status/', methods=['GET','POST'])
-def update_ta_status():
-    online_ta = TA.get_online_ta()
-    ret_list = {}
-    for index in range(len(online_ta)):
-        ta = online_ta[index]
-        ta.pop('_id',None)
-        ret_list[index] = (ta)
-    return jsonify(ret_list)
