@@ -5,20 +5,39 @@ $(document).ready(function() {
     socket.on('connect', function () {
         console.log("EMIT LOGIN TA");
         socket.emit('loginTA', {}); // On connect of a new user, emit join signal to socket.io server
+        socket.emit('getTAQueue', {});
     });
     socket.on('online', function (data) {
         console.log("here in online");
         console.log(data);
-        get_ta_status(data);
+        get_ta_status(data['online']);
+        get_ta_queue(data['queue']);
+
     });
 
-    socket.on('add_student', function(data){
+    socket.on('add_student_queue', function(data){
         console.log("ADD STUDENT");
         if (window.location.href.includes("/TA/")) {
 
             console.log("iN ADD STUDENT");
             console.log(data);
-            get_ta_queue(data);
+            var parser =  document.createElement('a');
+            parser.href = window.location.href;
+            console.log(parser.pathname.split('/')[2]);
+            var ta = parser.pathname.split('/')[2];
+            if(data){
+                console.log("DATA IS NOT EMPTY");
+                console.log(ta);
+                console.log(data[0]['ta']);
+                var list_queue = [];
+                for (var i = 0; i< Object.keys(data).length; i++) {
+                    if(data[i]['ta'] == ta){
+                        list_queue.push(data[i]);
+                    }
+                }
+                get_ta_queue(list_queue);
+
+            }
         }
         else{
         console.log("Boo");
@@ -78,22 +97,23 @@ function addqueue(id){
 function get_ta_queue(data){
     if (data){
        var html_data = ""
-        console.log("data");
-        console.log(data);
+        var parser =  document.createElement('a');
+        parser.href = window.location.href;
+        var ta = parser.pathname.split('/')[2];
         mydiv = document.getElementById('ta_queue');
         for (var i = 0; i< Object.keys(data).length; i++) {
-
-            var student_net_id = data[i]["student"];
-            console.log(student_net_id);
-            html_data = html_data.concat('<div class = "row"></div><a class="btn-floating green" onclick = \"answerstudent(this);\" id = \"');
-            //html_data = html_data.concat(ta_net_id);
-            //html_data = html_data.concat(')\" id = \"');
-            html_data = html_data.concat(student_net_id);
-            html_data = html_data.concat('\">Answer</a>');
-            html_data = html_data.concat('<div class = "chip large">');
-            html_data = html_data.concat(student_net_id);
-            html_data = html_data.concat('</h5></div>');
-
+            if(data[i]['ta'] == ta) {
+                var student_net_id = data[i]["student"];
+                console.log(student_net_id);
+                html_data = html_data.concat('<div class = "row"></div><a class="btn-floating green" onclick = \"answerstudent(this);\" id = \"');
+                //html_data = html_data.concat(ta_net_id);
+                //html_data = html_data.concat(')\" id = \"');
+                html_data = html_data.concat(student_net_id);
+                html_data = html_data.concat('\">Answer</a>');
+                html_data = html_data.concat('<div class = "chip large">');
+                html_data = html_data.concat(student_net_id);
+                html_data = html_data.concat('</h5></div>');
+            }
         }
         $(mydiv).html("");
         $(mydiv).html(html_data);

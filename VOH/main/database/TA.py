@@ -27,6 +27,14 @@ def add_to_queue_db(ret_data):
     close_db_connection(client)
     return new_data
 
+def get_ta_queue():
+    client, db = open_db_connection()
+    new_data = list(db["ta_queue"].find({}))
+    for key, value in enumerate(new_data):
+        del value['_id']
+    close_db_connection(client)
+    return new_data
+
 
 def add_TA(password, name, net_id,user_type):
     """
