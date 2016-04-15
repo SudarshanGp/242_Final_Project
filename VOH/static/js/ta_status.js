@@ -25,12 +25,16 @@ function get_ta_status(data) {
             id_add = ta_net_id + "add";
             id_remove = ta_net_id + "remove";
             path = "../static/data/img/" + ta_net_id + ".jpg";
-            html_data = html_data.concat('<div class = "row"></div><a class="btn-floating green" id = "');
+            html_data = html_data.concat('<div class = "row"></div><a class="btn-floating green" onclick = \"addqueue(\"');
             html_data = html_data.concat(id_add);
-            html_data = html_data.concat('">Join</a>');
-            html_data = html_data.concat('<a class="btn-floating red"id = "');
+            html_data = html_data.concat('\");\" id = \"');
+            html_data = html_data.concat(id_add);
+            html_data = html_data.concat('\">Join</a>');
+            html_data = html_data.concat('<a class="btn-floating red" onclick = \"removequeue(\"');
             html_data = html_data.concat(id_remove);
-            html_data = html_data.concat('">Leave</a>');
+            html_data = html_data.concat('\");\" id = \"');
+            html_data = html_data.concat(id_remove);
+            html_data = html_data.concat('\">Leave</a>');
             html_data = html_data.concat('<div class = "chip large"><img src =');
             html_data = html_data.concat(path);
             html_data = html_data.concat('></img>');
@@ -40,7 +44,6 @@ function get_ta_status(data) {
         }
         $(mydiv).html("");
         $(mydiv).html(html_data);
-
     }
 
 }
