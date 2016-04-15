@@ -76,6 +76,4 @@ def add_student(data):
         "ta": data["net_id"]
     }
     new_data = TA.add_to_queue_db(ret_data)
-
-    print(new_data, "new DATA")
     emit('add_student_queue', new_data, namespace='/login', broadcast=True)
