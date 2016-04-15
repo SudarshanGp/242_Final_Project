@@ -1,10 +1,13 @@
 var socket;
 $(document).ready(function() {
-
+    /**
+     * All socket IO listeners that catch different emit calls in order to update
+     * either the TA queue or the List of Online TA's
+     */
     socket = io.connect('http://' + document.domain + ':' + location.port + '/login'); // Connect to socket.io server
     socket.on('connect', function () {
         console.log("EMIT LOGIN TA");
-        socket.emit('loginTA', {}); // On connect of a new user, emit join signal to socket.io server
+        socket.emit('loginTA', {});
         socket.emit('getTAQueue', {});
     });
     socket.on('online', function (data) {
@@ -14,7 +17,9 @@ $(document).ready(function() {
         get_ta_queue(data['queue']);
 
     });
-
+    /**
+     * Add the student to a Queue
+     */
     socket.on('add_student_queue', function(data){
         console.log("ADD STUDENT");
         if (window.location.href.includes("/TA/")) {
@@ -48,6 +53,9 @@ $(document).ready(function() {
 });
 
 function get_ta_status(data) {
+    /**
+     * Updates the list of Online TA's
+     */
     if (data){
         console.log(data);
         var html_data = "";
@@ -89,8 +97,11 @@ function removequeue(id){
 }
 
 function addqueue(id){
-
+    /**
+     Emits a socket io call to add a student to a TA's queue
+    **/
     console.log(id.id);
+
      socket.emit('add_student', {"net_id":id.id});
 }
 
