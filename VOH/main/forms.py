@@ -36,7 +36,8 @@ class RegistrationForm(Form):
         :return: True if no Errors else False
         """
         # Authenticate USER
-        Form.validate(self)
+        if Form.validate(self) == False:
+            return False
         if self.instructor_type.data == "TA":
             if TA.check_in_ta_list(self.net_id.data) == False:
                 self.net_id.errors.append("This Net ID is not a valid TA")

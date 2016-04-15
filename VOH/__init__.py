@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_socketio import *
 from pymongo import *
+# import main
 
 
 socketio = SocketIO() # Create instance of socketio app
