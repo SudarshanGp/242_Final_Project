@@ -2,6 +2,9 @@ from VOH import open_db_connection, close_db_connection
 from werkzeug.security import generate_password_hash
 
 def check_in_student_list(net_id):
+    """
+    Checks if student is VALID or not
+    """
     client, db = open_db_connection()
     if len( list(db["student_list"].find({"net_id":net_id})))> 0:
         close_db_connection(client)
@@ -10,6 +13,10 @@ def check_in_student_list(net_id):
     return False
 
 def check_student_registration(net_id):
+    """
+    Checks if student has already Registered
+
+    """
     client, db = open_db_connection()
     if len( list(db["student_table"].find({"net_id":net_id})))> 0:
         close_db_connection(client)
@@ -19,7 +26,6 @@ def check_student_registration(net_id):
 
 def add_student( password, name, net_id,user_type):
     """
-    @author: Nihal,Aadhya
     Add a student to the DB
     :param username: Username
     :param password: Password
@@ -42,7 +48,6 @@ def add_student( password, name, net_id,user_type):
 
 def get_student(net_id):
     """
-    @author: Nihal
     Returns Username
     :param username: Username
     :return: User

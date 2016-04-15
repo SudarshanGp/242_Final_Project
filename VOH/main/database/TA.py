@@ -2,20 +2,32 @@ from VOH import open_db_connection, close_db_connection
 from werkzeug.security import generate_password_hash
 
 def check_in_ta_list(net_id):
+    """
+    Checks if TA is a valid TA
+    """
     client, db = open_db_connection()
     if len( list(db["ta_list"].find({"net_id":net_id})))> 0:
         close_db_connection(client)
         return True
     close_db_connection(client)
     return False
+
 def check_ta_registration(net_id):
+    """
+    Checks if TA has already been registered
+    """
     client, db = open_db_connection()
     if len( list(db["ta_table"].find({"net_id":net_id})))> 0:
         close_db_connection(client)
         return True
     close_db_connection(client)
     return False
+
 def add_to_queue_db(ret_data):
+    """
+    Add's student to the Queue Table with the corresponding TA requested
+
+    """
     client, db = open_db_connection()
     table = db["ta_queue"]
     print(ret_data)
@@ -28,6 +40,10 @@ def add_to_queue_db(ret_data):
     return new_data
 
 def get_ta_queue():
+    """
+    Returns the TA queue table
+    :return:
+    """
     client, db = open_db_connection()
     new_data = list(db["ta_queue"].find({}))
     for key, value in enumerate(new_data):
@@ -38,7 +54,7 @@ def get_ta_queue():
 
 def add_TA(password, name, net_id,user_type):
     """
-    @author: Nihal,Aadhya
+    Adds TA to table
     :param username: Username
     :param password: Password
     :param name: name
@@ -73,7 +89,6 @@ def update_ta_list(net_id_list):
 
 def get_online_ta():
     """
-    @author: Nihal
     :return: A list of online TA's
     """
     # Open Connection
@@ -101,6 +116,9 @@ def get_TA(net_id):
     return ta
 
 def set_ta_status(net_id, status):
+    """
+    Sets the status of the given TA to online/offline
+    """
     client, db = open_db_connection()
     db["online_ta"].update_one({
         '_id': net_id
