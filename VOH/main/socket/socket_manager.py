@@ -10,7 +10,6 @@ from VOH.main.database import TA
 @socketio.on('join', namespace='/chat')
 def join(message):
     """
-    @author : Sudarshan
     join function catches any a join signal emitted by socketIO client
     adds client to a particular room identified by chatID.
     Join Message returned is broadcasted to everyone in that specific room
@@ -25,7 +24,6 @@ def join(message):
 @socketio.on('text', namespace='/chat')
 def converse(message):
     """
-    @author : Sudarshan
     converse function catches any a text signal emitted by socketIO client
     It emits a signal to all users in that room to add that message to the chat box
     :param message: Conversation Message
@@ -37,7 +35,6 @@ def converse(message):
 @socketio.on('left', namespace='/chat')
 def leave(message):
     """
-    @author : Sudarshan
     leave function catches any a left signal emitted by socketIO client
     It emits a signal to all users in that room notifying that the user has left the chat conversation
     :param message: Leave Message
@@ -49,9 +46,13 @@ def leave(message):
 
 @socketio.on('loginTA', namespace = '/login')
 def add_ta_online(data):
-    print "getting online ta information"
+    """
+    Socket End point for a TA who is online
+    Updates the TA's status to online and updates all pages as well
+
+    :return:
+    """
     online_ta = TA.get_online_ta()
-    print(online_ta)
     ret_list = {}
     for index in range(len(online_ta)):
         ta = online_ta[index]
@@ -64,6 +65,11 @@ def add_ta_online(data):
 
 @socketio.on('add_student', namespace = '/login')
 def add_student(data):
+    """
+    Listener for when a student clicks on Joining a TA's queue
+
+    :return:
+    """
     ret_data = {
         "student":session["net_id"],
         "ta":data["net_id"]
