@@ -29,6 +29,14 @@ class RegistrationForm(Form):
 
 
     def validate(self):
+        """
+        Validation for Registration Forms
+        Checks for type of user and checks if "net id" has already been registered
+        Performs sanity checks as well (same passwords)
+
+        If There are errors, appends errors to the form
+        :return:
+        """
         # Authenticate USER
         Form.validate(self)
         if self.instructor_type.data == "TA":
@@ -62,7 +70,10 @@ class LoginForm(Form):
 
 
     def validate(self):
-        # Authenticate USER
+        """
+        Validation for Login
+        :return:
+        """
         Form.validate(self)
         if authenticate_user(self.net_id.data, self.password.data, self.instructor_type.data):
             return True
