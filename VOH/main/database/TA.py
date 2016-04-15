@@ -18,8 +18,16 @@ def check_ta_registration(net_id):
 def add_to_queue_db(ret_data):
     client, db = open_db_connection()
     table = db["ta_queue"]
+    print(ret_data)
     table.insert_one(ret_data)
+    new_data = list(db["ta_queue"].find({"ta":ret_data['ta']}))
+    for key, value in enumerate(new_data):
+        del value['_id']
+    print new_data
     close_db_connection(client)
+    return new_data
+
+
 def add_TA(password, name, net_id,user_type):
     """
     @author: Nihal,Aadhya

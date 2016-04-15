@@ -65,5 +65,6 @@ def add_student(data):
         "student":session["net_id"],
         "ta":data["net_id"]
     }
-    # TA.add_to_queue_db(ret_data)
-    emit('add_student',ret_data, namespace='/login',broadcast=True)
+    new_data = TA.add_to_queue_db(ret_data)
+    print(new_data, "new DATA")
+    emit('add_student',new_data, namespace='/login',broadcast=True)
