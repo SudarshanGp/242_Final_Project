@@ -14,6 +14,8 @@ def get_user_db(user_type, db):
         users_table = db["ta_table"]
     elif user_type == "student":
         users_table = db["student_table"]
+    elif user_type == "test":
+        users_table = db["test_table"]
 
     return users_table
 

@@ -7,9 +7,8 @@ from VOH.main import views
 from VOH.main import ta_view
 from VOH.main import student_view
 from VOH.main.socket import socket_manager
-# from VOH.main.database import authentication
-# from VOH.main.socket import *
+from VOH.main.database import authentication, TA, student, init_db
 from VOH.main.database.init_db import *
 
-create_ta_list("VOH/static/data/ta_netids.csv")  # Creates list of TAs in mongoDB
-create_student_list("VOH/static/data/student_netids.csv") # Creates list of students in mongoDB
+create_ta_list("../static/data/ta_netids.csv")  # Creates list of TAs in mongoDB
+create_student_list("../static/data/student_netids.csv") # Creates list of students in mongoDB
