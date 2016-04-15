@@ -69,8 +69,6 @@ function get_ta_status(data) {
             id_remove = ta_net_id + "remove";
             path = "../static/data/img/" + ta_net_id + ".jpg";
             html_data = html_data.concat('<div class = "row"></div><a class="btn-floating btn-large green" onclick = \"addqueue(this);\" id = \"');
-            //html_data = html_data.concat(ta_net_id);
-            //html_data = html_data.concat(')\" id = \"');
             html_data = html_data.concat(id_add);
             html_data = html_data.concat('\">Join</a>');
             html_data = html_data.concat('<a class="btn-floating red btn-large" onclick = \"removequeue(');
