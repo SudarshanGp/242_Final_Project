@@ -22,9 +22,7 @@
                 </div>
             </nav>
         </div>
-        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <script src="{{ url_for('static',filename='js/materialize.js') }}"></script>
-        <script src="{{ url_for('static',filename='js/init.js') }}"></script>
+
     </head>
     <body>
         {% block data %}
@@ -41,12 +39,12 @@
             </div>
         </div>
 
-        <script src="{{ url_for('static',filename='js/ta_status.js') }}"></script>
+
         {%  endblock %}
-        {# Includes scripts which will be required for rendering the webpage #}
-
-
-{#        <script src="{{ url_for('static',filename='js/ta_status.js') }}"></script>#}
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="{{ url_for('static',filename='js/materialize.js') }}"></script>
+        <script src="{{ url_for('static',filename='js/init.js') }}"></script>
+        <script src="{{ url_for('static',filename='js/ta_status.js') }}"></script>
 
     </body>
 </html>

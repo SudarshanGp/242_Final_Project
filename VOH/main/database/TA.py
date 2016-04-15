@@ -15,7 +15,11 @@ def check_ta_registration(net_id):
         return True
     close_db_connection(client)
     return False
-
+def add_to_queue_db(ret_data):
+    client, db = open_db_connection()
+    table = db["ta_queue"]
+    table.insert_one(ret_data)
+    close_db_connection(client)
 def add_TA(password, name, net_id,user_type):
     """
     @author: Nihal,Aadhya

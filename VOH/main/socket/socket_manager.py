@@ -2,7 +2,7 @@ from flask import Flask, Blueprint
 from flask import render_template, request, session, jsonify, redirect
 from flask_socketio import *
 from flask.ext.socketio import emit, join_room, leave_room
-
+from VOH import open_db_connection, close_db_connection
 from VOH import socketio
 from VOH.main.database import TA
 
@@ -58,3 +58,12 @@ def add_ta_online(data):
         ta.pop('_id', None)
         ret_list[index] = (ta)
     emit('online', ret_list, namespace='/login', broadcast=True)
+
+@socketio.on('add_student', namespace = '/login')
+def add_student(data):
+    ret_data = {
+        "student":session["net_id"],
+        "ta":data["net_id"]
+    }
+    # TA.add_to_queue_db(ret_data)
+    emit('add_student',ret_data, namespace='/login',broadcast=True)

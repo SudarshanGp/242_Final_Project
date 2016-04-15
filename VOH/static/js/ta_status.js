@@ -1,5 +1,6 @@
 var socket;
 $(document).ready(function() {
+
     socket = io.connect('http://' + document.domain + ':' + location.port + '/login'); // Connect to socket.io server
     socket.on('connect', function () {
         console.log("EMIT LOGIN TA");
@@ -9,7 +10,18 @@ $(document).ready(function() {
         console.log("here in online");
         console.log(data);
         get_ta_status(data);
-    })
+    });
+
+    if (window.location.href.includes("/TA/")){
+        socket.on('add_student', function(data){
+            console.log(data["student"]);
+            console.log(data["ta"]);
+        });
+    }
+    else{
+        console.log("Boo");
+    }
+
         
 });
 function get_ta_status(data) {
@@ -22,12 +34,12 @@ function get_ta_status(data) {
             var ta_net_id = data[i]["net_id"];
             var ta_status = data[i]["status"];
             var ta_name = data[i]['name'];
-            id_add = ta_net_id + "add";
+            id_add = ta_net_id;
             id_remove = ta_net_id + "remove";
             path = "../static/data/img/" + ta_net_id + ".jpg";
-            html_data = html_data.concat('<div class = "row"></div><a class="btn-floating green" onclick = \"addqueue(');
-            html_data = html_data.concat(ta_net_id);
-            html_data = html_data.concat(');\" id = \"');
+            html_data = html_data.concat('<div class = "row"></div><a class="btn-floating green" onclick = \"addqueue(this);\" id = \"');
+            //html_data = html_data.concat(ta_net_id);
+            //html_data = html_data.concat(')\" id = \"');
             html_data = html_data.concat(id_add);
             html_data = html_data.concat('\">Join</a>');
             html_data = html_data.concat('<a class="btn-floating red" onclick = \"removequeue(');
@@ -50,8 +62,11 @@ function get_ta_status(data) {
 
 function removequeue(id){
     console.log("in remove");
+
 }
 
 function addqueue(id){
-    console.log("in add");
+
+    console.log(id.id);
+     socket.emit('add_student', {"net_id":id.id});
 }
