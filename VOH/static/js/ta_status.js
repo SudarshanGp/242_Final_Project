@@ -60,12 +60,12 @@ function get_ta_status(data) {
             id_add = ta_net_id;
             id_remove = ta_net_id + "remove";
             path = "../static/data/img/" + ta_net_id + ".jpg";
-            html_data = html_data.concat('<div class = "row"></div><a class="btn-floating green" onclick = \"addqueue(this);\" id = \"');
+            html_data = html_data.concat('<div class = "row"></div><a class="btn-floating btn-large green" onclick = \"addqueue(this);\" id = \"');
             //html_data = html_data.concat(ta_net_id);
             //html_data = html_data.concat(')\" id = \"');
             html_data = html_data.concat(id_add);
             html_data = html_data.concat('\">Join</a>');
-            html_data = html_data.concat('<a class="btn-floating red" onclick = \"removequeue(');
+            html_data = html_data.concat('<a class="btn-floating red btn-large" onclick = \"removequeue(');
             html_data = html_data.concat(ta_net_id);
             html_data = html_data.concat(');\" id = \"');
             html_data = html_data.concat(id_remove);
@@ -96,7 +96,7 @@ function addqueue(id){
 
 function get_ta_queue(data){
     if (data){
-       var html_data = ""
+       var html_data = "<h5>Queue</h5><br>";
         var parser =  document.createElement('a');
         parser.href = window.location.href;
         var ta = parser.pathname.split('/')[2];
@@ -105,14 +105,11 @@ function get_ta_queue(data){
             if(data[i]['ta'] == ta) {
                 var student_net_id = data[i]["student"];
                 console.log(student_net_id);
-                html_data = html_data.concat('<div class = "row"></div><a class="btn-floating green" onclick = \"answerstudent(this);\" id = \"');
-                //html_data = html_data.concat(ta_net_id);
-                //html_data = html_data.concat(')\" id = \"');
+                html_data = html_data.concat('<blockquote style = "float:left;"><a class="waves-effect waves-light btn blue darken-4" onclick = \"answerstudent(this);\" id = \"');
                 html_data = html_data.concat(student_net_id);
-                html_data = html_data.concat('\">Answer</a>');
-                html_data = html_data.concat('<div class = "chip large">');
+                html_data = html_data.concat('\">Answer</a><text style = "font-size:18px; margin-left:15px;">');
                 html_data = html_data.concat(student_net_id);
-                html_data = html_data.concat('</h5></div>');
+                html_data = html_data.concat('</text></blockquote><br><br>');
             }
         }
         $(mydiv).html("");
