@@ -6,7 +6,7 @@ from flask import session
 def get_user_db(user_type, db):
     """
     Gets USERS Table
-    :return:
+    :return: Returns a list of users of user_type from database
     """
     users_table = None
 
@@ -22,9 +22,10 @@ def authenticate_user(net_id, password, user_type):
     """
     Validates User Credentials
     Update: Hashing of passwords
-    :param username: Username
+    :param net_id: Username
     :param password: Password
-    :return:
+    :param user_type: Type of User (TA or Student)
+    :return: True or False depending on if user passes authentication check
     """
     client, db = open_db_connection()
     users_table = get_user_db(user_type, db)
@@ -43,7 +44,7 @@ def authenticate_user(net_id, password, user_type):
 def check_login_status():
     """
     Checks Login status
-    :return:
+    :return: True if User is logged in
     """
     login_status = 'Login'
     if 'net_id' in session:

@@ -16,9 +16,10 @@ def join(message):
     :param message: Join Message
     """
 
-    chatID = session.get('chatID') # Retrieve chatID from session i
-    join_room(chatID) # Join chatID room
-    emit('status', {'msg': session.get('netID') + ' is now in the conversation'}, room=chatID)  #Emits signal to a particular chat conversation
+    chatID = session.get('chatID')  # Retrieve chatID from session i
+    join_room(chatID)  # Join chatID room
+    emit('status', {'msg': session.get('netID') + ' is now in the conversation'},
+         room=chatID)  # Emits signal to a particular chat conversation
 
 
 @socketio.on('text', namespace='/chat')
@@ -44,13 +45,13 @@ def leave(message):
     emit('status', {'msg': session.get('netID') + ' has now left the conversation.'}, room=chatID)
 
 
-@socketio.on('loginTA', namespace = '/login')
+@socketio.on('loginTA', namespace='/login')
 def add_ta_online(data):
     """
     Socket End point for a TA who is online
     Updates the TA's status to online and updates all pages as well
-
-    :return:
+    :param data: Data passed in by socketio client
+    :return: None
     """
     online_ta = TA.get_online_ta()
     ret_list = {}
@@ -60,21 +61,21 @@ def add_ta_online(data):
         ret_list[index] = (ta)
     new_data = TA.get_ta_queue()
 
-    emit('online', {"online" : ret_list, "queue" : new_data}, namespace='/login', broadcast=True)
+    emit('online', {"online": ret_list, "queue": new_data}, namespace='/login', broadcast=True)
 
 
-@socketio.on('add_student', namespace = '/login')
+@socketio.on('add_student', namespace='/login')
 def add_student(data):
     """
-    Listener for when a student clicks on Joining a TA's queue
-
-    :return:
+    Listener for when a student clicks on Joining a TA's queue and broadcasts queue to all TAs
+    :param data: Data passed in by socketio client
+    :return: None
     """
     ret_data = {
-        "student":session["net_id"],
-        "ta":data["net_id"]
+        "student": session["net_id"],
+        "ta": data["net_id"]
     }
     new_data = TA.add_to_queue_db(ret_data)
 
     print(new_data, "new DATA")
-    emit('add_student_queue',new_data, namespace='/login',broadcast=True)
+    emit('add_student_queue', new_data, namespace='/login', broadcast=True)

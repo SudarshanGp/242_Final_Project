@@ -6,13 +6,10 @@ $(document).ready(function() {
      */
     socket = io.connect('http://' + document.domain + ':' + location.port + '/login'); // Connect to socket.io server
     socket.on('connect', function () {
-        console.log("EMIT LOGIN TA");
         socket.emit('loginTA', {});
         socket.emit('getTAQueue', {});
     });
     socket.on('online', function (data) {
-        console.log("here in online");
-        console.log(data);
         get_ta_status(data['online']);
         get_ta_queue(data['queue']);
 
@@ -21,19 +18,11 @@ $(document).ready(function() {
      * Add the student to a Queue
      */
     socket.on('add_student_queue', function(data){
-        console.log("ADD STUDENT");
         if (window.location.href.includes("/TA/")) {
-
-            console.log("iN ADD STUDENT");
-            console.log(data);
             var parser =  document.createElement('a');
             parser.href = window.location.href;
-            console.log(parser.pathname.split('/')[2]);
             var ta = parser.pathname.split('/')[2];
             if(data){
-                console.log("DATA IS NOT EMPTY");
-                console.log(ta);
-                console.log(data[0]['ta']);
                 var list_queue = [];
                 for (var i = 0; i< Object.keys(data).length; i++) {
                     if(data[i]['ta'] == ta){
@@ -44,10 +33,6 @@ $(document).ready(function() {
 
             }
         }
-        else{
-        console.log("Boo");
-         }
-
     });
 
 });
@@ -57,7 +42,6 @@ function get_ta_status(data) {
      * Updates the list of Online TA's
      */
     if (data){
-        console.log(data);
         var html_data = "";
         mydiv = document.getElementById('ta_status');
         for (var i = 0; i< Object.keys(data).length; i++) {
@@ -90,7 +74,7 @@ function get_ta_status(data) {
 }
 
 function removequeue(id){
-    console.log("in remove");
+    // console.log("in remove");
 
 }
 
@@ -98,9 +82,7 @@ function addqueue(id){
     /**
      Emits a socket io call to add a student to a TA's queue
     **/
-    console.log(id.id);
-
-     socket.emit('add_student', {"net_id":id.id});
+    socket.emit('add_student', {"net_id":id.id});
 }
 
 function get_ta_queue(data){
@@ -116,7 +98,6 @@ function get_ta_queue(data){
         for (var i = 0; i< Object.keys(data).length; i++) {
             if(data[i]['ta'] == ta) {
                 var student_net_id = data[i]["student"];
-                console.log(student_net_id);
                 html_data = html_data.concat('<blockquote style = "float:left;"><a class="waves-effect waves-light btn blue darken-4" onclick = \"answerstudent(this);\" id = \"');
                 html_data = html_data.concat(student_net_id);
                 html_data = html_data.concat('\">Answer</a><text style = "font-size:18px; margin-left:15px;">');
@@ -131,7 +112,7 @@ function get_ta_queue(data){
 }
 
 function answerstudent(id) {
-    console.log(id.id);
+    // console.log(id.id);
     // socket.emit('add_student', {"net_id":id.id});
 
 }

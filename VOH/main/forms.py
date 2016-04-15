@@ -10,7 +10,6 @@ from VOH.main.database.authentication import *
 
 class RegistrationForm(Form):
     """
-    @author: Aadhya
     A registration form which allows the user to add name, username, net_id and password
     where there are conditions to check that the repeated password is the same as the original
     password
@@ -27,7 +26,6 @@ class RegistrationForm(Form):
     def __init__(self, *args, **kwargs):
         Form.__init__(self, *args, **kwargs)
 
-
     def validate(self):
         """
         Validation for Registration Forms
@@ -35,7 +33,7 @@ class RegistrationForm(Form):
         Performs sanity checks as well (same passwords)
 
         If There are errors, appends errors to the form
-        :return:
+        :return: True if no Errors else False
         """
         # Authenticate USER
         Form.validate(self)
@@ -56,9 +54,9 @@ class RegistrationForm(Form):
 
         return False
 
+
 class LoginForm(Form):
     """
-    @author: Aadhya
     A login form which allows a user to login depending upon whether he is a TA or a student
     """
     instructor_type = RadioField('Login as', choices=[('TA', 'Teaching Assistant'), ('student', 'Student')], default='student')
@@ -67,7 +65,6 @@ class LoginForm(Form):
 
     def __init__(self, *args, **kwargs):
         Form.__init__(self, *args, **kwargs)
-
 
     def validate(self):
         """
@@ -81,11 +78,8 @@ class LoginForm(Form):
         return False
 
 
-
-
 class ChatForm(form):
     """
-    @author Sudarshan
     Form that takes in a netID and a room ID to start a chat and a submit field which allows a user to submit the
     form
     """

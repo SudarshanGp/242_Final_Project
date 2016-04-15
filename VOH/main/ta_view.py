@@ -11,6 +11,8 @@ def TA_page(net_id):
     """
     Landing Page after Login for a TA
     Creates and stores a Chat form for future use
+    :param net_id: net_id of TA
+    :return: Rendered template of ta.html
     """
     ta = TA.get_TA(net_id)
     form = ChatForm()

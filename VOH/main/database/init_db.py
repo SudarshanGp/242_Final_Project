@@ -12,7 +12,7 @@ def add_to_db(table, user_list):
     client, db = open_db_connection()
     db[table].remove()
     for user in user_list:
-        db[table].insert({"net_id":user.replace("\r\n","").encode("utf-8")})
+        db[table].insert({"net_id": user.replace("\r\n", "").encode("utf-8")})
     close_db_connection(client)
 
 
@@ -20,15 +20,17 @@ def add_to_online_db(table, user_list):
     """
     Creates a db table for list of online TA's
     By default, every body is offline
-
-    :return:
+    :param table: table to add to
+    :param user_list: List of values
+    :return: None
     """
     client, db = open_db_connection()
     db[table].remove()
     for user in user_list:
-        net_id = user.replace("\r\n","").encode("utf-8")
-        db[table].insert({"net_id":net_id, "status":"offline", "_id":net_id})
+        net_id = user.replace("\r\n", "").encode("utf-8")
+        db[table].insert({"net_id": net_id, "status": "offline", "_id": net_id})
     close_db_connection(client)
+
 
 def create_ta_list(ta_list):
     """

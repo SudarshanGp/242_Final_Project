@@ -9,7 +9,7 @@ def student_page(net_id):
     """
     Landing page for students
     :param net_id: Net Id of student
-    :return:
+    :return: Returns a Rendered template of student.html
     """
     student = s.get_student(net_id)
     return render_template("student.html", netid = student[0]["name"],

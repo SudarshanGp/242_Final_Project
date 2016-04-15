@@ -13,15 +13,15 @@ from .. import app
 
 """
     views.py is in charge of routing different server requests from clients.
-
 """
+
 
 @main.route('/')
 @main.route('/index/')
 def main_page():
     """
     Routed to main_page() on load of website
-    Renders base.html
+    :return: Renders base.html
     """
 
     if "net_id" in session:
@@ -36,6 +36,7 @@ def chat():
     Routed to /chat/ by from landing_page on successful form submission
     chat() retrieves netID and chatID from session and validates whether it is valid
     If valid, it renders chat.html
+    :return: Renders chat.html
     """
     netID = session.get('netID', '')
     chatID = session.get('chatID', '')
@@ -43,12 +44,13 @@ def chat():
         return redirect(url_for('.landing'))
     return render_template('chat.html', netID=netID, chatID=chatID,login_status = check_login_status())
 
+
 @main.route('/Login/')
 @main.route('/login/')
 def login():
     """
     Create a login form and pass that into render_template so as to populate the form
-    :return: Template
+    :return: Renders login.html
     """
     form = LoginForm()
     return render_template("login.html", form = form,login_status = check_login_status())
@@ -58,7 +60,7 @@ def login():
 def register():
     """
     Create a registration form and pass that into render_template so as to populate the form
-    :return: Template
+    :return: Renders register.html
     """
     form = RegistrationForm()
     return render_template("register.html", form = form,login_status = check_login_status())
@@ -70,7 +72,7 @@ def register_user():
     Registers user by collecting all form data
     and validating the data
     Also updates the session variables
-    :return: None
+    :return: Renders register.html
     """
 
     form = RegistrationForm(request.form)
@@ -90,13 +92,11 @@ def register_user():
         return render_template("register.html", form = form,login_status = check_login_status())
 
 
-
 @main.route('/authenticate/', methods=["POST"])
 def authenticate_login():
     """
     Authenticates Login and throws error if wrong
     """
-
     form = LoginForm(request.form)
 
     if form.validate():
@@ -107,7 +107,6 @@ def authenticate_login():
         return flask.redirect('/'+session['type']+'/'+str(form.net_id.data))
 
     return render_template('login.html', form=form,login_status = check_login_status())
-
 
 
 @main.route('/instructor/',methods = ["GET","POST"])
@@ -128,11 +127,12 @@ def instructor_view():
             message = "No file to upload!"
     return render_template("instructor.html", message = message,login_status = check_login_status())
 
+
 @main.route('/Logout/', methods = ["GET", "POST"])
 def logout():
     """
     At logout, changes sessions variables
-    :return:
+    :return: None
     """
     if session['type'] == 'TA':
         TA.set_ta_status(session['net_id'],"offline")
