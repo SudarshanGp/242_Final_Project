@@ -106,6 +106,9 @@ function addqueue(id){
 }
 
 function get_ta_queue(data){
+    /**
+     * Update the queue for a given TA
+     */
     if (data){
        var html_data = "<h5>Queue</h5><br>";
         var parser =  document.createElement('a');
