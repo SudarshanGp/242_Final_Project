@@ -59,7 +59,9 @@ def add_ta_online(data):
         ta = online_ta[index]
         ta.pop('_id', None)
         ret_list[index] = (ta)
-    new_data = TA.get_ta_queue()
+    print "Session", session
+    print "sessions netid",session.get('net_id')
+    new_data = TA.get_ta_queue(session.get('net_id'))
 
     emit('online', {"online": ret_list, "queue": new_data}, namespace='/login', broadcast=True)
 
@@ -76,4 +78,4 @@ def add_student(data):
         "ta": data["net_id"]
     }
     new_data = TA.add_to_queue_db(ret_data)
-    emit('add_student_queue', new_data, namespace='/login', broadcast=True)
+    emit('add_student_queue', {"queue": new_data}, namespace='/login', broadcast=True)
