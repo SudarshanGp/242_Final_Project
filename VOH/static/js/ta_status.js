@@ -112,7 +112,10 @@ function get_ta_queue(data){
 }
 
 function answerstudent(id) {
-    // console.log(id.id);
-    // socket.emit('add_student', {"net_id":id.id});
+    var parser =  document.createElement('a');
+    parser.href = window.location.href;
+    var ta = parser.pathname.split('/')[2];
+    console.log(id.id);
+    socket.emit('answer_student', {"net_id":id.id, "ta": ta});
 
 }
