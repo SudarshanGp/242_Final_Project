@@ -10,7 +10,6 @@ $(document).ready(function(){
     });
 
     /**
-     * @author : Sudarshan Govindaprasad
      * On status being emitted by socket.io server, this function catches the join information and
      * adds it to the chat message box
      */
@@ -20,7 +19,6 @@ $(document).ready(function(){
     });
 
     /**
-     * @author : Sudarshan Govindaprasad
      * On a new message being emitted by socket.io server, this function
      * catches it and appends it to the chat box
      */
@@ -29,7 +27,6 @@ $(document).ready(function(){
     });
 
     /**
-     * @author : Sudarshan Govindaprasad
      * On Key Press of enter, message is retrieved from textbox (text) and emit signal with message is sent to
      * socket.io server
      */

@@ -1,11 +1,47 @@
-update_ta_status();
-setInterval(function(){
-    update_ta_status();
-}, 5000);
+var socket;
+$(document).ready(function() {
+    /**
+     * All socket IO listeners that catch different emit calls in order to update
+     * either the TA queue or the List of Online TA's
+     */
+    socket = io.connect('http://' + document.domain + ':' + location.port + '/login'); // Connect to socket.io server
+    socket.on('connect', function () {
+        socket.emit('loginTA', {});
+        socket.emit('getTAQueue', {});
+    });
+    socket.on('online', function (data) {
+        get_ta_status(data['online']);
+        get_ta_queue(data['queue']);
+
+    });
+    /**
+     * Add the student to a Queue
+     */
+    socket.on('add_student_queue', function(data){
+        if (window.location.href.includes("/TA/")) {
+            var parser =  document.createElement('a');
+            parser.href = window.location.href;
+            var ta = parser.pathname.split('/')[2];
+            if(data){
+                var list_queue = [];
+                for (var i = 0; i< Object.keys(data).length; i++) {
+                    if(data[i]['ta'] == ta){
+                        list_queue.push(data[i]);
+                    }
+                }
+                get_ta_queue(list_queue);
+
+            }
+        }
+    });
+
+});
 
 function get_ta_status(data) {
+    /**
+     * Updates the list of Online TA's
+     */
     if (data){
-        console.log(data);
         var html_data = "";
         mydiv = document.getElementById('ta_status');
         for (var i = 0; i< Object.keys(data).length; i++) {
@@ -13,15 +49,18 @@ function get_ta_status(data) {
             var ta_net_id = data[i]["net_id"];
             var ta_status = data[i]["status"];
             var ta_name = data[i]['name'];
-            console.log(ta_name);
+            id_add = ta_net_id;
+            id_remove = ta_net_id + "remove";
             path = "../static/data/img/" + ta_net_id + ".jpg";
-            html_data = html_data.concat('<div class = "container"><div class="fixed-action-btn horizontal click-to-toggle">');
-            html_data = html_data.concat('<a class="btn-floating btn pink accent-3">');
-            html_data = html_data.concat('<i class="large material-icons">mode_edit</i>');
-            html_data = html_data.concat('</a><ul>');
-            html_data = html_data.concat('<li><a class="btn-floating green"><i class="material-icons">add</i></a></li>');
-            html_data = html_data.concat('<li><a class="btn-floating red"><i class="material-icons">remove</i></a></li>');
-            html_data = html_data.concat('</ul></div><div class = "chip"><img src =');
+            html_data = html_data.concat('<div class = "row"></div><a class="btn-floating btn-large green" onclick = \"addqueue(this);\" id = \"');
+            html_data = html_data.concat(id_add);
+            html_data = html_data.concat('\">Join</a>');
+            html_data = html_data.concat('<a class="btn-floating red btn-large" onclick = \"removequeue(');
+            html_data = html_data.concat(ta_net_id);
+            html_data = html_data.concat(');\" id = \"');
+            html_data = html_data.concat(id_remove);
+            html_data = html_data.concat('\">Leave</a>');
+            html_data = html_data.concat('<div class = "chip large"><img src =');
             html_data = html_data.concat(path);
             html_data = html_data.concat('></img>');
             html_data = html_data.concat(ta_name);
@@ -30,20 +69,50 @@ function get_ta_status(data) {
         }
         $(mydiv).html("");
         $(mydiv).html(html_data);
-
     }
 
 }
-/**
- * Created by Aadhya on 4/14/16.
- */
-function update_ta_status(){
-    console.log("in ere");
-   $.ajax({
-    url: "/update_ta_status/",
-    method: "post",
-    success:function(data){
-        setTimeout(function(){get_ta_status(data);}, 1000);
+
+function removequeue(id){
+    // console.log("in remove");
+
+}
+
+function addqueue(id){
+    /**
+     Emits a socket io call to add a student to a TA's queue
+    **/
+    socket.emit('add_student', {"net_id":id.id});
+}
+
+function get_ta_queue(data){
+    /**
+     * Update the queue for a given TA
+     */
+    if (data){
+       var html_data = "<h5>Queue</h5><br>";
+        var parser =  document.createElement('a');
+        parser.href = window.location.href;
+        var ta = parser.pathname.split('/')[2];
+        mydiv = document.getElementById('ta_queue');
+        for (var i = 0; i< Object.keys(data).length; i++) {
+            if(data[i]['ta'] == ta) {
+                var student_net_id = data[i]["student"];
+                html_data = html_data.concat('<blockquote style = "float:left;"><a class="waves-effect waves-light btn blue darken-4" onclick = \"answerstudent(this);\" id = \"');
+                html_data = html_data.concat(student_net_id);
+                html_data = html_data.concat('\">Answer</a><text style = "font-size:18px; margin-left:15px;">');
+                html_data = html_data.concat(student_net_id);
+                html_data = html_data.concat('</text></blockquote><br><br>');
+            }
+        }
+        $(mydiv).html("");
+        $(mydiv).html(html_data);
     }
-});
+
+}
+
+function answerstudent(id) {
+    // console.log(id.id);
+    // socket.emit('add_student', {"net_id":id.id});
+
 }

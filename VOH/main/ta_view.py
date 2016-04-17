@@ -1,34 +1,26 @@
-from . import main
+from database import TA
+from flask import render_template, request, jsonify, redirect, url_for
+
+from VOH.main.database.authentication import *
 from VOH.main.forms import ChatForm
-from flask import render_template, request, session, jsonify, redirect, url_for
-from TA import *
-from authentication import *
+from . import main
+
 
 @main.route('/TA/<net_id>', methods=['GET', 'POST'])
 def TA_page(net_id):
     """
-    @author: Sudarshan
-    Landing Page after Login for a particular user
-    landing_page() validates the form submission and redirects to /chat/ if it is successful form POST
-    :param user: NetID of user
+    Landing Page after Login for a TA
+    Creates and stores a Chat form for future use
+    :param net_id: net_id of TA
+    :return: Rendered template of ta.html
     """
-    ta = get_TA(net_id)
-    form = ChatForm()  # Create a form as an instance of ChatFrom class
-    if form.validate_on_submit(): # On submission of From
-        session['netID'] = form.netID.data # Get NetID
-        session['chatID'] = form.chatID.data # Get unique chatID
-        return redirect(url_for('.chat')) # Redirect to /chat/
-    elif request.method == 'GET': # If its a get request
-        form.netID.data = session.get('netID', '') # Retrieve netID from form
-        form.chatID.data = session.get('chatID', '') # Retrieve chatID from form
-    return render_template("landing.html", netid = ta[0]["name"], form = form ,login_status = check_login_status()) # Render landing page
-
-@main.route('/update_ta_status/', methods=['GET','POST'])
-def update_ta_status():
-    online_ta = get_online_ta()
-    ret_list = {}
-    for index in range(len(online_ta)):
-        ta = online_ta[index]
-        ta.pop('_id',None)
-        ret_list[index] = (ta)
-    return jsonify(ret_list)
+    ta = TA.get_TA(net_id)
+    form = ChatForm()
+    if form.validate_on_submit():
+        session['netID'] = form.netID.data
+        session['chatID'] = form.chatID.data
+        return redirect(url_for('.chat'))
+    elif request.method == 'GET':
+        form.netID.data = session.get('netID', '')
+        form.chatID.data = session.get('chatID', '')
+    return render_template("ta.html", netid = ta[0]["name"], form = form, login_status = check_login_status())
