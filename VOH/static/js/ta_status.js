@@ -19,18 +19,8 @@ $(document).ready(function() {
      */
     socket.on('add_student_queue', function(data){
         if (window.location.href.includes("/TA/")) {
-            var parser =  document.createElement('a');
-            parser.href = window.location.href;
-            var ta = parser.pathname.split('/')[2];
             if(data){
-                var list_queue = [];
-                for (var i = 0; i< Object.keys(data).length; i++) {
-                    if(data[i]['ta'] == ta){
-                        list_queue.push(data[i]);
-                    }
-                }
-                get_ta_queue(list_queue);
-
+                get_ta_queue(data['queue']);
             }
         }
     });
@@ -52,11 +42,10 @@ function get_ta_status(data) {
             id_add = ta_net_id;
             id_remove = ta_net_id + "remove";
             path = "../static/data/img/" + ta_net_id + ".jpg";
-            html_data = html_data.concat('<div class = "row"></div><a class="btn-floating btn-large green" onclick = \"addqueue(this);\" id = \"');
+            html_data = html_data.concat('<div class = "row"></div><a class="btn-floating btn-large green" onclick = \"add_queue(this);\" id = \"');
             html_data = html_data.concat(id_add);
             html_data = html_data.concat('\">Join</a>');
-            html_data = html_data.concat('<a class="btn-floating red btn-large" onclick = \"removequeue(');
-            html_data = html_data.concat(ta_net_id);
+            html_data = html_data.concat('<a class="btn-floating red btn-large" onclick = \"remove_queue(this');
             html_data = html_data.concat(');\" id = \"');
             html_data = html_data.concat(id_remove);
             html_data = html_data.concat('\">Leave</a>');
@@ -73,12 +62,12 @@ function get_ta_status(data) {
 
 }
 
-function removequeue(id){
+function remove_queue(id){
     // console.log("in remove");
-
+    socket.emit('remove_student', {"net_id":id.id});
 }
 
-function addqueue(id){
+function add_queue(id){
     /**
      Emits a socket io call to add a student to a TA's queue
     **/
@@ -105,8 +94,11 @@ function get_ta_queue(data){
                 html_data = html_data.concat('</text></blockquote><br><br>');
             }
         }
-        $(mydiv).html("");
-        $(mydiv).html(html_data);
+        if (data[0]['ta'] == ta){
+            $(mydiv).html("");
+            $(mydiv).html(html_data);
+        }
+
     }
 
 }

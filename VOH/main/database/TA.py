@@ -39,20 +39,20 @@ def add_to_queue_db(ret_data):
     client, db = open_db_connection()
     table = db["ta_queue"]
     table.insert_one(ret_data)
-    new_data = list(db["ta_queue"].find({}))
+    new_data = list(db["ta_queue"].find({"ta":ret_data['ta']}))
     for key, value in enumerate(new_data):
         del value['_id']
     close_db_connection(client)
     return new_data
 
 
-def get_ta_queue():
+def get_ta_queue(net_id):
     """
     Returns the TA queue table
     :return: Returns all TA Queue
     """
     client, db = open_db_connection()
-    new_data = list(db["ta_queue"].find({}))
+    new_data = list(db["ta_queue"].find({"ta":net_id}))
     for key, value in enumerate(new_data):
         del value['_id']
     close_db_connection(client)

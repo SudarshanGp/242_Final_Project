@@ -104,7 +104,7 @@ def authenticate_login():
         session['type'] = str(form.instructor_type.data)
         if session['type'] == 'TA':
             TA.set_ta_status(session['net_id'],"online")
-        return flask.redirect('/'+session['type']+'/'+str(form.net_id.data))
+        return flask.redirect('/'+session['type']+'/'+session['net_id'])
 
     return render_template('login.html', form=form,login_status = check_login_status())
 
