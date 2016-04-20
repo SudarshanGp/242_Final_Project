@@ -98,8 +98,3 @@ def join_user_room(data):
     join_room(data['room'])
 
 
-
-
-
-
->>>>>>> test
