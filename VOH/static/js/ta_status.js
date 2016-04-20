@@ -65,9 +65,16 @@ function get_ta_status(data) {
     /**
      * Updates the list of Online TA's
      */
+     console.log(data);
+    var parser =  document.createElement('a');
+    parser.href = window.location.href;
+    var ta_net_id = parser.pathname.split('/')[2]; // student
+    console.log(ta_net_id);
+    var mydiv = document.getElementById('ta_status');   
     if (data){
+        console.log("HERE");
         var html_data = "";
-        mydiv = document.getElementById('ta_status');
+        
         for (var i = 0; i< Object.keys(data).length; i++) {
 
             var ta_net_id = data[i]["net_id"];
@@ -114,29 +121,44 @@ function get_ta_queue(data){
      */
     console.log("Updating Queue");
     console.log(data);
+    var parser =  document.createElement('a');
+    parser.href = window.location.href;
+    var ta_net_id = parser.pathname.split('/')[2]; // student
+    console.log(ta_net_id);
+    var mydiv = document.getElementById('ta_queue');
     if (Object.keys(data).length > 0 ){
        var html_data = "<h5>Queue</h5><br>";
         var parser =  document.createElement('a');
         parser.href = window.location.href;
         var ta = parser.pathname.split('/')[2];
-        mydiv = document.getElementById('ta_queue');
+        console.log(ta);
+        console.log(mydiv);
+        // $(mydiv).html("");
+        // mydiv = document.getElementById('ta_queue');
         for (var i = 0; i< Object.keys(data).length; i++) {
             if(data[i]['ta'] == ta) {
+                console.log("here");
+                console.log(data[i]);   
                 var student_net_id = data[i]["student"];
                 html_data = html_data.concat('<blockquote style = "float:left;"><a class="waves-effect waves-light btn blue darken-4" onclick = \"answerstudent(this);\" id = \"');
                 html_data = html_data.concat(student_net_id);
                 html_data = html_data.concat('\">Answer</a><text style = "font-size:18px; margin-left:15px;">');
                 html_data = html_data.concat(student_net_id);
                 html_data = html_data.concat('</text></blockquote><br><br>');
+                // $(mydiv).append(html_data);
             }
         }
-        if (data[0]['ta'] == ta){
+        console.log(data[0]['ta']);
+        console.log(ta);
+        // if (data[0]['ta'] == ta){
+            // console.log("hERE");
             $(mydiv).html("");
             $(mydiv).html(html_data);
-        }
+        // }
 
     }
     else{
+        console.log("HERE");
         $(mydiv).html("");
 
     }

@@ -1,6 +1,8 @@
 {%  extends "base.html" %}
 {# Includes the same frame as the main page but adds a form which allows a user to register #}
 {% block data %}
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+            <script src="{{ url_for('static',filename='js/ta_status.js') }}"></script>
 {# Creates a form which allows multi-file upload and gives a message output after file upload #}
 <form enctype=multipart/form-data method = "post">
    <div class = "row">

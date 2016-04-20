@@ -58,7 +58,7 @@ def get_ta_queue(net_id):
     :return: Returns all TA Queue
     """
     client, db = open_db_connection()
-    new_data = list(db["ta_queue"].find({"ta":net_id}))
+    new_data = list(db["ta_queue"].find())
     for key, value in enumerate(new_data):
         del value['_id']
     close_db_connection(client)
