@@ -40,9 +40,9 @@ def chat():
     """
     netID = session.get('netID', '')
     chatID = session.get('chatID', '')
-    if netID == '' or chatID == '':
-        return redirect(url_for('.landing'))
-    return render_template('chat.html', netID=netID, chatID=chatID,login_status = check_login_status())
+    # if netID == '' or chatID == '':
+    #     return redirect(url_for('.landing'))
+    return render_template('chat.html', netID=netID, chatID=chatID)
 
 
 @main.route('/Login/')
