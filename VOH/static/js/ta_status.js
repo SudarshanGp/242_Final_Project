@@ -24,6 +24,40 @@ $(document).ready(function() {
             }
         }
     });
+    socket.on('answer_info', function(data){
+        console.log(data);
+        if (window.location.href.includes("/TA/")) {
+            var parser =  document.createElement('a');
+            parser.href = window.location.href;
+            var ta = parser.pathname.split('/')[2];
+            console.log(ta);
+            if(ta == data['ta']){
+
+                console.log("ITS A TA");
+                socket.emit('join_room', {room : data['room']});
+                var redirect ='http://' + document.domain + ':' + location.port + '/chat';
+                window.location.href = redirect;
+            }
+
+        }
+        else if( window.location.href.includes("/student/")){
+            var parser =  document.createElement('a');
+            parser.href = window.location.href;
+            var student = parser.pathname.split('/')[2]; // student
+            console.log(student);
+            if(student == data['student']){
+                console.log("ITS TSUDNET");
+                socket.emit('join_room', {room : data['room']});
+                var redirect ='http://' + document.domain + ':' + location.port + '/chat';
+                window.location.href = redirect;
+            }
+
+
+        }
+        
+        // RETDIRECT TO NEW CHAT WINDOW
+        // DATA has to contain unique chat id/ url data
+    })
 
 });
 
@@ -104,7 +138,10 @@ function get_ta_queue(data){
 }
 
 function answerstudent(id) {
-    // console.log(id.id);
-    // socket.emit('add_student', {"net_id":id.id});
+    var parser =  document.createElement('a');
+    parser.href = window.location.href;
+    var ta = parser.pathname.split('/')[2];
+    console.log(id.id);
+    socket.emit('answer_student', {"net_id":id.id, "ta": ta});
 
 }

@@ -78,4 +78,32 @@ def add_student(data):
         "ta": data["net_id"]
     }
     new_data = TA.add_to_queue_db(ret_data)
+<<<<<<< HEAD
     emit('add_student_queue', {"queue": new_data}, namespace='/login', broadcast=True)
+=======
+    emit('add_student_queue', new_data, namespace='/login', broadcast=True)
+
+
+@socketio.on('answer_student', namespace='/login')
+def answer_student(data):
+    """
+    Needs to make a socket call to shift student and TA to a specific room. There will be an another function which
+    catches a signal that is emitted back (Python code will add both users to a room on this signal) and will return
+    a href to redirect the users {unique roomID} and will be redirected using window's href in the javascript code
+    :param data: data from socketio call
+    """
+    print(data)
+    new_data = {'room' : data['net_id'], 'student': data['net_id'], 'ta': data['ta']}
+    emit('answer_info', new_data, namespace='/login', broadcast=True)
+
+
+@socketio.on('join_room', namespace='/login')
+def join_user_room(data):
+    join_room(data['room'])
+
+
+
+
+
+
+>>>>>>> test
