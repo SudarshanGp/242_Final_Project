@@ -38,13 +38,19 @@ def add_to_queue_db(ret_data):
     """
     client, db = open_db_connection()
     table = db["ta_queue"]
-    table.insert_one(ret_data)
-    new_data = list(db["ta_queue"].find({"ta":ret_data['ta']}))
-    for key, value in enumerate(new_data):
-        del value['_id']
+    print "Adding Student to Queue TA.py"
+    if len(list(table.find(ret_data))) == 0:
+        table.insert_one(ret_data)
     close_db_connection(client)
-    return new_data
+    return get_ta_queue(ret_data["ta"])
 
+def remove_from_queue_db(remove_data):
+    client, db = open_db_connection()
+    table = db["ta_queue"]
+    print "Removing", remove_data["student"], "from", remove_data["ta"]
+    table.remove({"student":remove_data["student"], "ta": remove_data["ta"]})
+    close_db_connection(client)
+    return get_ta_queue(remove_data["ta"])
 
 def get_ta_queue(net_id):
     """
@@ -56,6 +62,7 @@ def get_ta_queue(net_id):
     for key, value in enumerate(new_data):
         del value['_id']
     close_db_connection(client)
+    print "Returning a List of Queue for TA"
     return new_data
 
 

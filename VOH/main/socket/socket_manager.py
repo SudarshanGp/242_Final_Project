@@ -59,8 +59,8 @@ def add_ta_online(data):
         ta = online_ta[index]
         ta.pop('_id', None)
         ret_list[index] = (ta)
-    print "Session", session
-    print "sessions netid",session.get('net_id')
+    # print "Session", session
+    # print "sessions netid",session.get('net_id')
     new_data = TA.get_ta_queue(session.get('net_id'))
 
     emit('online', {"online": ret_list, "queue": new_data}, namespace='/login', broadcast=True)
@@ -77,7 +77,25 @@ def add_student(data):
         "student": session["net_id"],
         "ta": data["net_id"]
     }
+    print "Adding Student to Queue Socket"
     new_data = TA.add_to_queue_db(ret_data)
+    emit('add_student_queue', {"queue": new_data}, namespace='/login', broadcast=True)
+
+
+@socketio.on('remove_student', namespace='/login')
+def remove_student(data):
+    """
+    Listener for when a student clicks on Joining a TA's queue and broadcasts queue to all TAs
+    :param data: Data passed in by socketio client
+    :return: None
+    """
+    remove_data = {
+        "student": session["net_id"],
+        "ta": data["net_id"]
+    }
+    print remove_data
+    new_data = TA.remove_from_queue_db(remove_data)
+    print new_data
     emit('add_student_queue', {"queue": new_data}, namespace='/login', broadcast=True)
 
 @socketio.on('answer_student', namespace='/login')
