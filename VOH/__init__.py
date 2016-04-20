@@ -16,7 +16,7 @@ def create_app(debug=False):
     """
     global app
     app.config.from_object(__name__)
-    app.config['UPLOAD_FOLDER'] = 'uploads'
+    app.config['UPLOAD_FOLDER'] = '/uploads'
     app.debug = debug
     app.config['SECRET_KEY'] = 'asdq2312ds1242!67#'
     from .main import main as main_blueprint
