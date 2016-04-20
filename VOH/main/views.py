@@ -33,14 +33,15 @@ def main_page():
     return render_template("base.html", login_status = check_login_status())
 
 
-@main.route('/chat/')
-def chat():
+@main.route('/chat/<path>')
+def chat(path):
     """
     Routed to /chat/ by from landing_page on successful form submission
     chat() retrieves netID and chatID from session and validates whether it is valid
     If valid, it renders chat.html
     :return: Renders chat.html
     """
+    print(path)
     # netID = session.get('netID', '')
     # chatID = session.get('chatID', '')
     # if netID == '' or chatID == '':

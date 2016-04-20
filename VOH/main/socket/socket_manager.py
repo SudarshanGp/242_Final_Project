@@ -16,12 +16,6 @@ def join(message):
     :param message: Join Message
     """
 
-    # chatID = session.get('chatID')  # Retrieve chatID from session i
-    # join_room(chatID)  # Join chatID room
-    print("JOIN")
-    print(session)
-    print(message)
-    print(message['room'])
     join_room(str(message['room']))
     session['room'] = str(message['room'])
     emit('status', {'msg': session['net_id'] + ' is now in the conversation'}, namespace = '/test', room = str(message['room']))  # Emits signal to a particular chat conversation
@@ -58,15 +52,12 @@ def add_ta_online(data):
     :param data: Data passed in by socketio client
     :return: None
     """
-    print(request.namespace)
     online_ta = TA.get_online_ta()
     ret_list = {}
     for index in range(len(online_ta)):
         ta = online_ta[index]
         ta.pop('_id', None)
         ret_list[index] = (ta)
-    # print "Session", session
-    # print "sessions netid",session.get('net_id')
     new_data = TA.get_ta_queue(session.get('net_id'))
 
     emit('online', {"online": ret_list, "queue": new_data}, namespace='/queue', broadcast=True)
@@ -112,7 +103,6 @@ def answer_student(data):
     a href to redirect the users {unique roomID} and will be redirected using window's href in the javascript code
     :param data: data from socketio call
     """
-    print(data)
     join_room(data['ta']) # Joined ta's room
     new_data = {'room' : data['net_id'], 'student': data['net_id'], 'ta': data['ta']}
     emit('student_join_emit', {"student" : data['net_id'], "ta" : data['ta']}, broadcast = True )
@@ -121,7 +111,8 @@ def answer_student(data):
 @socketio.on('student_join', namespace='/queue')
 def student_room_success(data):
     join_room(data['ta'])
-    emit('start_chat', namespace = '/queue', room = data['ta'], broadcast = True)
+    json_data = {'room' : data['ta']}
+    emit('start_chat', json_data , namespace = '/queue', room = data['ta'], broadcast = True)
     print("TRYING TO REDIRECT")
     # redirect(url_for('main.chat',messages = data['ta'] ))
 
