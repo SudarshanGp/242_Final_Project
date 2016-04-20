@@ -4,11 +4,26 @@ $(document).ready(function() {
      * All socket IO listeners that catch different emit calls in order to update
      * either the TA queue or the List of Online TA's
      */
-    socket = io.connect('http://' + document.domain + ':' + location.port + '/login'); // Connect to socket.io server
+    socket = io.connect('http://' + document.domain + ':' + location.port + '/queue'); // Connect to socket.io server
     socket.on('connect', function () {
         socket.emit('loginTA', {});
         socket.emit('getTAQueue', {});
+        if (window.location.href.includes("/TA/")) {
+            var parser =  document.createElement('a');
+            parser.href = window.location.href;
+            var ta = parser.pathname.split('/')[2];
+            console.log("MAKING TA JOIN ROOM");
+            console.log(ta);
+            socket.emit('join', {"id" : ta});
+        }
+        
+
     });
+    socket.on('join_room_ta', function(data){
+        console.log("hi, you joined the room and got messge " + data);
+        console.log(window.location.href);
+    });
+
     socket.on('online', function (data) {
         get_ta_status(data['online']);
         get_ta_queue(data['queue']);
@@ -24,40 +39,62 @@ $(document).ready(function() {
             }
         }
     });
-    socket.on('answer_info', function(data){
-        console.log(data);
-        if (window.location.href.includes("/TA/")) {
-            var parser =  document.createElement('a');
-            parser.href = window.location.href;
-            var ta = parser.pathname.split('/')[2];
-            console.log(ta);
-            if(ta == data['ta']){
+    socket.on('start_chat', function(){
+        console.log("STARTING CHAT");
+        window.location.href = 'http://' + document.domain + ':' + location.port + '/chat';
 
-                console.log("ITS A TA");
-                socket.emit('join_room', {room : data['room']});
-                var redirect ='http://' + document.domain + ':' + location.port + '/chat';
-                window.location.href = redirect;
-            }
 
-        }
-        else if( window.location.href.includes("/student/")){
+    })
+    socket.on('student_join_emit', function(data){
+        console.log("IN STUDENT JOIN EMIT");
+        if (window.location.href.includes("/student/")) {
+            console.log("Passed href check");
             var parser =  document.createElement('a');
             parser.href = window.location.href;
             var student = parser.pathname.split('/')[2]; // student
+            console.log(data);
+            console.log(data['student']);
             console.log(student);
             if(student == data['student']){
-                console.log("ITS TSUDNET");
-                socket.emit('join_room', {room : data['room']});
-                var redirect ='http://' + document.domain + ':' + location.port + '/chat';
-                window.location.href = redirect;
+                console.log("Emit student_join");
+                socket.emit('student_join', data);
             }
-
-
         }
+    });
+    // socket.on('answer_info', function(data){
+    //     console.log(data);
+    //     if (window.location.href.includes("/TA/")) {
+    //         var parser =  document.createElement('a');
+    //         parser.href = window.location.href;
+    //         var ta = parser.pathname.split('/')[2];
+    //         console.log(ta);
+    //         if(ta == data['ta']){
+
+    //             console.log("ITS A TA");
+    //             socket.emit('join_room', {room : data['room']});
+    //             var redirect ='http://' + document.domain + ':' + location.port + '/chat';
+    //             window.location.href = redirect;
+    //         }
+
+    //     }
+    //     else if( window.location.href.includes("/student/")){
+    //         var parser =  document.createElement('a');
+    //         parser.href = window.location.href;
+    //         var student = parser.pathname.split('/')[2]; // student
+    //         console.log(student);
+    //         if(student == data['student']){
+    //             console.log("ITS TSUDNET");
+    //             socket.emit('join_room', {room : data['room']});
+    //             var redirect ='http://' + document.domain + ':' + location.port + '/chat';
+    //             window.location.href = redirect;
+    //         }
+
+
+    //     }
         
-        // RETDIRECT TO NEW CHAT WINDOW
-        // DATA has to contain unique chat id/ url data
-    })
+    //     // RETDIRECT TO NEW CHAT WINDOW
+    //     // DATA has to contain unique chat id/ url data
+    // })
 
 });
 

@@ -3,10 +3,18 @@
 // MOTIVATION FROM FLASK-SOCKETIO DOCUMENTATION
 var socket;
 $(document).ready(function(){
-
-    socket = io.connect('http://' + document.domain + ':' + location.port + '/chat'); // Connect to socket.io server
+    console.log("here");
+    socket = io.connect('http://' + document.domain + ':' + location.port + '/test'); // Connect to socket.io server
     socket.on('connect', function() {
-        socket.emit('join', {}); // On connect of a new user, emit join signal to socket.io server
+        // Retrive generated url link from browser
+        var parser =  document.createElement('a');
+        parser.href = window.location.href;
+        console.log(parser);
+        console.log("HI")
+        var unique_id = parser.pathname.split('/')[1]; // should be 2
+        console.log(parser.pathname.split('/'));
+        console.log(unique_id);
+        socket.emit('join', {'room': unique_id}); // On connect of a new user, emit join signal to socket.io server
     });
 
     /**
@@ -14,7 +22,8 @@ $(document).ready(function(){
      * adds it to the chat message box
      */
     socket.on('status', function(data) {
-        $('#chat').val($('#chat').val() + '<!' + data.msg + '!>\n');
+        console.log("HERE");
+        $('#chat').val($('#chat').val() + '' + data.msg + '\n');
         $('#chat').scrollTop($('#chat')[0].scrollHeight);
     });
 
@@ -23,6 +32,7 @@ $(document).ready(function(){
      * catches it and appends it to the chat box
      */
     socket.on('message', function(data) {
+        console.log("message "  + data);
         $('#chat').val($('#chat').val() + data.msg + '\n');
     });
 
@@ -35,6 +45,7 @@ $(document).ready(function(){
         if (code == 13) {
             text = $('#text').val();
             $('#text').val('');
+            console.log('emitting ' + text);
             socket.emit('text', {msg: text});
         }
     });

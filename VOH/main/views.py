@@ -5,6 +5,9 @@ from database import TA
 from flask import render_template, request, redirect, url_for
 from flask_socketio import *
 from database import student
+from VOH import socketio
+from flask.ext.socketio import emit, join_room, leave_room
+
 
 from VOH.main.database.authentication import *
 from VOH.main.forms import RegistrationForm, LoginForm
@@ -38,11 +41,11 @@ def chat():
     If valid, it renders chat.html
     :return: Renders chat.html
     """
-    netID = session.get('netID', '')
-    chatID = session.get('chatID', '')
+    # netID = session.get('netID', '')
+    # chatID = session.get('chatID', '')
     # if netID == '' or chatID == '':
     #     return redirect(url_for('.landing'))
-    return render_template('chat.html', netID=netID, chatID=chatID)
+    return render_template('chat.html')
 
 
 @main.route('/Login/')
@@ -134,6 +137,7 @@ def logout():
     At logout, changes sessions variables
     :return: None
     """
+    print("IN LOGOUT")
     if session['type'] == 'TA':
         TA.set_ta_status(session['net_id'],"offline")
     session.clear()
