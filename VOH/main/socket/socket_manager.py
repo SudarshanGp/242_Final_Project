@@ -78,11 +78,7 @@ def add_student(data):
         "ta": data["net_id"]
     }
     new_data = TA.add_to_queue_db(ret_data)
-<<<<<<< HEAD
     emit('add_student_queue', {"queue": new_data}, namespace='/login', broadcast=True)
-=======
-    emit('add_student_queue', new_data, namespace='/login', broadcast=True)
-
 
 @socketio.on('answer_student', namespace='/login')
 def answer_student(data):
