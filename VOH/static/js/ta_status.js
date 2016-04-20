@@ -74,7 +74,7 @@ function get_ta_status(data) {
             var ta_status = data[i]["status"];
             var ta_name = data[i]['name'];
             id_add = ta_net_id;
-            id_remove = ta_net_id + "remove";
+            id_remove = ta_net_id ;
             path = "../static/data/img/" + ta_net_id + ".jpg";
             html_data = html_data.concat('<div class = "row"></div><a class="btn-floating btn-large green" onclick = \"add_queue(this);\" id = \"');
             html_data = html_data.concat(id_add);
@@ -112,7 +112,9 @@ function get_ta_queue(data){
     /**
      * Update the queue for a given TA
      */
-    if (data){
+    console.log("Updating Queue");
+    console.log(data);
+    if (Object.keys(data).length > 0 ){
        var html_data = "<h5>Queue</h5><br>";
         var parser =  document.createElement('a');
         parser.href = window.location.href;
@@ -132,6 +134,10 @@ function get_ta_queue(data){
             $(mydiv).html("");
             $(mydiv).html(html_data);
         }
+
+    }
+    else{
+        $(mydiv).html("");
 
     }
 
