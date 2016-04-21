@@ -25,11 +25,19 @@ $(document).ready(function(){
     });
      editor.on("change", function(e){
        console.log(e);
-        socket.emit('editor_change', {'change' : e});
+         
+        // console.log(editor.getSession().getValue());
+        socket.emit('editor_change', {'change' : e, 'all_data' : editor.getSession().getValue()});
     });
     socket.on('editor_change_api', function(data){
        console.log("CHANGE RECEIVED");
         console.log(data);
+        // console.log(new Range(data['message']['start']['row'], data['message']['start']['column'], data['message']['end']['row'], data['message']['end']['column']));
+        // editor.session.replace(new Range())
+        // editor.session.replace(new Range(0, 0, row, Number.MAX_VALUE), data['all_data']);
+
+        // var divecho = document.getElementById("editor");
+        // divecho.innerHTML=ace
     });
 
     /**

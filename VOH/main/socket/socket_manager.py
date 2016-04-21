@@ -35,7 +35,7 @@ def converse(message):
 @socketio.on('editor_change', namespace = '/chat_session')
 def editor(message):
     print(message, "EDITOR")
-    emit('editor_change_api', {'message': message['change']}, room = session['room'])
+    emit('editor_change_api', {'message': message['change'], 'all_data' : message['all_data']}, room = session['room'])
 
 
 @socketio.on('left', namespace='/chat_session')
