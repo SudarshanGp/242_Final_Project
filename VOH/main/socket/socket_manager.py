@@ -104,7 +104,8 @@ def remove_student(data):
 @socketio.on('remove_student_answer', namespace='/queue')
 def remove_student(data):
     """
-    Listener for when a student clicks on Joining a TA's queue and broadcasts queue to all TAs
+    Listener for when a TA clicks on Answer on the TA's queue and removes the student
+    from the TA's queue by removing the student from the queue database
     :param data: Data passed in by socketio client
     :return: None
     """
