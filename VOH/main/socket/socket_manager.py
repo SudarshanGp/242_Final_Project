@@ -143,6 +143,19 @@ def ta_logout(data):
     alert = {"message":data["name"]+" has left 225VOH!"}
     emit('logout_alert', alert, namespace='/queue', broadcast=True)
 
+
+@socketio.on('student_logout', namespace='/queue')
+def ta_logout(data):
+    remove_data = {
+        "student": session["net_id"],
+    }
+    print remove_data
+    new_data = TA.remove_from_queue_db(remove_data)
+
+    emit('student_logout', remove_data, namespace='/queue', broadcast=True)
+
+
+
 @socketio.on('join_room', namespace='/queue')
 def join_user_room(data):
     join_room(data['room'])

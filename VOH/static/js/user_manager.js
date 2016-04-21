@@ -26,6 +26,9 @@ function manage_log_status(status){
 
                     socket.emit('logout_alert',{"name":data["name"]});
                 }
+                else{
+                    socket.emit('student_logout',{});
+                }
 
                 window.location.href = "http://localhost:5000/"
             }

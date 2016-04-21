@@ -61,6 +61,13 @@ $(document).ready(function() {
 
     });
 
+    socket.on('student_logout', function(data){
+        if (window.location.href.includes('/TA/')){
+            socket.emit('loginTA',{});
+        }
+
+    });
+
 });
 
 function get_ta_status(data) {
