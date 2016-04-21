@@ -54,6 +54,13 @@ $(document).ready(function() {
         }
     });
 
+    socket.on('logout_alert', function(data){
+        if (window.location.href.includes('student')){
+            alert(data["message"]);
+        }
+
+    });
+
 });
 
 function get_ta_status(data) {

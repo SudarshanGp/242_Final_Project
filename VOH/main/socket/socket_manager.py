@@ -138,6 +138,10 @@ def student_room_success(data):
     print("TRYING TO REDIRECT")
     # redirect(url_for('main.chat',messages = data['ta'] ))
 
+@socketio.on('logout_alert', namespace='/queue')
+def ta_logout(data):
+    alert = {"message":data["name"]+" has left 225VOH!"}
+    emit('logout_alert', alert, namespace='/queue', broadcast=True)
 
 @socketio.on('join_room', namespace='/queue')
 def join_user_room(data):

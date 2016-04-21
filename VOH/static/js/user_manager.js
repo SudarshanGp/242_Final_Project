@@ -22,6 +22,11 @@ function manage_log_status(status){
             method:"post",
             success:function(data){
                 socket.emit('loginTA', {});
+                if( window.location.href.includes('/TA/')){
+
+                    socket.emit('logout_alert',{"name":data["name"]});
+                }
+
                 window.location.href = "http://localhost:5000/"
             }
         });

@@ -2,7 +2,7 @@ import os
 
 from database import TA
 # from a import *
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, jsonify
 from flask_socketio import *
 from database import student
 from database import init_db
@@ -89,6 +89,7 @@ def register_user():
 
         session['net_id'] = form.net_id.data
         session['type'] = form.instructor_type.data
+        session['name'] = form.name.data
         if session['type'] == 'TA':
             TA.set_ta_status(session['net_id'],"online")
         return flask.redirect('/'+session['type']+'/'+str(form.net_id.data))
@@ -107,8 +108,12 @@ def authenticate_login():
     if form.validate():
         session['net_id'] = str(form.net_id.data)
         session['type'] = str(form.instructor_type.data)
+
         if session['type'] == 'TA':
             TA.set_ta_status(session['net_id'],"online")
+            session['name'] = TA.get_TA(session['net_id'])[0]["name"]
+        else:
+            session['name'] = student.get_student(session['net_id'])[0]["name"]
         return flask.redirect('/'+session['type']+'/'+session['net_id'])
 
     return render_template('login.html', form=form,login_status = check_login_status())
@@ -153,6 +158,7 @@ def logout():
     if session['type'] == 'TA':
         TA.set_ta_status(session['net_id'],"offline")
     TA.clear_ta_queue(session['net_id'])
+    name = session["name"]
     session.clear()
-    return "True"
+    return jsonify({"name":name})
     # return flask.redirect('/')
