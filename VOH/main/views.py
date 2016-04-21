@@ -37,16 +37,10 @@ def main_page():
 @main.route('/chat/<path>')
 def chat(path):
     """
-    Routed to /chat/ by from landing_page on successful form submission
-    chat() retrieves netID and chatID from session and validates whether it is valid
-    If valid, it renders chat.html
+    Routed to /chat/<path> with the chat.html page rendered. This is routed by the socketio javascript clinet code
+    when a custom chat session is created
     :return: Renders chat.html
     """
-    print(path)
-    # netID = session.get('netID', '')
-    # chatID = session.get('chatID', '')
-    # if netID == '' or chatID == '':
-    #     return redirect(url_for('.landing'))
     return render_template('chat.html')
 
 
