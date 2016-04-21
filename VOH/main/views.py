@@ -5,6 +5,7 @@ from database import TA
 from flask import render_template, request, redirect, url_for
 from flask_socketio import *
 from database import student
+from database import init_db
 from VOH import socketio
 from flask.ext.socketio import emit, join_room, leave_room
 
@@ -126,11 +127,21 @@ def instructor_view():
             filename = file.filename
             path_of_file = "VOH/" + os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(path_of_file)
+            upload_file(path_of_file)
             message = "File has been uploaded!"
         else:
             message = "No file to upload!"
     return render_template("instructor.html", message = message,login_status = check_login_status())
 
+def upload_file(file_path):
+    """
+    Upload file contents to Database from Instructor View
+    """
+    print open(file_path).readline()
+    if "TA" in open(file_path).readline():
+        init_db.create_ta_list(file_path)
+    elif "student" in open(file_path).readline():
+        init_db.create_student_list(file_path)
 
 @main.route('/Logout/', methods = ["GET", "POST"])
 def logout():

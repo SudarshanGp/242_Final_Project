@@ -138,8 +138,6 @@ def student_room_success(data):
     # redirect(url_for('main.chat',messages = data['ta'] ))
 
 
-
-
 @socketio.on('join_room', namespace='/queue')
 def join_user_room(data):
     join_room(data['room'])
