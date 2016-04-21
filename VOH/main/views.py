@@ -153,4 +153,5 @@ def logout():
     if session['type'] == 'TA':
         TA.set_ta_status(session['net_id'],"offline")
     session.clear()
-    return flask.redirect('/')
+    return "True"
+    # return flask.redirect('/')

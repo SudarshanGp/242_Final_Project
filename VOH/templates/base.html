@@ -19,7 +19,7 @@
                     <a href="/" class="brand-logo center">VOH</a>
                     <ul class="right hide-on-med-and-down">
                         <li><a href="/register">Register</a></li>
-                        <li><a href="/{{ login_status }}">{{ login_status }}</a></li>
+                        <li><a onclick="manage_log_status('{{ login_status }}')">{{ login_status }}</a></li>
                     </ul>
                 </div>
             </nav>
@@ -28,7 +28,7 @@
     </head>
     <body>
         {% block data %}
-        <script src="{{ url_for('static',filename='js/user_manager.js') }}"></script>
+
         <div class="section no-pad-bot" id="index-banner">
             <div class="container">
                 <br><br>
@@ -48,6 +48,7 @@
 
         <script src="{{ url_for('static',filename='js/materialize.js') }}"></script>
         <script src="{{ url_for('static',filename='js/init.js') }}"></script>
+        <script src="{{ url_for('static',filename='js/user_manager.js') }}"></script>
 
     </body>
 </html>
