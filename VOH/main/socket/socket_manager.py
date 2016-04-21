@@ -7,7 +7,7 @@ from VOH import socketio
 from VOH.main.database import TA
 
 
-@socketio.on('join', namespace = '/chat_session')
+@socketio.on('join', namespace='/chat_session')
 def join(message):
     """
     join function catches any a join signal emitted by socketIO client
@@ -18,10 +18,11 @@ def join(message):
 
     join_room(str(message['room']))
     session['room'] = str(message['room'])
-    emit('status', {'msg': session['net_id'] + ' is now in the conversation'}, namespace = '/chat_session', room = str(message['room']))  # Emits signal to a particular chat conversation
+    emit('status', {'msg': session['net_id'] + ' is now in the conversation'}, namespace='/chat_session',
+         room=str(message['room']))  # Emits signal to a particular chat conversation
 
 
-@socketio.on('text',  namespace = '/chat_session')
+@socketio.on('text', namespace='/chat_session')
 def converse(message):
     """
     converse function catches any a text signal emitted by socketIO client
@@ -29,13 +30,15 @@ def converse(message):
     :param message: Conversation Message
     """
     print(message, "CONVERSE")
-    emit('message', {'msg': session.get('net_id') + ':' + message['msg']}, room = session['room'])
+    emit('message', {'msg': session.get('net_id') + ':' + message['msg']}, room=session['room'])
 
 
-@socketio.on('editor_change', namespace = '/chat_session')
+@socketio.on('editor_change', namespace='/chat_session')
 def editor(message):
     print(message, "EDITOR")
-    emit('editor_change_api', {'message': message['change'], 'all_data' : message['all_data'], 'my_id' : message['my_id']}, room = session['room'])
+    emit('editor_change_api',
+         {'message': message['change'], 'all_data': message['all_data'], 'my_id': message['my_id']},
+         room=session['room'])
 
 
 @socketio.on('left', namespace='/chat_session')
@@ -101,6 +104,7 @@ def remove_student(data):
     print new_data
     emit('add_student_queue', {"queue": new_data}, namespace='/queue', broadcast=True)
 
+
 @socketio.on('remove_student_answer', namespace='/queue')
 def remove_student(data):
     """
@@ -117,6 +121,7 @@ def remove_student(data):
     new_data = TA.remove_from_queue_db(remove_data)
     print new_data
 
+
 @socketio.on('answer_student', namespace='/queue')
 def answer_student(data):
     """
@@ -125,22 +130,24 @@ def answer_student(data):
     a href to redirect the users {unique roomID} and will be redirected using window's href in the javascript code
     :param data: data from socketio call
     """
-    join_room(data['ta']) # Joined ta's room
-    new_data = {'room' : data['net_id'], 'student': data['net_id'], 'ta': data['ta']}
-    emit('student_join_emit', {"student" : data['net_id'], "ta" : data['ta']}, broadcast = True )
+    join_room(data['ta'])  # Joined ta's room
+    new_data = {'room': data['net_id'], 'student': data['net_id'], 'ta': data['ta']}
+    emit('student_join_emit', {"student": data['net_id'], "ta": data['ta']}, broadcast=True)
     # emit('answer_info', new_data, namespace='/queue', broadcast=True)
+
 
 @socketio.on('student_join', namespace='/queue')
 def student_room_success(data):
     join_room(data['ta'])
-    json_data = {'room' : data['ta']}
-    emit('start_chat', json_data , namespace = '/queue', room = data['ta'], broadcast = True)
+    json_data = {'room': data['ta']}
+    emit('start_chat', json_data, namespace='/queue', room=data['ta'], broadcast=True)
     print("TRYING TO REDIRECT")
     # redirect(url_for('main.chat',messages = data['ta'] ))
 
+
 @socketio.on('logout_alert', namespace='/queue')
 def ta_logout(data):
-    alert = {"message":data["name"]+" has left 225VOH!"}
+    alert = {"message": data["name"] + " has left 225VOH!"}
     emit('logout_alert', alert, namespace='/queue', broadcast=True)
 
 
@@ -155,7 +162,6 @@ def ta_logout(data):
     emit('student_logout', remove_data, namespace='/queue', broadcast=True)
 
 
-
 @socketio.on('join_room', namespace='/queue')
 def join_user_room(data):
     join_room(data['room'])
@@ -167,7 +173,5 @@ def join(data):
 
     """
     join_room(data['id'])  # Join chatID room
-    emit('join_room_ta', {'msg':"hi, you are in room " + data['id']},
+    emit('join_room_ta', {'msg': "hi, you are in room " + data['id']},
          room=data['id'])  # Emits signal to a particular chat conversation
-
-
