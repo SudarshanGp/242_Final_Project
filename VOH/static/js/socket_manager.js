@@ -7,6 +7,7 @@ $(document).ready(function(){
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/javascript");
+
     
     socket = io.connect('http://' + document.domain + ':' + location.port + '/test'); // Connect to socket.io server
     socket.on('connect', function() {

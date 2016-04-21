@@ -68,11 +68,3 @@ the given attributes with customized attributes*/
 .btn-large{
     margin-right: 10px;
 }
-
-#editor {
-position: absolute;
-    top: 90px;
-    left: 500px;
-    right:0;
-    bottom:0;
-}
