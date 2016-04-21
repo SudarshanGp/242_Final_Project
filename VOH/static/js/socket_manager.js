@@ -7,9 +7,10 @@ $(document).ready(function(){
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/javascript");
+    // TODO : editor.session.replace(new Range(row, 0, row, Number.MAX_VALUE), newText)
 
     
-    socket = io.connect('http://' + document.domain + ':' + location.port + '/test'); // Connect to socket.io server
+    socket = io.connect('http://' + document.domain + ':' + location.port + '/chat_session'); // Connect to socket.io server
     socket.on('connect', function() {
         // Retrive generated url link from browser
         var parser =  document.createElement('a');

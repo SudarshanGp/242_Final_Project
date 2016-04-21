@@ -7,7 +7,7 @@ from VOH import socketio
 from VOH.main.database import TA
 
 
-@socketio.on('join', namespace = '/test')
+@socketio.on('join', namespace = '/chat_session')
 def join(message):
     """
     join function catches any a join signal emitted by socketIO client
@@ -18,11 +18,11 @@ def join(message):
 
     join_room(str(message['room']))
     session['room'] = str(message['room'])
-    emit('status', {'msg': session['net_id'] + ' is now in the conversation'}, namespace = '/test', room = str(message['room']))  # Emits signal to a particular chat conversation
+    emit('status', {'msg': session['net_id'] + ' is now in the conversation'}, namespace = '/chat_session', room = str(message['room']))  # Emits signal to a particular chat conversation
 
 
-@socketio.on('text',  namespace = '/test')
-def converse(message, namespace = '/test'):
+@socketio.on('text',  namespace = '/chat_session')
+def converse(message):
     """
     converse function catches any a text signal emitted by socketIO client
     It emits a signal to all users in that room to add that message to the chat box
@@ -32,7 +32,7 @@ def converse(message, namespace = '/test'):
     emit('message', {'msg': session.get('net_id') + ':' + message['msg']}, room = session['room'])
 
 
-@socketio.on('left', namespace='/test')
+@socketio.on('left', namespace='/chat_session')
 def leave(message):
     """
     leave function catches any a left signal emitted by socketIO client
