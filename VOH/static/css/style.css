@@ -2,6 +2,20 @@
 /*Customized style sheet which changes some attributes of the existing css elements in Materialize by overriding
 the given attributes with customized attributes*/
 
+#editor {
+    padding-top: 200px;
+    position: relative;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    max-width:1000px;
+    max-height: 1000px;
+    margin: auto;
+    height:100%;
+
+}
+
 /*Each icon has a padding of 5px on the */
 .icon-block {
   padding: 0 5px;
@@ -49,4 +63,8 @@ the given attributes with customized attributes*/
 #upload_submit{
     margin-top: 15px;
     height:45px;
+}
+
+.btn-large{
+    margin-right: 10px;
 }

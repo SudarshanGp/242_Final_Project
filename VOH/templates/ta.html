@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% from "_formhelpers.html" import render_field %}
+
+{# Includes the same frame as the main page but adds a form which allows a user to login #}
+{# Gets a macro function from another file which allows form validation and error checking #}
+{% block data %}
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+            <script src="{{ url_for('static',filename='js/ta_status.js') }}"></script>
+{# Welcomes the user to the main user page and allows the user to create a chat session#}
+        <br><br>
+        <div class="row center">
+            <div class = "col s3">
+                <h5 class="header col s12 light">Welcome {{ netid }}</h5>
+                <i class="large material-icons">code</i>
+                <div id = "ta_queue"></div>
+            </div>
+            <div class = "col right-align offset-l5 online">
+                <h5>Online TAs</h5>
+                <div id = "ta_status"></div>
+            </div>
+        </div>
+        <br><br>
+{#    {% if form %}#}
+{#        <form method="POST">#}
+{#            {{ render_field(form.hidden_tag) }}#}
+{#            {{ render_field(form.netID) }}#}
+{#            {{ render_field(form.chatID) }}#}
+{#            {{ form.submit() }}#}
+{#        </form>#}
+{#    {%  endif %}#}
+
+{%  endblock %}
