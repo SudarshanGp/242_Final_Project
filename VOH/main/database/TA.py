@@ -128,6 +128,14 @@ def get_TA(net_id):
     close_db_connection(client)
     return ta
 
+def clear_ta_queue(net_id):
+    """
+    Clears TA queue at Logout
+    """
+    client, db = open_db_connection()
+    table = db["ta_queue"]
+    table.remove({"ta":net_id})
+    close_db_connection(client)
 
 def set_ta_status(net_id, status):
     """

@@ -152,6 +152,7 @@ def logout():
     print("IN LOGOUT")
     if session['type'] == 'TA':
         TA.set_ta_status(session['net_id'],"offline")
+    TA.clear_ta_queue(session['net_id'])
     session.clear()
     return "True"
     # return flask.redirect('/')

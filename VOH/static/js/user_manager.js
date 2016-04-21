@@ -13,7 +13,7 @@ function manage_log_status(status){
     socket = io.connect('http://' + document.domain + ':' + location.port + '/queue'); // Connect to socket.io server
     if (status == "Login"){
         console.log("Logging In");
-        window.location.href = "http://localhost:5000/Login/";
+        window.location.href = 'http://' + document.domain + ':' + location.port +"/Login/";
     }
     else{
         console.log("Logging Out");
