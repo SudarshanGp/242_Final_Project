@@ -101,6 +101,21 @@ def remove_student(data):
     print new_data
     emit('add_student_queue', {"queue": new_data}, namespace='/queue', broadcast=True)
 
+@socketio.on('remove_student_answer', namespace='/queue')
+def remove_student(data):
+    """
+    Listener for when a student clicks on Joining a TA's queue and broadcasts queue to all TAs
+    :param data: Data passed in by socketio client
+    :return: None
+    """
+    remove_data = {
+        "student": data["net_id"],
+        "ta": session["net_id"]
+    }
+    print remove_data
+    new_data = TA.remove_from_queue_db(remove_data)
+    print new_data
+
 @socketio.on('answer_student', namespace='/queue')
 def answer_student(data):
     """

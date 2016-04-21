@@ -144,6 +144,7 @@ function answerstudent(id) {
     var parser =  document.createElement('a');
     parser.href = window.location.href;
     var ta = parser.pathname.split('/')[2];
+    socket.emit('remove_student_answer', {net_id: id.id, ta:ta});
     socket.emit('answer_student', {"net_id":id.id, "ta": ta});
 
 }
