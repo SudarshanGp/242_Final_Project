@@ -14,7 +14,7 @@ $(document).ready(function() {
             var ta = parser.pathname.split('/')[2];
             socket.emit('join', {"id" : ta});
         }
-        
+
 
     });
     socket.on('join_room_ta', function(data){
@@ -38,9 +38,11 @@ $(document).ready(function() {
         }
     });
     socket.on('start_chat', function(data){
+        socket.disconnect();
         window.location.href = 'http://' + document.domain + ':' + location.port + '/chat' + '/' + data['room'];
 
-    })
+    });
+
     socket.on('student_join_emit', function(data){
         if (window.location.href.includes("/student/")) {
             var parser =  document.createElement('a');
@@ -61,9 +63,9 @@ function get_ta_status(data) {
     var parser =  document.createElement('a');
     parser.href = window.location.href;
     var ta_net_id = parser.pathname.split('/')[2]; // student
-    var mydiv = document.getElementById('ta_status');   
+    var mydiv = document.getElementById('ta_status');
     if (data){
-        var html_data = "";        
+        var html_data = "";
         for (var i = 0; i< Object.keys(data).length; i++) {
 
             var ta_net_id = data[i]["net_id"];
@@ -100,7 +102,7 @@ function remove_queue(id){
 function add_queue(id){
     /**
      Emits a socket io call to add a student to a TA's queue
-    **/
+     **/
     socket.emit('add_student', {"net_id":id.id});
 }
 
@@ -120,7 +122,7 @@ function get_ta_queue(data){
         for (var i = 0; i< Object.keys(data).length; i++) {
             if(data[i]['ta'] == ta) {
                 console.log("here");
-                console.log(data[i]);   
+                console.log(data[i]);
                 var student_net_id = data[i]["student"];
                 html_data = html_data.concat('<blockquote style = "float:left;"><a class="waves-effect waves-light btn blue darken-4" onclick = \"answerstudent(this);\" id = \"');
                 html_data = html_data.concat(student_net_id);
