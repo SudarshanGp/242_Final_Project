@@ -9,6 +9,7 @@ $(document).ready(function(){
     editor.getSession().setMode("ace/mode/javascript");
     // TODO : editor.session.replace(new Range(row, 0, row, Number.MAX_VALUE), newText)
 
+
     
     socket = io.connect('http://' + document.domain + ':' + location.port + '/chat_session'); // Connect to socket.io server
     socket.on('connect', function() {
@@ -21,6 +22,14 @@ $(document).ready(function(){
         console.log(parser.pathname.split('/'));
         console.log(unique_id);
         socket.emit('join', {'room': unique_id}); // On connect of a new user, emit join signal to socket.io server
+    });
+     editor.on("change", function(e){
+       console.log(e);
+        socket.emit('editor_change', {'change' : e});
+    });
+    socket.on('editor_change_api', function(data){
+       console.log("CHANGE RECEIVED");
+        console.log(data);
     });
 
     /**
