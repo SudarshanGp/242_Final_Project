@@ -14,21 +14,28 @@ $(document).ready(function() {
             var ta = parser.pathname.split('/')[2];
             socket.emit('join', {"id" : ta});
         }
-
-
     });
+    /**
+     * Function acts as a debug check to check only if a TA has joined a room when
+     * the TA logs in
+     */
     socket.on('join_room_ta', function(data){
         console.log("hi, you joined the room and got messge " + data);
-        console.log(window.location.href);
-    });
 
+    });
+    /**
+     * Call back function is called when a user comes online.
+     * The function updates updates information about the queue
+     * and about which TAs are online
+     */
     socket.on('online', function (data) {
         get_ta_status(data['online']);
         get_ta_queue(data['queue']);
 
     });
     /**
-     * Add the student to a Queue
+     * Add the student to a Queue and updates the queue structure
+     * to reflect students on queue
      */
     socket.on('add_student_queue', function(data){
         if (window.location.href.includes("/TA/")) {
@@ -37,12 +44,22 @@ $(document).ready(function() {
             }
         }
     });
+
+    /**
+     * When a TA/student is ready to start a chat, we need to disconnect them
+     * from the correct socket connection and redirect them a new chat link that
+     * is unique to their conversation
+     */
     socket.on('start_chat', function(data){
         socket.disconnect();
         window.location.href = 'http://' + document.domain + ':' + location.port + '/chat' + '/' + data['room'];
 
     });
-
+    /**
+     * Lister is used to catch student_join_emit signal which keeps track of a request from a TA asking a
+     * student to join a room. This function will contact the socket io server with data about the chat room
+     * the student is going to join
+     */
     socket.on('student_join_emit', function(data){
         if (window.location.href.includes("/student/")) {
             var parser =  document.createElement('a');
@@ -72,7 +89,7 @@ $(document).ready(function() {
 
 function get_ta_status(data) {
     /**
-     * Updates the list of Online TA's
+     * Updates the list of Online TA's for all clients
      */
     var parser =  document.createElement('a');
     parser.href = window.location.href;
@@ -109,7 +126,6 @@ function get_ta_status(data) {
 }
 
 function remove_queue(id){
-    // console.log("in remove");
     socket.emit('remove_student', {"net_id":id.id});
 }
 
@@ -122,7 +138,7 @@ function add_queue(id){
 
 function get_ta_queue(data){
     /**
-     * Update the queue for a given TA
+     * Update the queue for a given TA's view
      */
     var parser =  document.createElement('a');
     parser.href = window.location.href;
@@ -138,7 +154,7 @@ function get_ta_queue(data){
                 console.log("here");
                 console.log(data[i]);
                 var student_net_id = data[i]["student"];
-                html_data = html_data.concat('<blockquote style = "float:left;"><a class="waves-effect waves-light btn blue darken-4" onclick = \"answerstudent(this);\" id = \"');
+                html_data = html_data.concat('<blockquote style = "float:left;"><a class="waves-effect waves-light btn blue darken-4" onclick = \"answer_student(this);\" id = \"');
                 html_data = html_data.concat(student_net_id);
                 html_data = html_data.concat('\">Answer</a><text style = "font-size:18px; margin-left:15px;">');
                 html_data = html_data.concat(student_net_id);
@@ -156,7 +172,12 @@ function get_ta_queue(data){
 
 }
 
-function answerstudent(id) {
+/**
+ * On clicking to answer a particular student, student is removed from queue and a
+ * answer_student signal is emitted to the socket_io server
+ * @param id keeps track of the id of the button that is clicked (student_id)
+ */
+function answer_student(id) {
     var parser =  document.createElement('a');
     parser.href = window.location.href;
     var ta = parser.pathname.split('/')[2];
