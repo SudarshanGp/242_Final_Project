@@ -148,7 +148,8 @@ def answer_student(data):
     join_room(data['ta']) # Joined ta's room
     new_data = {'room' : data['net_id'], 'student': data['net_id'], 'ta': data['ta']}
 
-    path = "/Users/Nihal/Desktop/codeshare.py"
+    path = os.path.abspath("codeshare.py")
+    print path
 
     link = subprocess.check_output(["python", path])
 
