@@ -6,7 +6,9 @@ $(document).ready(function() {
      */
     socket = io.connect('http://' + document.domain + ':' + location.port + '/queue'); // Connect to socket.io server
     socket.on('connect', function () {
+        // Emission on Logging in
         socket.emit('loginTA', {});
+        // Emission to get TA Queue
         socket.emit('getTAQueue', {});
         if (window.location.href.includes("/TA/")) {
             var parser =  document.createElement('a');
@@ -70,14 +72,18 @@ $(document).ready(function() {
             }
         }
     });
-
+    /**
+     * Alert to a Student if a TA logs out
+     */
     socket.on('logout_alert', function(data){
         if (window.location.href.includes('student')){
             alert(data["message"]);
         }
 
     });
-
+    /**
+     * If a student logs out, all queues are updated by call to loginTA
+     */
     socket.on('student_logout', function(data){
         if (window.location.href.includes('/TA/')){
             socket.emit('loginTA',{});
@@ -86,19 +92,21 @@ $(document).ready(function() {
     });
 
 });
-
+/**
+ * Function that updates the list of Online TA's
+ * @param data
+ */
 function get_ta_status(data) {
-    /**
-     * Updates the list of Online TA's for all clients
-     */
     var parser =  document.createElement('a');
     parser.href = window.location.href;
     var ta_net_id = parser.pathname.split('/')[2]; // student
     var mydiv = document.getElementById('ta_status');
+
+    // Creates HTML List with all TA's
     if (data){
         var html_data = "";
         for (var i = 0; i< Object.keys(data).length; i++) {
-
+            
             var ta_net_id = data[i]["net_id"];
             var ta_status = data[i]["status"];
             var ta_name = data[i]['name'];
@@ -119,31 +127,41 @@ function get_ta_status(data) {
             html_data = html_data.concat('</h5></div></div>');
 
         }
+        // Updates HTML Content
         $(mydiv).html("");
         $(mydiv).html(html_data);
     }
 
 }
-
+/**
+ * Function to remove student from Queue on click of "LEAVE" button
+ * @param id
+ */
 function remove_queue(id){
     socket.emit('remove_student', {"net_id":id.id});
 }
-
+/**
+ *  Emits a socket io call to add a student to a TA's queue
+ * @param id
+ */
 function add_queue(id){
-    /**
-     Emits a socket io call to add a student to a TA's queue
-     **/
+
     socket.emit('add_student', {"net_id":id.id});
 }
 
+/**
+ * Function to get the list of students who have requested the TA
+ * @param data
+ */
 function get_ta_queue(data){
-    /**
-     * Update the queue for a given TA's view
-     */
+
+
     var parser =  document.createElement('a');
     parser.href = window.location.href;
-    var ta_net_id = parser.pathname.split('/')[2]; // student
+    var ta_net_id = parser.pathname.split('/')[2];
     var mydiv = document.getElementById('ta_queue');
+
+    // Updates the Queue with students
     if (Object.keys(data).length > 0 ){
         var html_data = "<h5>Queue</h5><br>";
         var parser =  document.createElement('a');
@@ -151,8 +169,6 @@ function get_ta_queue(data){
         var ta = parser.pathname.split('/')[2];
         for (var i = 0; i< Object.keys(data).length; i++) {
             if(data[i]['ta'] == ta) {
-                console.log("here");
-                console.log(data[i]);
                 var student_net_id = data[i]["student"];
                 html_data = html_data.concat('<blockquote style = "float:left;"><a class="waves-effect waves-light btn blue darken-4" onclick = \"answer_student(this);\" id = \"');
                 html_data = html_data.concat(student_net_id);
@@ -161,7 +177,7 @@ function get_ta_queue(data){
                 html_data = html_data.concat('</text></blockquote><br><br>');
             }
         }
-
+        // Updates HTML Div
         $(mydiv).html("");
         $(mydiv).html(html_data);
     }
