@@ -13,7 +13,8 @@ $(document).ready(function(){
         // Retrive generated url link from browser
         var parser =  document.createElement('a');
         parser.href = window.location.href;
-        var unique_id = parser.pathname.split('/')[1]; // should be 2
+        var unique_id = parser.pathname.split('/')[2]; // should be 2
+        console.log("UNIQUE ROOM ID " + unique_id);
         socket.emit('join', {'room': unique_id}); // On connect of a new user, emit join signal to socket.io server
     });
     editor.on("change", function(e){

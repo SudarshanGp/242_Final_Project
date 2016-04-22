@@ -3,39 +3,50 @@ from flask import render_template, request, session, jsonify, redirect, Flask, u
 from flask_socketio import *
 from flask.ext.socketio import emit, join_room, leave_room
 from VOH import open_db_connection, close_db_connection
+import datetime
+import time
 from VOH import socketio
 from VOH.main.database import TA
 import os, subprocess
 
-@socketio.on('join', namespace = '/chat_session')
+@socketio.on('join', namespace='/chat_session')
 def join(message):
     """
     join function catches any a join signal emitted by socketIO client
-    adds client to a particular room identified by chatID.
+    adds client to a particular room identified by the message passed in from the socket client.
     Join Message returned is broadcasted to everyone in that specific room
     :param message: Join Message
     """
 
     join_room(str(message['room']))
     session['room'] = str(message['room'])
-    emit('status', {'msg': session['net_id'] + ' is now in the conversation'}, namespace = '/chat_session', room = str(message['room']))  # Emits signal to a particular chat conversation
+    emit('status', {'msg': session['net_id'] + ' is now in the conversation'}, namespace='/chat_session',
+         room=str(message['room']))  # Emits signal to a particular chat conversation
 
 
-@socketio.on('text',  namespace = '/chat_session')
+@socketio.on('text', namespace='/chat_session')
 def converse(message):
     """
     converse function catches any a text signal emitted by socketIO client
     It emits a signal to all users in that room to add that message to the chat box
     :param message: Conversation Message
     """
-    print(message, "CONVERSE")
-    emit('message', {'msg': session.get('net_id') + ':' + message['msg']}, room = session['room'])
+    ts = time.time()
+    st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+    client, db = open_db_connection()
+    db['chat_log'][session['room']].insert(
+        dict(room=session['room'].encode("utf-8"), message=message, by = session.get('net_id'), time=st.encode("utf-8")))
+    close_db_connection(client)
+
+    emit('message', {'msg': session.get('net_id') + ':' + message['msg']}, room=session['room'])
 
 
-@socketio.on('editor_change', namespace = '/chat_session')
+@socketio.on('editor_change', namespace='/chat_session')
 def editor(message):
     print(message, "EDITOR")
-    emit('editor_change_api', {'message': message['change'], 'all_data' : message['all_data'], 'my_id' : message['my_id']}, room = session['room'])
+    emit('editor_change_api',
+         {'message': message['change'], 'all_data': message['all_data'], 'my_id': message['my_id']},
+         room=session['room'])
 
 
 @socketio.on('left', namespace='/chat_session')
@@ -47,6 +58,12 @@ def leave(message):
     """
     chatID = session.get('room')
     leave_room(chatID)
+    ts = time.time()
+    st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+    client, db = open_db_connection()
+    db['chat_log'][session['room']].insert(
+        dict(room=session['room'].encode("utf-8"), message=session.get('net_id') + ' has now left the conversation.', by = session.get('net_id'), time=st.encode("utf-8")))
+    close_db_connection(client)
     emit('status', {'msg': session.get('net_id') + ' has now left the conversation.'}, room=session['room'])
 
 
@@ -101,6 +118,7 @@ def remove_student(data):
     print new_data
     emit('add_student_queue', {"queue": new_data}, namespace='/queue', broadcast=True)
 
+
 @socketio.on('remove_student_answer', namespace='/queue')
 def remove_student(data):
     """
@@ -117,6 +135,7 @@ def remove_student(data):
     new_data = TA.remove_from_queue_db(remove_data)
     print new_data
 
+
 @socketio.on('answer_student', namespace='/queue')
 def answer_student(data):
     """
@@ -125,26 +144,43 @@ def answer_student(data):
     a href to redirect the users {unique roomID} and will be redirected using window's href in the javascript code
     :param data: data from socketio call
     """
+
     join_room(data['ta']) # Joined ta's room
     new_data = {'room' : data['net_id'], 'student': data['net_id'], 'ta': data['ta']}
 
     path = "/Users/Nihal/Desktop/codeshare.py"
 
     link = subprocess.check_output(["python", path])
-    emit('student_join_emit', {"student" : data['net_id'], "ta" : data['ta'], "link":link}, broadcast = True )
+
     # emit('answer_info', new_data, namespace='/queue', broadcast=True)
+
+    # Adding a new collection for particular student, ta pair. Collection name is the ta's netID
+    ts = time.time()
+    st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+    client, db = open_db_connection()
+    db['chat_log'][data['ta']].insert(
+        dict(room=data['ta'].encode("utf-8"), message="Started Conversation", time=st.encode("utf-8")))
+    close_db_connection(client)
+    emit('student_join_emit', {"student" : data['net_id'], "ta" : data['ta'], "link":link}, broadcast = True )
+
+
 
 @socketio.on('student_join', namespace='/queue')
 def student_room_success(data):
+    """
+    When a Student joins the TA's room, they are both in the same room and its time to start the chat.
+    A start_chat signal is emitted to a particular room in the namespace asking both clients in to
+    redirect to the chat page
+    :param data: Data about room
+    """
     join_room(data['ta'])
     json_data = {'room' : data['ta'], "link":data["link"]}
     emit('start_chat', json_data , namespace = '/queue', room = data['ta'], broadcast = True)
-    print("TRYING TO REDIRECT")
-    # redirect(url_for('main.chat',messages = data['ta'] ))
+
 
 @socketio.on('logout_alert', namespace='/queue')
 def ta_logout(data):
-    alert = {"message":data["name"]+" has left 225VOH!"}
+    alert = {"message": data["name"] + " has left 225VOH!"}
     emit('logout_alert', alert, namespace='/queue', broadcast=True)
 
 
@@ -159,19 +195,13 @@ def ta_logout(data):
     emit('student_logout', remove_data, namespace='/queue', broadcast=True)
 
 
-
-@socketio.on('join_room', namespace='/queue')
-def join_user_room(data):
-    join_room(data['room'])
-
-
 @socketio.on('join', namespace='/queue')
 def join(data):
     """
-
+    Function is called when a TA and Student need to join a particular room so that they can be
+    directed to a unique URL to start their chat
+    :param data: Data Containing information about the room
     """
-    join_room(data['id'])  # Join chatID room
-    emit('join_room_ta', {'msg':"hi, you are in room " + data['id']},
+    join_room(data['id'])
+    emit('join_room_ta', {'msg': "hi, you are in room " + data['id']},
          room=data['id'])  # Emits signal to a particular chat conversation
-
-
