@@ -145,7 +145,6 @@ def answer_student(data):
     :param data: data from socketio call
     """
     join_room(data['ta'])  # Joined ta's room
-    new_data = {'room': data['net_id'], 'student': data['net_id'], 'ta': data['ta']}
     # Adding a new collection for particular student, ta pair. Collection name is the ta's netID
     ts = time.time()
     st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
@@ -156,14 +155,17 @@ def answer_student(data):
     emit('student_join_emit', {"student": data['net_id'], "ta": data['ta']}, broadcast=True)
 
 
-
 @socketio.on('student_join', namespace='/queue')
 def student_room_success(data):
+    """
+    When a Student joins the TA's room, they are both in the same room and its time to start the chat.
+    A start_chat signal is emitted to a particular room in the namespace asking both clients in to
+    redirect to the chat page
+    :param data: Data about room
+    """
     join_room(data['ta'])
     json_data = {'room': data['ta']}
     emit('start_chat', json_data, namespace='/queue', room=data['ta'], broadcast=True)
-    print("TRYING TO REDIRECT")
-    # redirect(url_for('main.chat',messages = data['ta'] ))
 
 
 @socketio.on('logout_alert', namespace='/queue')
@@ -183,16 +185,13 @@ def ta_logout(data):
     emit('student_logout', remove_data, namespace='/queue', broadcast=True)
 
 
-@socketio.on('join_room', namespace='/queue')
-def join_user_room(data):
-    join_room(data['room'])
-
-
 @socketio.on('join', namespace='/queue')
 def join(data):
     """
-
+    Function is called when a TA and Student need to join a particular room so that they can be
+    directed to a unique URL to start their chat
+    :param data: Data Containing information about the room
     """
-    join_room(data['id'])  # Join chatID room
+    join_room(data['id'])
     emit('join_room_ta', {'msg': "hi, you are in room " + data['id']},
          room=data['id'])  # Emits signal to a particular chat conversation
