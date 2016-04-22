@@ -3,6 +3,8 @@ from flask import render_template, request, session, jsonify, redirect, Flask, u
 from flask_socketio import *
 from flask.ext.socketio import emit, join_room, leave_room
 from VOH import open_db_connection, close_db_connection
+import datetime
+import time
 from VOH import socketio
 from VOH.main.database import TA
 
@@ -11,7 +13,7 @@ from VOH.main.database import TA
 def join(message):
     """
     join function catches any a join signal emitted by socketIO client
-    adds client to a particular room identified by chatID.
+    adds client to a particular room identified by the message passed in from the socket client.
     Join Message returned is broadcasted to everyone in that specific room
     :param message: Join Message
     """
@@ -29,7 +31,13 @@ def converse(message):
     It emits a signal to all users in that room to add that message to the chat box
     :param message: Conversation Message
     """
-    print(message, "CONVERSE")
+    ts = time.time()
+    st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+    client, db = open_db_connection()
+    db['chat_log'][session['room']].insert(
+        dict(room=session['room'].encode("utf-8"), message=message, by = session.get('net_id'), time=st.encode("utf-8")))
+    close_db_connection(client)
+
     emit('message', {'msg': session.get('net_id') + ':' + message['msg']}, room=session['room'])
 
 
@@ -50,6 +58,12 @@ def leave(message):
     """
     chatID = session.get('room')
     leave_room(chatID)
+    ts = time.time()
+    st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+    client, db = open_db_connection()
+    db['chat_log'][session['room']].insert(
+        dict(room=session['room'].encode("utf-8"), message=session.get('net_id') + ' has now left the conversation.', by = session.get('net_id'), time=st.encode("utf-8")))
+    close_db_connection(client)
     emit('status', {'msg': session.get('net_id') + ' has now left the conversation.'}, room=session['room'])
 
 
@@ -132,8 +146,15 @@ def answer_student(data):
     """
     join_room(data['ta'])  # Joined ta's room
     new_data = {'room': data['net_id'], 'student': data['net_id'], 'ta': data['ta']}
+    # Adding a new collection for particular student, ta pair. Collection name is the ta's netID
+    ts = time.time()
+    st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+    client, db = open_db_connection()
+    db['chat_log'][data['ta']].insert(
+        dict(room=data['ta'].encode("utf-8"), message="Started Conversation", time=st.encode("utf-8")))
+    close_db_connection(client)
     emit('student_join_emit', {"student": data['net_id'], "ta": data['ta']}, broadcast=True)
-    # emit('answer_info', new_data, namespace='/queue', broadcast=True)
+
 
 
 @socketio.on('student_join', namespace='/queue')
