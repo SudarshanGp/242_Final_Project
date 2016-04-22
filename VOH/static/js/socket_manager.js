@@ -5,9 +5,7 @@
 var socket;
 $(document).ready(function(){
     console.log("here");
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/monokai");
-    editor.getSession().setMode("ace/mode/javascript");
+
     socket = io.connect('http://' + document.domain + ':' + location.port + '/chat_session'); // Connect to socket.io server
     socket.on('connect', function() {
         // Retrive generated url link from browser
@@ -17,14 +15,7 @@ $(document).ready(function(){
         console.log("UNIQUE ROOM ID " + unique_id);
         socket.emit('join', {'room': unique_id}); // On connect of a new user, emit join signal to socket.io server
     });
-    editor.on("change", function(e){
-        console.log(e);
-        socket.emit('editor_change', {'change' : e, 'all_data' : editor.getSession().getValue()});
-    });
-    socket.on('editor_change_api', function(data){
-        console.log("CHANGE RECEIVED");
-        console.log(data);
-    });
+    
 
     /**
      * On status being emitted by socket.io server, this function catches the join information and

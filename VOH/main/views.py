@@ -38,6 +38,15 @@ def main_page():
 
     return render_template("base.html", login_status = check_login_status())
 
+@main.route('/chat/<path>/')
+def chat_main(path):
+    """
+    Routed to /chat/<path> with the chat.html page rendered. This is routed by the socketio javascript clinet code
+    when a custom chat session is created
+    :return: Renders chat.html
+    """
+    codeshare = ""
+    return render_template('chat.html', codeshare = session["link"])
 
 @main.route('/chat/<path>/<link>')
 def chat(path, link):
@@ -61,7 +70,8 @@ def chat(path, link):
 
     # r = requests.get("https://codeshare.io/new", allow_redirects=False).text
     # l+ r.split(" ")[-1]
-    return render_template('chat.html', codeshare = code_link)
+    session["link"] = code_link
+    return flask.redirect(url_for("main.chat_main",path=path))
 
 
 
