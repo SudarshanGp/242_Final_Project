@@ -5,7 +5,7 @@ from flask.ext.socketio import emit, join_room, leave_room
 from VOH import open_db_connection, close_db_connection
 from VOH import socketio
 from VOH.main.database import TA
-
+import os, subprocess
 
 @socketio.on('join', namespace = '/chat_session')
 def join(message):
@@ -127,13 +127,17 @@ def answer_student(data):
     """
     join_room(data['ta']) # Joined ta's room
     new_data = {'room' : data['net_id'], 'student': data['net_id'], 'ta': data['ta']}
-    emit('student_join_emit', {"student" : data['net_id'], "ta" : data['ta']}, broadcast = True )
+
+    path = "/Users/Nihal/Desktop/codeshare.py"
+
+    link = subprocess.check_output(["python", path])
+    emit('student_join_emit', {"student" : data['net_id'], "ta" : data['ta'], "link":link}, broadcast = True )
     # emit('answer_info', new_data, namespace='/queue', broadcast=True)
 
 @socketio.on('student_join', namespace='/queue')
 def student_room_success(data):
     join_room(data['ta'])
-    json_data = {'room' : data['ta']}
+    json_data = {'room' : data['ta'], "link":data["link"]}
     emit('start_chat', json_data , namespace = '/queue', room = data['ta'], broadcast = True)
     print("TRYING TO REDIRECT")
     # redirect(url_for('main.chat',messages = data['ta'] ))

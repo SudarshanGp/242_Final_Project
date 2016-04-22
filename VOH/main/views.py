@@ -1,14 +1,19 @@
 import os
-
+import subprocess
 from database import TA
-# from a import *
 from flask import render_template, request, redirect, url_for, jsonify
 from flask_socketio import *
 from database import student
 from database import init_db
 from VOH import socketio
+import requests
 from flask.ext.socketio import emit, join_room, leave_room
-
+requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ':RC4-SHA'
+try:
+    requests.packages.urllib3.contrib.pyopenssl.DEFAULT_SSL_CIPHER_LIST += ':RC4-SHA'
+except AttributeError:
+    # no pyopenssl support used / needed / available
+    pass
 
 from VOH.main.database.authentication import *
 from VOH.main.forms import RegistrationForm, LoginForm
@@ -34,8 +39,8 @@ def main_page():
     return render_template("base.html", login_status = check_login_status())
 
 
-@main.route('/chat/<path>')
-def chat(path):
+@main.route('/chat/<path>/<link>')
+def chat(path, link):
     """
     Routed to /chat/ by from landing_page on successful form submission
     chat() retrieves netID and chatID from session and validates whether it is valid
@@ -47,7 +52,17 @@ def chat(path):
     # chatID = session.get('chatID', '')
     # if netID == '' or chatID == '':
     #     return redirect(url_for('.landing'))
-    return render_template('chat.html')
+
+    code_link = "https://codeshare.io/"+link
+    # # ret = subprocess.check_output(['python', "codeshare.py"])
+    # print os.path.exists("codeshare.py")
+    # path = "/Users/Nihal/Desktop/codeshare.py"
+    #
+    # link += subprocess.check_output(["python", path])
+
+    # r = requests.get("https://codeshare.io/new", allow_redirects=False).text
+    # l+ r.split(" ")[-1]
+    return render_template('chat.html', codeshare = code_link)
 
 
 @main.route('/Login/')

@@ -39,7 +39,7 @@ $(document).ready(function() {
     });
     socket.on('start_chat', function(data){
         socket.disconnect();
-        window.location.href = 'http://' + document.domain + ':' + location.port + '/chat' + '/' + data['room'];
+        window.location.href = 'http://' + document.domain + ':' + location.port + '/chat' + '/' + data['room']+data['link'];
 
     });
 
