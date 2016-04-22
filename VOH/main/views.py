@@ -166,11 +166,9 @@ def logout():
     At logout, changes sessions variables
     :return: None
     """
-    print("IN LOGOUT")
     if session['type'] == 'TA':
         TA.set_ta_status(session['net_id'],"offline")
     TA.clear_ta_queue(session['net_id'])
     name = session["name"]
     session.clear()
     return jsonify({"name":name})
-    # return flask.redirect('/')
