@@ -15,7 +15,7 @@ $(document).ready(function(){
         console.log("UNIQUE ROOM ID " + unique_id);
         socket.emit('join', {'room': unique_id}); // On connect of a new user, emit join signal to socket.io server
     });
-    
+
 
     /**
      * On status being emitted by socket.io server, this function catches the join information and

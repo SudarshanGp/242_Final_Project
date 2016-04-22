@@ -181,12 +181,19 @@ def student_room_success(data):
 
 @socketio.on('logout_alert', namespace='/queue')
 def ta_logout(data):
+    """
+    When a TA Logs out, every student must be alerted
+    """
     alert = {"message": data["name"] + " has left 225VOH!"}
     emit('logout_alert', alert, namespace='/queue', broadcast=True)
 
 
 @socketio.on('student_logout', namespace='/queue')
-def ta_logout(data):
+def student_logout(data):
+    """
+    When a student logs out, the student is removed from all Queues
+    Updated Queues are emitted to all TA's
+    """
     remove_data = {
         "student": session["net_id"],
     }
