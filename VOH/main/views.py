@@ -41,35 +41,21 @@ def main_page():
 @main.route('/chat/<path>/')
 def chat_main(path):
     """
-    Routed to /chat/<path> with the chat.html page rendered. This is routed by the socketio javascript clinet code
-    when a custom chat session is created
+    Routed to /chat/<path> with the chat.html page rendered.
+    Contains a chat div as well as a codeshare embed
     :return: Renders chat.html
     """
-    codeshare = ""
     return render_template('chat.html', codeshare = session["link"])
 
 @main.route('/chat/<path>/<link>')
 def chat(path, link):
     """
-    Routed to /chat/<path> with the chat.html page rendered. This is routed by the socketio javascript clinet code
-    when a custom chat session is created
-    :return: Renders chat.html
+    Routed to /chat/<path>/<link>
+    This is a unique function that creates a link between a TA and a Student
+    Redirects to /chat/<path> to render the chat page with the codeshare link
     """
-    print(path)
-    # netID = session.get('netID', '')
-    # chatID = session.get('chatID', '')
-    # if netID == '' or chatID == '':
-    #     return redirect(url_for('.landing'))
 
     code_link = "https://codeshare.io/"+link
-    # # ret = subprocess.check_output(['python', "codeshare.py"])
-    # print os.path.exists("codeshare.py")
-    # path = "/Users/Nihal/Desktop/codeshare.py"
-    #
-    # link += subprocess.check_output(["python", path])
-
-    # r = requests.get("https://codeshare.io/new", allow_redirects=False).text
-    # l+ r.split(" ")[-1]
     session["link"] = code_link
     return flask.redirect(url_for("main.chat_main",path=path))
 
@@ -167,7 +153,6 @@ def upload_file(file_path):
     """
     Upload file contents to Database from Instructor View
     """
-    print open(file_path).readline()
     if "TA" in open(file_path).readline():
         init_db.create_ta_list(file_path)
     elif "student" in open(file_path).readline():
