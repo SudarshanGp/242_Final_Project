@@ -9,14 +9,6 @@ from VOH import socketio
 import requests
 from flask.ext.socketio import emit, join_room, leave_room
 
-# include SSL encryption to avoid SSL3 Handshake error and set the default cipher tp RC4-SHA
-requests.packages.urllib3.util.ssl_._DEFAULT_CIPHERS += ':RC4-SHA'
-try:
-    requests.packages.urllib3.contrib.pyopenssl.DEFAULT_SSL_CIPHER_LIST += ':RC4-SHA'
-except AttributeError:
-    # no pyOpenSSL5 found
-    pass
-
 from VOH.main.database.authentication import *
 from VOH.main.forms import RegistrationForm, LoginForm
 from . import main
