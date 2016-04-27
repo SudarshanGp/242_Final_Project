@@ -4,7 +4,7 @@
 {# Includes the scripts such as jquery and socket_manager which are required to create the chat box    #}
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="{{ url_for('static',filename='js/socket_manager.js') }}"></script>
-    <script src="{{ url_for('static',filename='ace/src-noconflict/ace.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/modaal.js') }}"></script>
 
 <div class = "row">
     <div class = "col s6">
@@ -14,7 +14,10 @@
             <textarea readonly class="materialize-textarea" id="chat"></textarea>
             <br><br>
             <input id="text" size="80" placeholder="Enter your message here"><br><br>
-            <a href="#" onclick="leave_room();">Leave this room</a>
+            <a href="#inline" data-modaal-type="inline" data-modaal-animation="fade" class="modaal" onclick="leave_room();">Leave this room</a>
+            <div id = "inline">
+                
+            </div>
         </div>
     </div>
     <div class = "col s6">
