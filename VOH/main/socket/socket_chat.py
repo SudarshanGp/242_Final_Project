@@ -41,13 +41,6 @@ def converse(message):
     emit('message', {'msg': session.get('net_id') + ':' + message['msg']}, room=session['room'])
 
 
-@socketio.on('editor_change', namespace='/chat_session')
-def editor(message):
-    print(message, "EDITOR")
-    emit('editor_change_api',
-         {'message': message['change'], 'all_data': message['all_data'], 'my_id': message['my_id']},
-         room=session['room'])
-
 
 @socketio.on('left', namespace='/chat_session')
 def leave(message):

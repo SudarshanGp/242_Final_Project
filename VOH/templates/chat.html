@@ -5,7 +5,9 @@
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="{{ url_for('static',filename='js/socket_manager.js') }}"></script>
     <script src="{{ url_for('static',filename='js/modaal.js') }}"></script>
-
+<div class = "row center">
+    <h5>{{ name }}</h5>
+</div>
 <div class = "row">
     <div class = "col s6">
         <div class = "card">
@@ -14,9 +16,17 @@
             <textarea readonly class="materialize-textarea" id="chat"></textarea>
             <br><br>
             <input id="text" size="80" placeholder="Enter your message here"><br><br>
-            <a href="#inline" data-modaal-type="inline" data-modaal-animation="fade" class="modaal" onclick="leave_room();">Leave this room</a>
-            <div id = "inline">
-                
+            <a  href="#inline"class="inline" onclick="leave_room();" >Leave this room</a>
+{#            "#}
+            <div style="display:none;" id = "inline">
+
+                <form>
+  First name:<br>
+  <input type="text" name="firstname">
+  <br>
+  Last name:<br>
+  <input type="text" name="lastname">
+</form>
             </div>
         </div>
     </div>
@@ -24,6 +34,8 @@
        <iframe style="width: 750px;height: 700px;" src = {{ codeshare }}></iframe>
     </div>
 </div>
-
+<script>
+$(".inline").modaal();
+</script>
 
 {% endblock %}

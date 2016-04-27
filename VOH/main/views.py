@@ -40,7 +40,8 @@ def chat_main(path):
     Contains a chat div as well as a codeshare embed
     :return: Renders chat.html
     """
-    return render_template('chat.html', codeshare = session["link"])
+
+    return render_template('chat.html', codeshare = session["link"], name = session["type"])
 
 @main.route('/chat/<path>/<link>')
 def chat(path, link):

@@ -4,7 +4,7 @@ from VOH.main.database.authentication import *
 from . import main
 
 
-@main.route('/student/<net_id>/', methods=['GET','POST'])
+@main.route('/student/<net_id>', methods=['GET','POST'])
 def student_page(net_id):
     """
     Landing page for students

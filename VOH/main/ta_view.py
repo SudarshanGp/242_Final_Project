@@ -6,7 +6,7 @@ from VOH.main.forms import ChatForm
 from . import main
 
 
-@main.route('/TA/<net_id>/', methods=['GET', 'POST'])
+@main.route('/TA/<net_id>', methods=['GET', 'POST'])
 def TA_page(net_id):
     """
     Landing Page after Login for a TA
