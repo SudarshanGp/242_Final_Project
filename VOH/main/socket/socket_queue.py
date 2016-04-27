@@ -9,81 +9,7 @@ from VOH import socketio
 from VOH.main.database import TA
 import os, subprocess
 
-@socketio.on('join', namespace='/chat_session')
-def join(message):
-    """
-    join function catches any a join signal emitted by socketIO client
-    adds client to a particular room identified by the message passed in from the socket client.
-    Join Message returned is broadcasted to everyone in that specific room
-    :param message: Join Message
-    """
 
-    join_room(str(message['room']))
-    session['room'] = str(message['room'])
-    emit('status', {'msg': session['net_id'] + ' is now in the conversation'}, namespace='/chat_session',
-         room=str(message['room']))  # Emits signal to a particular chat conversation
-
-
-@socketio.on('text', namespace='/chat_session')
-def converse(message):
-    """
-    converse function catches any a text signal emitted by socketIO client
-    It emits a signal to all users in that room to add that message to the chat box
-    :param message: Conversation Message
-    """
-    ts = time.time()
-    st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-    client, db = open_db_connection()
-    db['chat_log'][session['room']].insert(
-        dict(room=session['room'].encode("utf-8"), message=message, by = session.get('net_id'), time=st.encode("utf-8")))
-    close_db_connection(client)
-
-    emit('message', {'msg': session.get('net_id') + ':' + message['msg']}, room=session['room'])
-
-
-@socketio.on('editor_change', namespace='/chat_session')
-def editor(message):
-    print(message, "EDITOR")
-    emit('editor_change_api',
-         {'message': message['change'], 'all_data': message['all_data'], 'my_id': message['my_id']},
-         room=session['room'])
-
-
-@socketio.on('left', namespace='/chat_session')
-def leave(message):
-    """
-    leave function catches any a left signal emitted by socketIO client
-    It emits a signal to all users in that room notifying that the user has left the chat conversation
-    :param message: Leave Message
-    """
-    chatID = session.get('room')
-    leave_room(chatID)
-    ts = time.time()
-    st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-    client, db = open_db_connection()
-    db['chat_log'][session['room']].insert(
-        dict(room=session['room'].encode("utf-8"), message=session.get('net_id') + ' has now left the conversation.', by = session.get('net_id'), time=st.encode("utf-8")))
-    close_db_connection(client)
-    emit('status', {'msg': session.get('net_id') + ' has now left the conversation.'}, room=session['room'])
-
-
-@socketio.on('loginTA', namespace='/queue')
-def add_ta_online(data):
-    """
-    Socket End point for a TA who is online
-    Updates the TA's status to online and updates all pages as well
-    :param data: Data passed in by socketio client
-    :return: None
-    """
-    online_ta = TA.get_online_ta()
-    ret_list = {}
-    for index in range(len(online_ta)):
-        ta = online_ta[index]
-        ta.pop('_id', None)
-        ret_list[index] = (ta)
-    new_data = TA.get_ta_queue(session.get('net_id'))
-
-    emit('online', {"online": ret_list, "queue": new_data}, namespace='/queue', broadcast=True)
 
 
 @socketio.on('add_student', namespace='/queue')
@@ -179,28 +105,6 @@ def student_room_success(data):
     emit('start_chat', json_data , namespace = '/queue', room = data['ta'], broadcast = True)
 
 
-@socketio.on('logout_alert', namespace='/queue')
-def ta_logout(data):
-    """
-    When a TA Logs out, every student must be alerted
-    """
-    alert = {"message": data["name"] + " has left 225VOH!"}
-    emit('logout_alert', alert, namespace='/queue', broadcast=True)
-
-
-@socketio.on('student_logout', namespace='/queue')
-def student_logout(data):
-    """
-    When a student logs out, the student is removed from all Queues
-    Updated Queues are emitted to all TA's
-    """
-    remove_data = {
-        "student": session["net_id"],
-    }
-    print remove_data
-    new_data = TA.remove_from_queue_db(remove_data)
-
-    emit('student_logout', remove_data, namespace='/queue', broadcast=True)
 
 
 @socketio.on('join', namespace='/queue')

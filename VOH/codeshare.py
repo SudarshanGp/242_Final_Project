@@ -1,3 +1,6 @@
+import sys
+sys.path.insert(2, '/usr/local/lib/python2.7/site-packages')
+
 import requests
 
 if __name__ == "__main__":
