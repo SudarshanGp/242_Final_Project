@@ -19,8 +19,9 @@ from .. import app
 """
 
 
-@main.route('/')
+
 @main.route('/index/')
+@main.route('/')
 def main_page():
     """
     Routed to main_page() on load of website

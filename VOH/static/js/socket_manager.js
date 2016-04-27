@@ -56,9 +56,9 @@ $(document).ready(function(){
 function leave_room() {
     console.log(".line");
     $(".inline").modaal();
-    socket.emit('left', {}, function() {
-        socket.disconnect();
-        var redirect ='http://' + document.domain + ':' + location.port + '/';
-        window.location.href = redirect;
-    });
+    //socket.emit('left', {}, function() {
+    //    socket.disconnect();
+    //    var redirect ='http://' + document.domain + ':' + location.port + '/';
+    //    window.location.href = redirect;
+    //});
 }

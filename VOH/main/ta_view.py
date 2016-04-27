@@ -6,7 +6,7 @@ from VOH.main.forms import ChatForm
 from . import main
 
 
-@main.route('/TA/<net_id>', methods=['GET', 'POST'])
+@main.route('/TA/<net_id>/', methods=['GET', 'POST'])
 def TA_page(net_id):
     """
     Landing Page after Login for a TA
@@ -14,5 +14,8 @@ def TA_page(net_id):
     :param net_id: net_id of TA
     :return: Rendered template of ta.html
     """
-    ta = TA.get_TA(net_id)
-    return render_template("ta.html", netid = ta[0]["name"], login_status = check_login_status())
+    if "net_id" in session and session["net_id"] == net_id:
+        ta = TA.get_TA(net_id)
+        return render_template("ta.html", netid = ta[0]["name"], login_status = check_login_status())
+    else:
+        return redirect(url_for("main.main_page"))
