@@ -1,44 +1,21 @@
 // @author : Sudarshan Govindaprasad
 
 // MOTIVATION FROM FLASK-SOCKETIO DOCUMENTATION
+
 var socket;
 $(document).ready(function(){
     console.log("here");
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/monokai");
-    editor.getSession().setMode("ace/mode/javascript");
-    // TODO : editor.session.replace(new Range(row, 0, row, Number.MAX_VALUE), newText)
 
-
-    
     socket = io.connect('http://' + document.domain + ':' + location.port + '/chat_session'); // Connect to socket.io server
     socket.on('connect', function() {
         // Retrive generated url link from browser
         var parser =  document.createElement('a');
         parser.href = window.location.href;
-        console.log(parser);
-        console.log("HI")
-        var unique_id = parser.pathname.split('/')[1]; // should be 2
-        console.log(parser.pathname.split('/'));
-        console.log(unique_id);
+        var unique_id = parser.pathname.split('/')[2]; // should be 2
+        console.log("UNIQUE ROOM ID " + unique_id);
         socket.emit('join', {'room': unique_id}); // On connect of a new user, emit join signal to socket.io server
     });
-     editor.on("change", function(e){
-       console.log(e);
-         
-        // console.log(editor.getSession().getValue());
-        socket.emit('editor_change', {'change' : e, 'all_data' : editor.getSession().getValue()});
-    });
-    socket.on('editor_change_api', function(data){
-       console.log("CHANGE RECEIVED");
-        console.log(data);
-        // console.log(new Range(data['message']['start']['row'], data['message']['start']['column'], data['message']['end']['row'], data['message']['end']['column']));
-        // editor.session.replace(new Range())
-        // editor.session.replace(new Range(0, 0, row, Number.MAX_VALUE), data['all_data']);
 
-        // var divecho = document.getElementById("editor");
-        // divecho.innerHTML=ace
-    });
 
     /**
      * On status being emitted by socket.io server, this function catches the join information and
@@ -68,7 +45,6 @@ $(document).ready(function(){
         if (code == 13) {
             text = $('#text').val();
             $('#text').val('');
-            console.log('emitting ' + text);
             socket.emit('text', {msg: text});
         }
     });

@@ -1,13 +1,21 @@
 import os
-
+import subprocess
 from database import TA
-# from a import *
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, jsonify
 from flask_socketio import *
 from database import student
+from database import init_db
 from VOH import socketio
+import requests
 from flask.ext.socketio import emit, join_room, leave_room
 
+# include SSL encryption to avoid SSL3 Handshake error and set the default cipher tp RC4-SHA
+requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ':RC4-SHA'
+try:
+    requests.packages.urllib3.contrib.pyopenssl.DEFAULT_SSL_CIPHER_LIST += ':RC4-SHA'
+except AttributeError:
+    # no pyOpenSSL5 found
+    pass
 
 from VOH.main.database.authentication import *
 from VOH.main.forms import RegistrationForm, LoginForm
@@ -32,21 +40,27 @@ def main_page():
 
     return render_template("base.html", login_status = check_login_status())
 
-
-@main.route('/chat/<path>')
-def chat(path):
+@main.route('/chat/<path>/')
+def chat_main(path):
     """
-    Routed to /chat/ by from landing_page on successful form submission
-    chat() retrieves netID and chatID from session and validates whether it is valid
-    If valid, it renders chat.html
+    Routed to /chat/<path> with the chat.html page rendered.
+    Contains a chat div as well as a codeshare embed
     :return: Renders chat.html
     """
-    print(path)
-    # netID = session.get('netID', '')
-    # chatID = session.get('chatID', '')
-    # if netID == '' or chatID == '':
-    #     return redirect(url_for('.landing'))
-    return render_template('chat.html')
+    return render_template('chat.html', codeshare = session["link"])
+
+@main.route('/chat/<path>/<link>')
+def chat(path, link):
+    """
+    Routed to /chat/<path>/<link>
+    This is a unique function that creates a link between a TA and a Student
+    Redirects to /chat/<path> to render the chat page with the codeshare link
+    """
+
+    code_link = "https://codeshare.io/"+link
+    session["link"] = code_link
+    return flask.redirect(url_for("main.chat_main",path=path))
+
 
 
 @main.route('/Login/')
@@ -88,6 +102,7 @@ def register_user():
 
         session['net_id'] = form.net_id.data
         session['type'] = form.instructor_type.data
+        session['name'] = form.name.data
         if session['type'] == 'TA':
             TA.set_ta_status(session['net_id'],"online")
         return flask.redirect('/'+session['type']+'/'+str(form.net_id.data))
@@ -106,8 +121,12 @@ def authenticate_login():
     if form.validate():
         session['net_id'] = str(form.net_id.data)
         session['type'] = str(form.instructor_type.data)
+
         if session['type'] == 'TA':
             TA.set_ta_status(session['net_id'],"online")
+            session['name'] = TA.get_TA(session['net_id'])[0]["name"]
+        else:
+            session['name'] = student.get_student(session['net_id'])[0]["name"]
         return flask.redirect('/'+session['type']+'/'+session['net_id'])
 
     return render_template('login.html', form=form,login_status = check_login_status())
@@ -126,11 +145,20 @@ def instructor_view():
             filename = file.filename
             path_of_file = "VOH/" + os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(path_of_file)
+            upload_file(path_of_file)
             message = "File has been uploaded!"
         else:
             message = "No file to upload!"
     return render_template("instructor.html", message = message,login_status = check_login_status())
 
+def upload_file(file_path):
+    """
+    Upload file contents to Database from Instructor View
+    """
+    if "TA" in open(file_path).readline():
+        init_db.create_ta_list(file_path)
+    elif "student" in open(file_path).readline():
+        init_db.create_student_list(file_path)
 
 @main.route('/Logout/', methods = ["GET", "POST"])
 def logout():
@@ -138,8 +166,9 @@ def logout():
     At logout, changes sessions variables
     :return: None
     """
-    print("IN LOGOUT")
     if session['type'] == 'TA':
         TA.set_ta_status(session['net_id'],"offline")
+    TA.clear_ta_queue(session['net_id'])
+    name = session["name"]
     session.clear()
-    return flask.redirect('/')
+    return jsonify({"name":name})

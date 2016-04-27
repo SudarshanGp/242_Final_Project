@@ -47,10 +47,11 @@ def add_to_queue_db(ret_data):
 def remove_from_queue_db(remove_data):
     client, db = open_db_connection()
     table = db["ta_queue"]
-    print "Removing", remove_data["student"], "from", remove_data["ta"]
-    table.remove({"student":remove_data["student"], "ta": remove_data["ta"]})
+    table.remove(remove_data)
     close_db_connection(client)
-    return get_ta_queue(remove_data["ta"])
+    if "ta" in remove_data:
+        return get_ta_queue(remove_data["ta"])
+    return None
 
 def get_ta_queue(net_id):
     """
@@ -128,6 +129,14 @@ def get_TA(net_id):
     close_db_connection(client)
     return ta
 
+def clear_ta_queue(net_id):
+    """
+    Clears TA queue at Logout
+    """
+    client, db = open_db_connection()
+    table = db["ta_queue"]
+    table.remove({"ta":net_id})
+    close_db_connection(client)
 
 def set_ta_status(net_id, status):
     """
