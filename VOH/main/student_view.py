@@ -11,10 +11,11 @@ def student_page(net_id):
     :param net_id: Net Id of student
     :return: Returns a Rendered template of student.html
     """
+    # Check for Student Login
     if "net_id" in session and session["net_id"] == net_id:
         student = s.get_student(net_id)
         return render_template("student.html", netid = student[0]["name"],
                                form = None, login_status = check_login_status()) # Render landing page
-
+    # Redirect if No Student Login
     else:
         return redirect(url_for("main.main_page"))
