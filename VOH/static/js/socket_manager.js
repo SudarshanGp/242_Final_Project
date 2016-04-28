@@ -23,7 +23,7 @@ $(document).ready(function(){
      */
     socket.on('status', function(data) {
         console.log("HERE");
-        $('#chat').val($('#chat').val() + '' + data.msg + '\n');
+        $('#chat').html($('#chat').html() + '<br>' + data.msg + '\n');
         $('#chat').scrollTop($('#chat')[0].scrollHeight);
     });
 
@@ -36,7 +36,8 @@ $(document).ready(function(){
         var message = linkifyHtml(data.msg, {
           defaultProtocol: 'https'
         });
-        $('#chat').val($('#chat').val() + message + '\n');
+        console.log($('#chat').html());
+        $('#chat').html($('#chat').html() + '<br>' + message + '\n');
     });
 
     /**
