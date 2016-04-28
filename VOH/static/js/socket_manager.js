@@ -4,18 +4,14 @@
 
 var socket;
 $(document).ready(function(){
-    console.log("here");
-
     socket = io.connect('http://' + document.domain + ':' + location.port + '/chat_session'); // Connect to socket.io server
     socket.on('connect', function() {
         // Retrive generated url link from browser
         var parser =  document.createElement('a');
         parser.href = window.location.href;
         var unique_id = parser.pathname.split('/')[2]; // should be 2
-        console.log("UNIQUE ROOM ID " + unique_id);
         socket.emit('join', {'room': unique_id}); // On connect of a new user, emit join signal to socket.io server
     });
-
 
     /**
      * On status being emitted by socket.io server, this function catches the join information and
@@ -43,7 +39,6 @@ $(document).ready(function(){
                 message = $.parseHTML(data_html);
         
                 $('#chat').append(message);
-            console.log(d);
             });  
             message = $.parseHTML( "<p style = 'text-align: center;'> Start New Conversation</p>");
             $('#chat').append(message);
@@ -68,11 +63,7 @@ $(document).ready(function(){
         else{
            data_html = "<p style = 'text-align: left; padding-left: 10px;'>"+msg+"</p>";
         }
-        // var message = linkifyHtml(data_html, {
-        //  defaultProtocol: 'https'
-        // });
         message = $.parseHTML(data_html);
-        
         $('#chat').append(message);
         var objDiv = document.getElementById("chat");
         objDiv.scrollTop = objDiv.scrollHeight;
