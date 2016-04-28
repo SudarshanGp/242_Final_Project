@@ -8,6 +8,11 @@ import time
 from VOH import socketio
 from VOH.main.database import TA
 import os, subprocess
+from profanity import profanity
+
+
+profanity.load_words(['Shit', 'Fuck', 'Dumb', 'Idiot', 'Stupid', 'Ass', 'Arse', 'Bitch', 'Fucker', 'Asshole'])
+profanity.set_censor_characters('****')
 
 @socketio.on('join', namespace='/chat_session')
 def join(message):
@@ -34,11 +39,12 @@ def converse(message):
     ts = time.time()
     st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
     client, db = open_db_connection()
+    new_message ={'msg' : profanity.censor(message['msg'])}
     db['chat_log'][session['room']].insert(
-        dict(room=session['room'].encode("utf-8"), message=message, by = session.get('net_id'), time=st.encode("utf-8")))
+        dict(room=session['room'].encode("utf-8"), message=new_message, by = session.get('net_id'), time=st.encode("utf-8")))
     close_db_connection(client)
 
-    emit('message', {'msg': session.get('net_id') + ':' + message['msg']}, room=session['room'])
+    emit('message', {'msg': session.get('net_id') + ':' + new_message['msg']}, room=session['room'])
 
 @socketio.on('add_rating_to_db', namespace='/chat_session')
 def add_rating_to_db(data):
