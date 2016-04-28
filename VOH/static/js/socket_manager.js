@@ -82,9 +82,9 @@ function leave_room(data, rating_for, rating_by) {
     console.log(rating_for);
     console.log(rating_by);
     socket.emit('add_rating_to_db',{"rating_for":rating_for, "rating_by":rating_by, "rating":rating});
-    //socket.emit('left', {}, function() {
-    //    socket.disconnect();
-    //    var redirect ='http://' + document.domain + ':' + location.port + '/';
-    //    window.location.href = redirect;
-    //});
+    socket.emit('left', {}, function() {
+        socket.disconnect();
+        var redirect ='http://' + document.domain + ':' + location.port + '/';
+        window.location.href = redirect;
+    });
 }

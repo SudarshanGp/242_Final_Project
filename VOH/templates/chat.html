@@ -33,18 +33,6 @@
                             {{ render_field(form.rating) }}
                         </div>
                     </div>
-                     <div class="row margin">
-                        <div class="input-field col s12">
-
-                            {{ (form.rating_for) }}
-                        </div>
-                    </div>
-                     <div class="row margin">
-                        <div class="input-field col s12">
-
-                            {{ (form.rating_by) }}
-                        </div>
-                    </div>
                     <div class="row center">
                         <div class="input-field col s4">
                             <a onclick="leave_room(document.getElementsByClassName('rate'), '{{ form.rating_for }}','{{ form.rating_by }}' );" class="btn waves-effect waves-light col s12 blue darken-3">Submit</a>
