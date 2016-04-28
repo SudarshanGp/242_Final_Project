@@ -1,0 +1,131 @@
+{
+  "_args": [
+    [
+      "linkifyjs",
+      "/Users/Sudarshan/Documents/Github/242_Final_Project"
+    ]
+  ],
+  "_from": "linkifyjs@latest",
+  "_id": "linkifyjs@2.0.0",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/linkifyjs",
+  "_nodeVersion": "5.9.1",
+  "_npmOperationalInternal": {
+    "host": "packages-16-east.internal.npmjs.com",
+    "tmp": "tmp/linkifyjs-2.0.0.tgz_1460943292252_0.5225233931560069"
+  },
+  "_npmUser": {
+    "email": "nick@soapboxhq.com",
+    "name": "nfrasser"
+  },
+  "_npmVersion": "3.7.3",
+  "_phantomChildren": {},
+  "_requested": {
+    "name": "linkifyjs",
+    "raw": "linkifyjs",
+    "rawSpec": "",
+    "scope": null,
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/linkifyjs/-/linkifyjs-2.0.0.tgz",
+  "_shasum": "e5a99aac096fefeb252866cb0c314f0995b9074f",
+  "_shrinkwrap": null,
+  "_spec": "linkifyjs",
+  "_where": "/Users/Sudarshan/Documents/Github/242_Final_Project",
+  "author": {
+    "name": "SoapBox Innovations",
+    "url": "@SoapBoxHQ"
+  },
+  "bugs": {
+    "url": "https://github.com/SoapBox/linkifyjs/issues"
+  },
+  "dependencies": {
+    "jquery": ">=1.9.0"
+  },
+  "description": "Intelligent link recognition, made easy",
+  "devDependencies": {
+    "amd-optimize": "^0.6.1",
+    "brfs": "^1.4.1",
+    "closure-compiler": "0.2.6",
+    "coveralls": "^2.11.4",
+    "expect.js": "^0.3.1",
+    "glob": "^7.0.3",
+    "gulp": "^3.8.11",
+    "gulp-babel": "^5.3.0",
+    "gulp-closure-compiler": "^0.3.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-istanbul": "^0.10.2",
+    "gulp-jshint": "^2.0.0",
+    "gulp-mocha": "^2.1.3",
+    "gulp-qunit": "^1.3.0",
+    "gulp-rename": "^1.2.0",
+    "gulp-replace": "^0.5.4",
+    "gulp-uglify": "^1.4.2",
+    "gulp-wrap": "^0.11.0",
+    "jsdom": "^8.4.0",
+    "jshint": "^2.9.1",
+    "jshint-stylish": "^2.0.1",
+    "karma": "^0.13.15",
+    "karma-browserify": "^5.0.3",
+    "karma-chrome-launcher": "^0.2.1",
+    "karma-firefox-launcher": "^0.1.6",
+    "karma-mocha": "^0.2.0",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "karma-sauce-launcher": "^0.3.0",
+    "lodash": "^4.11.1",
+    "merge-stream": "^1.0.0",
+    "mocha": "^2.3.3",
+    "phantomjs-prebuilt": "^2.1.7",
+    "qunitjs": "^1.20.0",
+    "requirejs": "^2.1.22",
+    "simple-html-tokenizer": "git+https://github.com/nfrasser/simple-html-tokenizer.git#master"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "e5a99aac096fefeb252866cb0c314f0995b9074f",
+    "tarball": "https://registry.npmjs.org/linkifyjs/-/linkifyjs-2.0.0.tgz"
+  },
+  "gitHead": "30fb24ec695aa6d28fc2a7dd85489c2af90a5ae8",
+  "homepage": "https://github.com/SoapBox/linkifyjs#readme",
+  "keywords": [
+    "autolink",
+    "email",
+    "hashtag",
+    "hashtags",
+    "jquery",
+    "link",
+    "mention",
+    "mentions",
+    "text",
+    "url"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "name": "nfrasser",
+      "email": "nick@soapboxhq.com"
+    }
+  ],
+  "name": "linkifyjs",
+  "optionalDependencies": {
+    "jquery": ">=1.9.0"
+  },
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SoapBox/linkifyjs.git"
+  },
+  "scripts": {
+    "coverage": "./node_modules/coveralls/bin/coveralls.js < coverage/lcov.info",
+    "prepublish": "rm -rf lib/* && node_modules/.bin/gulp build",
+    "test": "gulp test",
+    "test-ci": "gulp test-ci"
+  },
+  "version": "2.0.0"
+}
