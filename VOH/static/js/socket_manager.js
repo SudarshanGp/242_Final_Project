@@ -23,7 +23,9 @@ $(document).ready(function(){
      */
     socket.on('status', function(data) {
         console.log("HERE");
-        $('#chat').val($('#chat').val() + '' + data.msg + '\n');
+        var data_html = "<p style = 'text-align: center;'>"+data.msg+"</p>";
+        message = $.parseHTML(data_html);
+        $('#chat').append(message);
         $('#chat').scrollTop($('#chat')[0].scrollHeight);
     });
 
@@ -33,10 +35,20 @@ $(document).ready(function(){
      */
     socket.on('message', function(data) {
         console.log("message "  + data);
-        var message = linkifyHtml(data.msg, {
-          defaultProtocol: 'https'
-        });
-        $('#chat').val($('#chat').val() + message + '\n');
+        var data_html = "";
+        if(data.type == "TA"){
+            data_html = "<p style = 'text-align: right;'>"+data.msg+"</p>";
+        }
+        else{
+           data_html = "<p style = 'text-align: left;'>"+data.msg+"</p>";
+        }
+        //var message = linkifyHtml(data_html, {
+        //  defaultProtocol: 'https'
+        //});
+        message = $.parseHTML(data_html);
+        console.log(message);
+        console.log(typeof(message));
+        $('#chat').append(message);
     });
 
     /**
