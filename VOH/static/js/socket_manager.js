@@ -22,7 +22,7 @@ $(document).ready(function(){
      * adds it to the chat message box
      */
     socket.on('status', function(data) {
-        console.log("HERE");
+
         var data_html = "<p style = 'text-align: center;'>"+data.msg+"</p>";
         message = $.parseHTML(data_html);
         $('#chat').append(message);
@@ -49,6 +49,7 @@ $(document).ready(function(){
         console.log(message);
         console.log(typeof(message));
         $('#chat').append(message);
+
     });
 
     /**
