@@ -12,7 +12,8 @@
     <script src="{{ url_for('static',filename='linkifyjs/linkify-element.js') }}"></script>
     <script src="{{ url_for('static',filename='linkifyjs/linkify-jquery.js') }}"></script>
 <div class = "row center">
-    <h5>{{ name }}</h5>
+    <h5>{{ ta }}</h5>
+    <h5>{{ student }}</h5>
 </div>
 <div class = "row">
     <div class = "col s6">
@@ -23,18 +24,29 @@
             <br><br>
             <input id="text" size="80" placeholder="Enter your message here"><br><br>
             <a  href="#inline"class="inline" >Leave this room</a>
-{#            "#}
             <div style="display:none;" id = "inline">
-                 <form class="rating" id = "rating-form">
+                 <form class="rate" id = "rate">
                     <div class="row margin">
-                        <div class="input-field col s12">
+                        <div class=" col s12">
 
                             {{ render_field(form.rating) }}
                         </div>
                     </div>
+                     <div class="row margin">
+                        <div class="input-field col s12">
+
+                            {{ (form.rating_for) }}
+                        </div>
+                    </div>
+                     <div class="row margin">
+                        <div class="input-field col s12">
+
+                            {{ (form.rating_by) }}
+                        </div>
+                    </div>
                     <div class="row center">
                         <div class="input-field col s4">
-                            <a onclick="leave_room(document.getElementsByClassName('rating'));" class="btn waves-effect waves-light col s12 blue darken-3">Submit</a>
+                            <a onclick="leave_room(document.getElementsByClassName('rate'), '{{ form.rating_for }}','{{ form.rating_by }}' );" class="btn waves-effect waves-light col s12 blue darken-3">Submit</a>
                 </div>
             </div>
         </form>

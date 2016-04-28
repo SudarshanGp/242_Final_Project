@@ -101,7 +101,7 @@ def student_room_success(data):
     :param data: Data about room
     """
     join_room(data['ta'])
-    json_data = {'room' : data['ta'], "link":data["link"]}
+    json_data = {'room' : data['ta'], "link":data["link"], 'student':data['student']}
     emit('start_chat', json_data , namespace = '/queue', room = data['ta'], broadcast = True)
 
 
@@ -117,3 +117,4 @@ def join(data):
     join_room(data['id'])
     emit('join_room_ta', {'msg': "hi, you are in room " + data['id']},
          room=data['id'])  # Emits signal to a particular chat conversation
+

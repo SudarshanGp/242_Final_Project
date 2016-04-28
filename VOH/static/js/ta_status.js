@@ -54,7 +54,9 @@ $(document).ready(function() {
      */
     socket.on('start_chat', function(data){
         socket.disconnect();
-        window.location.href = 'http://' + document.domain + ':' + location.port + '/chat' + '/' + data['room']+data['link'];
+        console.log(data);
+        window.location.href = 'http://' + document.domain + ':' +
+            location.port + '/chat' + '/' + data['room']+'-'+data['student'] + data['link'];
 
     });
     /**

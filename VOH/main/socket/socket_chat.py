@@ -40,6 +40,45 @@ def converse(message):
 
     emit('message', {'msg': session.get('net_id') + ':' + message['msg']}, room=session['room'])
 
+@socketio.on('add_rating_to_db', namespace='/chat_session')
+def add_rating_to_db(data):
+    """
+    leave function catches any a left signal emitted by socketIO client
+    It emits a signal to all users in that room notifying that the user has left the chat conversation
+    :param message: Leave Message
+    """
+
+    if TA.check_in_ta_list(data['rating_for']):
+        client, db = open_db_connection()
+        cur_val = list(db['ta_rating'].find({"ta":data['rating_for']}))
+        if len(cur_val) == 1:
+            db["ta_rating"].update_one({
+                '_id': data['rating_for']
+                }, {
+                '$set': {
+                    'score': cur_val[0]["score"] + int(data['rating'])
+                }
+            }, upsert=False)
+        else:
+            db['ta_rating'].insert({"ta":data['rating_for'], '_id':data['rating_for'], 'score':int(data['rating'])})
+    # Close Connection
+        close_db_connection(client)
+    else:
+        client, db = open_db_connection()
+        cur_val = list(db['student_rating'].find({"student":data['rating_for']}))
+        if len(cur_val) == 1:
+            db["student_rating"].update_one({
+                '_id': data['rating_for']
+                }, {
+                '$set': {
+                    'score': cur_val[0]["score"] + int(data['rating'])
+                }
+            }, upsert=False)
+        else:
+            db['student_rating'].insert({"student":data['rating_for'], '_id':data['rating_for'], 'score':int(data['rating'])})
+    # Close Connection
+        close_db_connection(client)
+
 
 
 @socketio.on('left', namespace='/chat_session')

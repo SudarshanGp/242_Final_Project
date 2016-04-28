@@ -1,7 +1,7 @@
 from database import TA
 from flask.ext.wtf import Form as form
 from database import student
-from wtforms import Form, RadioField, PasswordField, validators
+from wtforms import Form, RadioField, PasswordField, validators, HiddenField
 from wtforms.fields import StringField, SubmitField
 from wtforms.validators import DataRequired
 
@@ -82,10 +82,13 @@ class LoginForm(Form):
 class TARating(form):
     rating = RadioField('Rate TA', choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')],
                                  default='student')
-
+    rating_for = HiddenField('Default TA')
+    rating_by = HiddenField('Default Student')
 
 
 class StudentRating(form):
 
     rating = RadioField('Rate Student',choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')],
                                  default='student')
+    rating_for = HiddenField('Default Student')
+    rating_by = HiddenField('Default TA')
