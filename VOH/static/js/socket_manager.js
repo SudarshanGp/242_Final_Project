@@ -35,19 +35,25 @@ $(document).ready(function(){
      */
     socket.on('message', function(data) {
         console.log("message "  + data);
+        var msg = linkifyHtml(data.msg, {
+         defaultProtocol: 'https'
+        });
         var data_html = "";
         if(data.type == "TA"){
-            data_html = "<p style = 'text-align: right; padding-right: 10px;'>"+data.msg+"</p>";
+            data_html = "<p style = 'text-align: right; padding-right: 10px;'>"+msg+"</p>";
         }
         else{
-           data_html = "<p style = 'text-align: left; padding-left: 10px;'>"+data.msg+"</p>";
+           data_html = "<p style = 'text-align: left; padding-left: 10px;'>"+msg+"</p>";
         }
-        //var message = linkifyHtml(data_html, {
+        // var message = linkifyHtml(data_html, {
         //  defaultProtocol: 'https'
-        //});
+        // });
         message = $.parseHTML(data_html);
         console.log(message);
+        console.log(message.innerHTML);
         console.log(typeof(message));
+        
+        
         $('#chat').append(message);
         var objDiv = document.getElementById("chat");
         objDiv.scrollTop = objDiv.scrollHeight;
