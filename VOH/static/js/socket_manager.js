@@ -33,7 +33,10 @@ $(document).ready(function(){
      */
     socket.on('message', function(data) {
         console.log("message "  + data);
-        $('#chat').val($('#chat').val() + data.msg + '\n');
+        var message = linkifyHtml(data.msg, {
+          defaultProtocol: 'https'
+        });
+        $('#chat').val($('#chat').val() + message + '\n');
     });
 
     /**
