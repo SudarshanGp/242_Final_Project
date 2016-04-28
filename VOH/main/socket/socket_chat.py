@@ -24,13 +24,14 @@ def join(message):
     """
     join_room(str(message['room']))
     client, db = open_db_connection()
+    room = message['room']
     old_messages = list(db['chat_log'][message['room'].replace("-", "_")].find({}))
     close_db_connection(client)
     for key, value in enumerate(old_messages):
         del value['_id']
     session['room'] = str(message['room'])
-    emit('status', {'msg': session['net_id'] + ' is now in the conversation', 'old' :   old_messages }, namespace='/chat_session',
-         room=str(message['room']))  # Emits signal to a particular chat conversation
+    emit('status', {'msg': session['net_id'] + ' is now in the conversation', 'old' :   old_messages, 'type':session.get('type') }, namespace='/chat_session',
+         room=str(room))  # Emits signal to a particular chat conversation
 
 
 @socketio.on('text', namespace='/chat_session')
@@ -45,10 +46,12 @@ def converse(message):
     client, db = open_db_connection()
     new_message ={'msg' : profanity.censor(message['msg'])}
     print(session)
-    db['chat_log'][session['room'].replace("-", "_")].insert(
-        dict(room=session['room'].replace("-", "_").encode("utf-8"), message=new_message, by = session.get('net_id'), time=st.encode("utf-8")))
+    room = session['room']
+    db_collection = session['room'].replace("-", "_")
+    db['chat_log'][db_collection].insert(
+        dict(room=session['room'].replace("-", "_").encode("utf-8"), message=new_message, by = session.get('net_id'), type = session.get('type'), time=st.encode("utf-8")))
     close_db_connection(client)
-    emit('message', {'msg': session.get('net_id') + ':' + new_message['msg'], 'type':session.get('type')}, room=session['room'])
+    emit('message', {'msg': session.get('net_id') + ':' + new_message['msg'], 'type':session.get('type')}, room=room)
 
 
 @socketio.on('add_rating_to_db', namespace='/chat_session')

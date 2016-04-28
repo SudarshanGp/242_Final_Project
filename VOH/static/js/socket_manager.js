@@ -20,16 +20,36 @@ $(document).ready(function(){
     /**
      * On status being emitted by socket.io server, this function catches the join information and
      * adds it to the chat message box
-     */
+     */ 
     socket.on('status', function(data) {
         console.log(data);
         var data_html = "<p style = 'text-align: center;'>"+data.msg+"</p>";
         message = $.parseHTML(data_html);
         $('#chat').append(message);
-        console.log($('#chat').scrollTop($('#chat')[0].scrollHeight));
-        data.old_messages.forEach(function(d){
+        $('#chat').scrollTop($('#chat')[0].scrollHeight);
+        old_messages = data.old;
+        
+        if(data.type == "TA"){
+            message = $.parseHTML( "<p style = 'text-align: center;'> Old Archived Messages</p>");
+            $('#chat').append(message);
+            old_messages.forEach(function(d){
+                var data_html = "";
+                if(d.type == "TA"){
+                    data_html = "<p style = 'text-align: right; padding-right: 10px;'>"+d.by + ": " + d.message.msg+"</p>";
+                }
+                else{
+                   data_html = "<p style = 'text-align: left; padding-left: 10px;'>"+d.by + ": " +d.message.msg+"</p>";
+                }
+                message = $.parseHTML(data_html);
+        
+                $('#chat').append(message);
             console.log(d);
-        });
+            });  
+            message = $.parseHTML( "<p style = 'text-align: center;'> Start New Conversation</p>");
+            $('#chat').append(message);
+        }
+        
+        
     });
 
     /**
@@ -52,10 +72,6 @@ $(document).ready(function(){
         //  defaultProtocol: 'https'
         // });
         message = $.parseHTML(data_html);
-        console.log(message);
-        console.log(message.innerHTML);
-        console.log(typeof(message));
-        
         
         $('#chat').append(message);
         var objDiv = document.getElementById("chat");
