@@ -45,6 +45,7 @@ def converse(message):
     close_db_connection(client)
     emit('message', {'msg': session.get('net_id') + ':' + new_message['msg'], 'type':session.get('type')}, room=session['room'])
 
+
 @socketio.on('add_rating_to_db', namespace='/chat_session')
 def add_rating_to_db(data):
     """
