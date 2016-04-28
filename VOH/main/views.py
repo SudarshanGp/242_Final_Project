@@ -10,7 +10,7 @@ import requests
 from flask.ext.socketio import emit, join_room, leave_room
 
 from VOH.main.database.authentication import *
-from VOH.main.forms import RegistrationForm, LoginForm
+from VOH.main.forms import RegistrationForm, LoginForm, TARating, StudentRating
 from . import main
 from .. import app
 
@@ -40,8 +40,12 @@ def chat_main(path):
     Contains a chat div as well as a codeshare embed
     :return: Renders chat.html
     """
-
-    return render_template('chat.html', codeshare = session["link"], name = session["type"])
+    form = ""
+    if session["type"] == "TA":
+        form = StudentRating()
+    else:
+        form = TARating()
+    return render_template('chat.html', codeshare = session["link"], name = session["type"], form = form)
 
 @main.route('/chat/<path>/<link>')
 def chat(path, link):

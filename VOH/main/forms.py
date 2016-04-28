@@ -79,11 +79,13 @@ class LoginForm(Form):
         return False
 
 
-class ChatForm(form):
-    """
-    Form that takes in a netID and a room ID to start a chat and a submit field which allows a user to submit the
-    form
-    """
-    netID = StringField('NetID', validators=[DataRequired()])
-    chatID = StringField('chatID', validators=[DataRequired()])
-    submit = SubmitField('Initiate chat')
+class TARating(form):
+    rating = RadioField('Rate TA', choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')],
+                                 default='student')
+
+
+
+class StudentRating(form):
+
+    rating = RadioField('Rate Student',choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')],
+                                 default='student')

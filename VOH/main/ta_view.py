@@ -2,7 +2,6 @@ from database import TA
 from flask import render_template, request, jsonify, redirect, url_for
 
 from VOH.main.database.authentication import *
-from VOH.main.forms import ChatForm
 from . import main
 
 

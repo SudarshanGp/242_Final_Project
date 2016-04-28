@@ -53,11 +53,12 @@ $(document).ready(function(){
 /**
  * When a user leaves the room, socket is disconnected and user is redirected to a common page
  */
-function leave_room() {
-    console.log(".line");
-    //socket.emit('left', {}, function() {
-    //    socket.disconnect();
-    //    var redirect ='http://' + document.domain + ':' + location.port + '/';
-    //    window.location.href = redirect;
-    //});
+function leave_room(data) {
+    console.log(data);
+
+    socket.emit('left', {}, function() {
+        socket.disconnect();
+        var redirect ='http://' + document.domain + ':' + location.port + '/';
+        window.location.href = redirect;
+    });
 }

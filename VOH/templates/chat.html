@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_formhelpers.html" import render_field %}
 {# Includes the same frame as the main page but adds a form which allows a user to register #}
 {% block data %}
 {# Includes the scripts such as jquery and socket_manager which are required to create the chat box    #}
@@ -16,17 +17,22 @@
             <textarea readonly class="materialize-textarea" id="chat"></textarea>
             <br><br>
             <input id="text" size="80" placeholder="Enter your message here"><br><br>
-            <a  href="#inline"class="inline" onclick="leave_room();" >Leave this room</a>
+            <a  href="#inline"class="inline" >Leave this room</a>
 {#            "#}
             <div style="display:none;" id = "inline">
+                 <form class="rating" id = "rating-form">
+                    <div class="row margin">
+                        <div class="input-field col s12">
 
-                <form>
-  First name:<br>
-  <input type="text" name="firstname">
-  <br>
-  Last name:<br>
-  <input type="text" name="lastname">
-</form>
+                            {{ render_field(form.rating) }}
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="input-field col s4">
+                            <a onclick="leave_room(document.getElementsByClassName('rating'));" class="btn waves-effect waves-light col s12 blue darken-3">Submit</a>
+                </div>
+            </div>
+        </form>
             </div>
         </div>
     </div>
