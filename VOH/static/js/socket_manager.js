@@ -26,7 +26,7 @@ $(document).ready(function(){
         var data_html = "<p style = 'text-align: center;'>"+data.msg+"</p>";
         message = $.parseHTML(data_html);
         $('#chat').append(message);
-        $('#chat').scrollTop($('#chat')[0].scrollHeight);
+        console.log($('#chat').scrollTop($('#chat')[0].scrollHeight));
     });
 
     /**
@@ -37,10 +37,10 @@ $(document).ready(function(){
         console.log("message "  + data);
         var data_html = "";
         if(data.type == "TA"){
-            data_html = "<p style = 'text-align: right;'>"+data.msg+"</p>";
+            data_html = "<p style = 'text-align: right; padding-right: 10px;'>"+data.msg+"</p>";
         }
         else{
-           data_html = "<p style = 'text-align: left;'>"+data.msg+"</p>";
+           data_html = "<p style = 'text-align: left; padding-left: 10px;'>"+data.msg+"</p>";
         }
         //var message = linkifyHtml(data_html, {
         //  defaultProtocol: 'https'
@@ -49,6 +49,8 @@ $(document).ready(function(){
         console.log(message);
         console.log(typeof(message));
         $('#chat').append(message);
+        var objDiv = document.getElementById("chat");
+        objDiv.scrollTop = objDiv.scrollHeight;
 
     });
 
