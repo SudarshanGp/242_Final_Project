@@ -22,11 +22,14 @@ $(document).ready(function(){
      * adds it to the chat message box
      */
     socket.on('status', function(data) {
-
+        console.log(data);
         var data_html = "<p style = 'text-align: center;'>"+data.msg+"</p>";
         message = $.parseHTML(data_html);
         $('#chat').append(message);
         console.log($('#chat').scrollTop($('#chat')[0].scrollHeight));
+        data.old_messages.forEach(function(d){
+            console.log(d);
+        });
     });
 
     /**

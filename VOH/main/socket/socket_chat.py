@@ -22,10 +22,14 @@ def join(message):
     Join Message returned is broadcasted to everyone in that specific room
     :param message: Join Message
     """
-
     join_room(str(message['room']))
+    client, db = open_db_connection()
+    old_messages = list(db['chat_log'][message['room'].replace("-", "_")].find({}))
+    close_db_connection(client)
+    for key, value in enumerate(old_messages):
+        del value['_id']
     session['room'] = str(message['room'])
-    emit('status', {'msg': session['net_id'] + ' is now in the conversation'}, namespace='/chat_session',
+    emit('status', {'msg': session['net_id'] + ' is now in the conversation', 'old' :   old_messages }, namespace='/chat_session',
          room=str(message['room']))  # Emits signal to a particular chat conversation
 
 
@@ -40,8 +44,9 @@ def converse(message):
     st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
     client, db = open_db_connection()
     new_message ={'msg' : profanity.censor(message['msg'])}
-    db['chat_log'][session['room']].insert(
-        dict(room=session['room'].encode("utf-8"), message=new_message, by = session.get('net_id'), time=st.encode("utf-8")))
+    print(session)
+    db['chat_log'][session['room'].replace("-", "_")].insert(
+        dict(room=session['room'].replace("-", "_").encode("utf-8"), message=new_message, by = session.get('net_id'), time=st.encode("utf-8")))
     close_db_connection(client)
     emit('message', {'msg': session.get('net_id') + ':' + new_message['msg'], 'type':session.get('type')}, room=session['room'])
 
