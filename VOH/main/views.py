@@ -180,12 +180,8 @@ def logout():
 
 @main.route('/get_ratings/', methods = [ "POST"])
 def ta_ratings():
-    print "gettign ratings"
-    print TA.get_ta_ratings()
-    print TA.get_ta_timings()
+    """
+    Return jsonified data of the ratings for all tas and hours looged for all tas
+    :return: jsnofied object containing data to be visualized
+    """
     return jsonify({"ratings":TA.get_ta_ratings(),"timings":TA.get_ta_timings()})
-
-
-@main.route('/ta_timings/', methods = [ "POST"])
-def ta_timings():
-    return {"timings":TA.get_ta_timings()}
