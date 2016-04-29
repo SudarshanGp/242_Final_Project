@@ -24,25 +24,24 @@ $(document).ready(function(){
         $('#chat').append(message);
         $('#chat').scrollTop($('#chat')[0].scrollHeight);
         old_messages = data.old;
-        
-        if(data.type == "TA"){
-            message = $.parseHTML( "<p style = 'text-align: center;'> Old Archived Messages</p>");
+
+        message = $.parseHTML( "<p style = 'text-align: center;'> Old Archived Messages</p>");
+        $('#chat').append(message);
+        old_messages.forEach(function(d){
+            var data_html = "";
+            if(d.type == "TA"){
+                data_html = "<p style = 'text-align: right; padding-right: 10px;'>"+d.by + ": " + d.message.msg+"</p>";
+            }
+            else{
+               data_html = "<p style = 'text-align: left; padding-left: 10px;'>"+d.by + ": " +d.message.msg+"</p>";
+            }
+            message = $.parseHTML(data_html);
+
             $('#chat').append(message);
-            old_messages.forEach(function(d){
-                var data_html = "";
-                if(d.type == "TA"){
-                    data_html = "<p style = 'text-align: right; padding-right: 10px;'>"+d.by + ": " + d.message.msg+"</p>";
-                }
-                else{
-                   data_html = "<p style = 'text-align: left; padding-left: 10px;'>"+d.by + ": " +d.message.msg+"</p>";
-                }
-                message = $.parseHTML(data_html);
-        
-                $('#chat').append(message);
-            });  
-            message = $.parseHTML( "<p style = 'text-align: center;'> Start New Conversation</p>");
-            $('#chat').append(message);
-        }
+        });
+        message = $.parseHTML( "<p style = 'text-align: center;'> Start New Conversation</p>");
+        $('#chat').append(message);
+
         
         
     });
