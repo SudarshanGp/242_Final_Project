@@ -209,3 +209,16 @@ def get_ta_timings():
 
     close_db_connection(client)
     return ta_timings
+
+def add_ta_rating(data):
+    client, db = open_db_connection()
+    cur_val = list(db['ta_rating'].find({"ta":data['rating_for']}))
+    if len(cur_val) == 1:
+        db["ta_rating"].update_one({
+            '_id': data['rating_for']
+            }, {
+            '$set': {
+                'score': cur_val[0]["score"] + int(data['rating'])
+            }
+        }, upsert=False)
+    close_db_connection(client)

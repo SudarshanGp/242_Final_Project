@@ -61,20 +61,8 @@ def add_rating_to_db(data):
     """
 
     if TA.check_in_ta_list(data['rating_for']):
-        client, db = open_db_connection()
-        cur_val = list(db['ta_rating'].find({"ta":data['rating_for']}))
-        if len(cur_val) == 1:
-            db["ta_rating"].update_one({
-                '_id': data['rating_for']
-                }, {
-                '$set': {
-                    'score': cur_val[0]["score"] + int(data['rating'])
-                }
-            }, upsert=False)
-        else:
-            db['ta_rating'].insert({"ta":data['rating_for'], '_id':data['rating_for'], 'score':int(data['rating'])})
-    # Close Connection
-        close_db_connection(client)
+        TA.add_ta_rating(data)
+
     else:
         client, db = open_db_connection()
         cur_val = list(db['student_rating'].find({"student":data['rating_for']}))

@@ -1,6 +1,7 @@
 import unittest
 from VOH import main
 from werkzeug.security import generate_password_hash
+import time
 class TestVOH(unittest.TestCase):
 
     def setUp(self):
@@ -40,7 +41,53 @@ class TestVOH(unittest.TestCase):
         self.assertTrue(main.TA.check_ta_registration("nmshah4"))
 
 
+    def test_time(self):
+        """
+        Tests Timing functions for TA
+        :return:
+        """
+        main.TA.set_ta_status("agupta60", "online")
+        ta_time_old = main.TA.get_ta_timings()
+        old_time = ""
+        new_time = ""
+        for ta in ta_time_old:
+            if ta["name"] == "agupta60":
+                old_time = ta["time in minutes"]
 
+        time.sleep(60)
+
+        main.TA.set_ta_status("agupta60", "offline")
+        ta_time_new = main.TA.get_ta_timings()
+        for ta in ta_time_new:
+            if ta["name"] == "agupta60":
+                new_time = ta["time in minutes"]
+
+        self.assertTrue(new_time -old_time >= 1)
+        # self.assertEquals(new_time - old_time , 1)
+
+    def test_rating(self):
+        """
+        Tests addition of Rating for TA
+        :return:
+        """
+        ta_rating_old = main.TA.get_ta_ratings()
+        old_rating = ""
+        new_rating = ""
+        for ta in ta_rating_old:
+            if ta["name"] == "agupta60":
+                old_rating = ta["score"]
+
+        data = {
+            "rating_for":"agupta60",
+            "rating_by":"agou2",
+            "rating":5
+        }
+        main.TA.add_ta_rating(data)
+        ta_rating_new = main.TA.get_ta_ratings()
+        for ta in ta_rating_new:
+            if ta["name"] == "agupta60":
+                new_rating = ta["score"]
+        self.assertTrue(new_rating - old_rating == 5)
 
 
 if __name__ == "__main__":
