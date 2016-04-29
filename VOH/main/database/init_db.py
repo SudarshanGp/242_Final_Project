@@ -47,6 +47,12 @@ def create_ta_list(ta_list):
         add_to_rating_db("ta_rating", user_list[1:])
 
 def add_to_rating_db(table, user_list):
+    """
+    Initialize the Ratings DB
+    :param table:
+    :param user_list:
+    :return:
+    """
     client, db = open_db_connection()
     db[table].remove()
     for user in user_list:
@@ -63,4 +69,4 @@ def create_student_list(student_list):
         # Read all lines
         user_list = student_file.readlines()
         # Add Students
-        add_to_db("student_list", user_list)
+        add_to_db("student_list", user_list[1:])
