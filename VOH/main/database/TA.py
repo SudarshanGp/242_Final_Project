@@ -176,6 +176,10 @@ def set_ta_status(net_id, status):
     close_db_connection(client)
 
 def get_ta_ratings():
+    """
+    Returns a list of TA ratings
+    :return:
+    """
     ta_ratings = []
     client, db = open_db_connection()
     ta_list = list(db["ta_rating"].find({}))
@@ -190,6 +194,10 @@ def get_ta_ratings():
     return ta_ratings
 
 def get_ta_timings():
+    """
+    Returns a list of TA timings Logged into the DB
+    :return:
+    """
     ta_timings = []
     client, db = open_db_connection()
     ta_list = list(db["online_ta"].find({}))
