@@ -95,7 +95,8 @@ $(document).ready(function() {
 
 });
 /**
- * Function that updates the list of Online TA's
+ * Function that updates the list of Online TA's If the user is a TA then he/she does not get a join/leave option
+ * while a student does
  * @param data
  */
 function get_ta_status(data) {
