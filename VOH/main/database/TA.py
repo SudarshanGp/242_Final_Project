@@ -1,6 +1,6 @@
 from VOH import open_db_connection, close_db_connection
 from werkzeug.security import generate_password_hash
-
+import datetime
 
 def check_in_ta_list(net_id):
     """
@@ -98,6 +98,7 @@ def update_ta_list(net_id_list):
         net_id = net_id_list[index]["net_id"]
         name = get_TA(net_id)[0]["name"]
         net_id_list[index]["name"] = name
+        net_id_list[index].pop("last_login",None)
 
 
 def get_online_ta():
@@ -145,13 +146,30 @@ def set_ta_status(net_id, status):
     :param net_id: Status of TA
     :return: None
     """
+    cur_time = datetime.datetime.now()
     client, db = open_db_connection()
-    db["online_ta"].update_one({
-        '_id': net_id
-    }, {
-        '$set': {
-            'status': status
-        }
-    }, upsert=False)
+    if status == "online":
+
+        db["online_ta"].update_one({
+            '_id': net_id
+        }, {
+            '$set': {
+                'status': status,
+                'last_login':cur_time
+            }
+        }, upsert=False)
+    else:
+        ta_data = list(db["online_ta"].find({"_id":net_id}))
+        print ta_data
+        total_time = ta_data[0]["total_time"] + (cur_time - ta_data[0]["last_login"]).seconds
+        db["online_ta"].update_one({
+            '_id': net_id
+        }, {
+            '$set': {
+                'status': status,
+                'total_time':total_time
+            }
+        }, upsert=False)
+
     # Close Connection
     close_db_connection(client)

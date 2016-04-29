@@ -1,4 +1,5 @@
 from VOH import open_db_connection, close_db_connection
+import datetime
 
 
 def add_to_db(table, user_list):
@@ -24,11 +25,12 @@ def add_to_online_db(table, user_list):
     :param user_list: List of values
     :return: None
     """
+    cur_time = datetime.datetime.now()
     client, db = open_db_connection()
     db[table].remove()
     for user in user_list:
         net_id = user.replace("\r\n", "").encode("utf-8")
-        db[table].insert({"net_id": net_id, "status": "offline", "_id": net_id})
+        db[table].insert({"net_id": net_id, "status": "offline", "_id": net_id, "total_time":0, "last_login":cur_time})
     close_db_connection(client)
 
 
