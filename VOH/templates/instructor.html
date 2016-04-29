@@ -1,4 +1,4 @@
-{%  extends "base.html" %}
+{% extends "base.html" %}
 {# Includes the same frame as the main page but adds a form which allows a user to register #}
 {% block data %}
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -7,38 +7,42 @@
     <script src="http://www.d3plus.org/js/d3plus.js"></script>
     <script src="{{ url_for('static',filename='js/ta_visualizations.js') }}"></script>
 
-{# Creates a form which allows multi-file upload and gives a message output after file upload #}
-<form enctype=multipart/form-data method = "post">
-   <div class = "row center">
-      <div class = "col s8">
-         <div class="file-field input-field">
-            <div class="btn pink accent-3">
-               <span>File</span>
-               <input type="file" name="file" multiple>
+    {# Creates a form which allows multi-file upload and gives a message output after file upload #}
+    <form enctype=multipart/form-data method="post">
+        <div class="row center">
+            <div class="col s8">
+                <div class="file-field input-field">
+                    <div class="btn pink accent-3">
+                        <span>File</span>
+                        <input type="file" name="file" multiple>
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text" placeholder="Upload one or more files">
+                    </div>
+                </div>
             </div>
-            <div class="file-path-wrapper">
-               <input class="file-path validate" type="text" placeholder="Upload one or more files" >
+            <div class="col s4 center">
+                <button class="btn waves-effect waves-light orange accent-3" type="submit" value="Upload"
+                        id="upload_submit">Submit
+                    <i class="material-icons right">send</i>
+                </button>
             </div>
-         </div>
-      </div>
-      <div class = "col s4 center">
-         <button class="btn waves-effect waves-light orange accent-3" type="submit" value="Upload" id = "upload_submit">Submit
-            <i class="material-icons right">send</i>
-         </button>
-      </div>
 
-   </div>
-   <div class = "row">
-      <span>{{message}}</span>
-   </div>
-</form>
-
-    <div class = "row">
-        <div class = "col s6">
-            <div id = "ratingviz"></div>
         </div>
-        <div class = "col s6">
-            <div id = "timeviz"></div>
+    </form>
+
+    <div class="card">
+        <div class="card-title center blue-text text-darken-4">
+            TA Ratings
         </div>
     </div>
+    <div id="ratingviz"></div>
+
+    <div class="card">
+        <div class="card-title center blue-text text-darken-4">
+            TA Hours Logged
+        </div>
+    </div>
+    <div id="timeviz"></div>
+
 {% endblock %}
