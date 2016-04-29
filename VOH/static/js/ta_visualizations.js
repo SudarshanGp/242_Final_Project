@@ -1,3 +1,5 @@
+// When the Instructor page is rendered, it makes an AJAX post to Flask to get the data regarging the ratings
+// and hours logged by a TA as a JSON object. The data is then rendered using d3plus to different ids
 $(document).ready(function(){
     $.ajax({
         url:"/get_ratings/",
@@ -10,7 +12,7 @@ $(document).ready(function(){
                 .id("name")
                 .x("name")
                 .y("score")
-                .draw()
+                .draw();
             var visualization = d3plus.viz()
                 .container("#timeviz")
                 .data(data['timings'])
