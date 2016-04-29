@@ -12,13 +12,13 @@
     <script src="{{ url_for('static',filename='linkifyjs/linkify-element.js') }}"></script>
     <script src="{{ url_for('static',filename='linkifyjs/linkify-jquery.js') }}"></script>
 <div class = "row center">
-    <h5>{{ ta }}</h5>
-    <h5>{{ student }}</h5>
+
 </div>
 <div class = "row">
     <div class = "col s6">
+        <h5 class = "center">Chat between {{ ta }} - {{ student }}</h5>
         <div class = "card">
-            <h5>Chat: {{ chatID }}</h5>
+
             {# Make the textarea readonly to prevent people from typing into the textbox #}
             <div readonly class="materialize-textarea" id="chat"></div>
 
@@ -43,9 +43,13 @@
         </div>
     </div>
     <div class = "col s6">
-       <iframe style="width: 750px;height: 700px;" src = {{ codeshare }}></iframe>
+        <h5 class = "center">Codeshare Link: <a>{{ codeshare }}</a></h5>
+       <iframe style="width: 650px;height: 510px;" src = {{ codeshare }}></iframe>
     </div>
 </div>
+        <div id = "student_list" class = "center">
+    </div>
+
 <script>
 $(".inline").modaal();
 </script>

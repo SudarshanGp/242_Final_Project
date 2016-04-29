@@ -30,7 +30,7 @@ def join(message):
     for key, value in enumerate(old_messages):
         del value['_id']
     session['room'] = str(message['room'])
-    emit('status', {'msg': session['net_id'] + ' is now in the conversation', 'old' :   old_messages, 'type':session.get('type') }, namespace='/chat_session',
+    emit('status', {'msg': session['net_id'] + ' is now in the conversation', 'old' :   old_messages, 'type':session.get('type'), "net_id":session['net_id'] }, namespace='/chat_session',
          room=str(room))  # Emits signal to a particular chat conversation
 
 
@@ -93,7 +93,22 @@ def add_rating_to_db(data):
     # Close Connection
         close_db_connection(client)
 
-
+@socketio.on('get_student_list',namespace='/chat_session')
+def get_student_list(data):
+    """
+    
+    :param data:
+    :return:
+    """
+    net_id = data["ta"]
+    print data
+    student_list = TA.get_ta_queue(net_id)
+    ret_list = []
+    for val in student_list:
+        if val["ta"] == net_id:
+            ret_list.append(val)
+    room = session['room']
+    emit('load_student_list',{"student_list":ret_list, "type":data["type"]},room = room)
 
 @socketio.on('left', namespace='/chat_session')
 def leave(message):

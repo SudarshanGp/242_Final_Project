@@ -2,6 +2,7 @@
 
 // MOTIVATION FROM FLASK-SOCKETIO DOCUMENTATION
 var loaded_archive = false;
+var ta = false;
 var socket;
 $(document).ready(function(){
     socket = io.connect('http://' + document.domain + ':' + location.port + '/chat_session'); // Connect to socket.io server
@@ -30,6 +31,7 @@ $(document).ready(function(){
             old_messages.forEach(function(d){
                 var data_html = "";
                 if(d.type == "TA"){
+                    ta = true;
                     data_html = "<p style = 'text-align: right; padding-right: 10px;'>"+d.by + ": " + d.message.msg+"</p>";
                 }
                 else{
@@ -44,10 +46,30 @@ $(document).ready(function(){
         message = $.parseHTML( "<p style = 'text-align: center;'> Start New Conversation</p>");
         $('#chat').append(message);
 
+        if (data.type == "TA") {
+            socket.emit('get_student_list', {"ta": data.net_id, "type":data.type})
+        }
         
         
     });
 
+    socket.on('load_student_list', function(data){
+        var mydiv = document.getElementById("student_list");
+        var student_list = data["student_list"];
+        var html_data = "<h6>Students on your queue</h6>";
+        student_list.forEach(function(d){
+                var student_net_id = d["student"];
+                html_data = html_data.concat('<blockquote style = "float:left;">');
+                html_data = html_data.concat(student_net_id);
+                html_data = html_data.concat('</blockquote><br>');
+        });
+        // Updates HTML Div
+        $(mydiv).html("");
+        if(data["type"] == "TA"){
+            console.log("is a ta");
+            $(mydiv).html(html_data);
+        }
+    });
     /**
      * On a new message being emitted by socket.io server, this function
      * catches it and appends it to the chat box

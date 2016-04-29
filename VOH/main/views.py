@@ -51,7 +51,7 @@ def chat_main(path):
         form.rating_by = path.split('-')[1]
 
     return render_template('chat.html', codeshare = session["link"], name = session["type"],
-                           form = form, ta = path.split('-')[0], student = path.split('-')[1])
+                           form = form, ta = path.split('-')[0], student = path.split('-')[1],login_status = check_login_status())
 
 @main.route('/chat/<path>/<link>')
 def chat(path, link):
@@ -64,7 +64,7 @@ def chat(path, link):
     code_link = "https://codeshare.io/"+link
     session["link"] = code_link
     # path = path.split('-')[0]
-    return flask.redirect(url_for("main.chat_main",path=path))
+    return flask.redirect(url_for("main.chat_main",path=path,login_status = check_login_status()))
 
 
 
