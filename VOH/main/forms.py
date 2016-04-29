@@ -80,6 +80,10 @@ class LoginForm(Form):
 
 
 class TARating(form):
+    """
+    Create a TA rating form which allows you to rate a TA on a scale from 1 to 5 and has two hidden fields which store
+    the rating for and by
+    """
     rating = RadioField('Rate TA', choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')],
                                  default='student')
     rating_for = HiddenField('Default TA')
@@ -87,7 +91,10 @@ class TARating(form):
 
 
 class StudentRating(form):
-
+    """
+    Create a Student rating form which allows you to rate a student on a scale from 1 to 5 and has two hidden fields which store
+    the rating for and by
+    """
     rating = RadioField('Rate Student',choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')],
                                  default='student')
     rating_for = HiddenField('Default Student')
