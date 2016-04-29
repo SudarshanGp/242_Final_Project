@@ -115,18 +115,29 @@ function get_ta_status(data) {
             id_add = ta_net_id;
             id_remove = ta_net_id ;
             path = "../static/data/img/" + ta_net_id + ".jpg";
-            html_data = html_data.concat('<div class = "row"></div><a class="btn-floating btn-large green" onclick = \"add_queue(this);\" id = \"');
-            html_data = html_data.concat(id_add);
-            html_data = html_data.concat('\">Join</a>');
-            html_data = html_data.concat('<a class="btn-floating red btn-large" onclick = \"remove_queue(this');
-            html_data = html_data.concat(');\" id = \"');
-            html_data = html_data.concat(id_remove);
-            html_data = html_data.concat('\">Leave</a>');
-            html_data = html_data.concat('<div class = "chip large"><img src =');
-            html_data = html_data.concat(path);
-            html_data = html_data.concat('></img>');
-            html_data = html_data.concat(ta_name);
-            html_data = html_data.concat('</h5></div></div>');
+            if(window.location.href.indexOf("TA") > -1){
+                html_data = html_data.concat('<div class = "row">');
+                html_data = html_data.concat('<div class = "chip large"><img src =');
+                html_data = html_data.concat(path);
+                html_data = html_data.concat('></img>');
+                html_data = html_data.concat(ta_name);
+                html_data = html_data.concat('</h5></div></div>');
+            }
+            else{
+                html_data = html_data.concat('<div class = "row"></div><a class="btn-floating btn-large green" onclick = \"add_queue(this);\" id = \"');
+                html_data = html_data.concat(id_add);
+                html_data = html_data.concat('\">Join</a>');
+                html_data = html_data.concat('<a class="btn-floating red btn-large" onclick = \"remove_queue(this');
+                html_data = html_data.concat(');\" id = \"');
+                html_data = html_data.concat(id_remove);
+                html_data = html_data.concat('\">Leave</a>');
+                html_data = html_data.concat('<div class = "chip large"><img src =');
+                html_data = html_data.concat(path);
+                html_data = html_data.concat('></img>');
+                html_data = html_data.concat(ta_name);
+                html_data = html_data.concat('</h5></div></div>');
+            }
+
 
         }
         // Updates HTML Content
