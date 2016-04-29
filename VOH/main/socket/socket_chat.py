@@ -57,9 +57,7 @@ def converse(message):
 @socketio.on('add_rating_to_db', namespace='/chat_session')
 def add_rating_to_db(data):
     """
-    leave function catches any a left signal emitted by socketIO client
-    It emits a signal to all users in that room notifying that the user has left the chat conversation
-    :param message: Leave Message
+    On Exit, this function adds the rating for TA/Student to the DB
     """
 
     if TA.check_in_ta_list(data['rating_for']):
@@ -96,12 +94,11 @@ def add_rating_to_db(data):
 @socketio.on('get_student_list',namespace='/chat_session')
 def get_student_list(data):
     """
-    
+    Returns a list of students online for the given TA
     :param data:
     :return:
     """
     net_id = data["ta"]
-    print data
     student_list = TA.get_ta_queue(net_id)
     ret_list = []
     for val in student_list:
