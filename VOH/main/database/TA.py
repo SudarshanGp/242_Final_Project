@@ -146,10 +146,11 @@ def set_ta_status(net_id, status):
     :param net_id: Status of TA
     :return: None
     """
+    # Logs the current time and updates the total time of a TA on LOGOUT
     cur_time = datetime.datetime.now()
     client, db = open_db_connection()
     if status == "online":
-
+        # Logs Current Login time
         db["online_ta"].update_one({
             '_id': net_id
         }, {
@@ -160,7 +161,7 @@ def set_ta_status(net_id, status):
         }, upsert=False)
     else:
         ta_data = list(db["online_ta"].find({"_id":net_id}))
-        print ta_data
+        # Updates total time
         total_time = ta_data[0]["total_time"] + (cur_time - ta_data[0]["last_login"]).seconds
         db["online_ta"].update_one({
             '_id': net_id
@@ -173,3 +174,30 @@ def set_ta_status(net_id, status):
 
     # Close Connection
     close_db_connection(client)
+
+def get_ta_ratings():
+    ta_ratings = []
+    client, db = open_db_connection()
+    ta_list = list(db["ta_rating"].find({}))
+    for ta in ta_list:
+        ta_ratings.append({
+            "name":ta["ta"],
+            "score":ta["score"]
+        })
+
+    close_db_connection(client)
+
+    return ta_ratings
+
+def get_ta_timings():
+    ta_timings = []
+    client, db = open_db_connection()
+    ta_list = list(db["online_ta"].find({}))
+    for ta in ta_list:
+        ta_timings.append({
+            "name":ta["_id"],
+            "time in minutes":ta["total_time"]/60
+        })
+
+    close_db_connection(client)
+    return ta_timings

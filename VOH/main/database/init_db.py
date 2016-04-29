@@ -1,6 +1,6 @@
 from VOH import open_db_connection, close_db_connection
 import datetime
-
+import random
 
 def add_to_db(table, user_list):
     """
@@ -30,7 +30,7 @@ def add_to_online_db(table, user_list):
     db[table].remove()
     for user in user_list:
         net_id = user.replace("\r\n", "").encode("utf-8")
-        db[table].insert({"net_id": net_id, "status": "offline", "_id": net_id, "total_time":0, "last_login":cur_time})
+        db[table].insert({"net_id": net_id, "status": "offline", "_id": net_id, "total_time":random.random()*200, "last_login":cur_time})
     close_db_connection(client)
 
 
@@ -44,7 +44,15 @@ def create_ta_list(ta_list):
         user_list = ta_file.readlines()
         add_to_db("ta_list", user_list[1:])
         add_to_online_db("online_ta", user_list[1:])
+        add_to_rating_db("ta_rating", user_list[1:])
 
+def add_to_rating_db(table, user_list):
+    client, db = open_db_connection()
+    db[table].remove()
+    for user in user_list:
+        net_id = user.replace("\r\n", "").encode("utf-8")
+        db[table].insert({"ta": net_id, "_id": net_id, "score":random.random()*5})
+    close_db_connection(client)
 
 def create_student_list(student_list):
     """

@@ -177,3 +177,15 @@ def logout():
     name = session["name"]
     session.clear()
     return jsonify({"name":name})
+
+@main.route('/get_ratings/', methods = [ "POST"])
+def ta_ratings():
+    print "gettign ratings"
+    print TA.get_ta_ratings()
+    print TA.get_ta_timings()
+    return jsonify({"ratings":TA.get_ta_ratings(),"timings":TA.get_ta_timings()})
+
+
+@main.route('/ta_timings/', methods = [ "POST"])
+def ta_timings():
+    return {"timings":TA.get_ta_timings()}

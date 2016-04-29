@@ -2,10 +2,14 @@
 {# Includes the same frame as the main page but adds a form which allows a user to register #}
 {% block data %}
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-            <script src="{{ url_for('static',filename='js/ta_status.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/ta_status.js') }}"></script>
+    <script src="http://www.d3plus.org/js/d3.js"></script>
+    <script src="http://www.d3plus.org/js/d3plus.js"></script>
+    <script src="{{ url_for('static',filename='js/ta_visualizations.js') }}"></script>
+
 {# Creates a form which allows multi-file upload and gives a message output after file upload #}
 <form enctype=multipart/form-data method = "post">
-   <div class = "row">
+   <div class = "row center">
       <div class = "col s8">
          <div class="file-field input-field">
             <div class="btn pink accent-3">
@@ -17,15 +21,24 @@
             </div>
          </div>
       </div>
-      <div class = "col s4">
-         <button class="btn waves-effect waves-light pink accent-3" type="submit" value="Upload" id = "upload_submit">Submit
-         <i class="material-icons right">send</i>
+      <div class = "col s4 center">
+         <button class="btn waves-effect waves-light orange accent-3" type="submit" value="Upload" id = "upload_submit">Submit
+            <i class="material-icons right">send</i>
+         </button>
       </div>
-      </button>
+
    </div>
    <div class = "row">
       <span>{{message}}</span>
    </div>
-
 </form>
+
+    <div class = "row">
+        <div class = "col s6">
+            <div id = "ratingviz"></div>
+        </div>
+        <div class = "col s6">
+            <div id = "timeviz"></div>
+        </div>
+    </div>
 {% endblock %}
