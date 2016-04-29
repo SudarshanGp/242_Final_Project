@@ -1,7 +1,7 @@
 // @author : Sudarshan Govindaprasad
 
 // MOTIVATION FROM FLASK-SOCKETIO DOCUMENTATION
-
+var loaded_archive = false;
 var socket;
 $(document).ready(function(){
     socket = io.connect('http://' + document.domain + ':' + location.port + '/chat_session'); // Connect to socket.io server
@@ -24,21 +24,23 @@ $(document).ready(function(){
         $('#chat').append(message);
         $('#chat').scrollTop($('#chat')[0].scrollHeight);
         old_messages = data.old;
-
-        message = $.parseHTML( "<p style = 'text-align: center;'> Old Archived Messages</p>");
-        $('#chat').append(message);
-        old_messages.forEach(function(d){
-            var data_html = "";
-            if(d.type == "TA"){
-                data_html = "<p style = 'text-align: right; padding-right: 10px;'>"+d.by + ": " + d.message.msg+"</p>";
-            }
-            else{
-               data_html = "<p style = 'text-align: left; padding-left: 10px;'>"+d.by + ": " +d.message.msg+"</p>";
-            }
-            message = $.parseHTML(data_html);
-
+        if(loaded_archive == false){
+            message = $.parseHTML( "<p style = 'text-align: center;'> Old Archived Messages</p>");
             $('#chat').append(message);
-        });
+            old_messages.forEach(function(d){
+                var data_html = "";
+                if(d.type == "TA"){
+                    data_html = "<p style = 'text-align: right; padding-right: 10px;'>"+d.by + ": " + d.message.msg+"</p>";
+                }
+                else{
+                   data_html = "<p style = 'text-align: left; padding-left: 10px;'>"+d.by + ": " +d.message.msg+"</p>";
+                }
+                message = $.parseHTML(data_html);
+
+                $('#chat').append(message);
+            });
+            loaded_archive = true;
+        }
         message = $.parseHTML( "<p style = 'text-align: center;'> Start New Conversation</p>");
         $('#chat').append(message);
 
